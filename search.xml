@@ -79,7 +79,7 @@
       <link href="/2025/02/06/blog%E7%94%A8%E6%B3%95/"/>
       <url>/2025/02/06/blog%E7%94%A8%E6%B3%95/</url>
       
-        <content type="html"><![CDATA[<h2 id="提交更改"><a href="#提交更改" class="headerlink" title="提交更改"></a>提交更改</h2><div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo g -d</span><br></pre></td></tr></table></figure></div>]]></content>
+        <content type="html"><![CDATA[<h2 id="提交更改"><a href="#提交更改" class="headerlink" title="提交更改"></a>提交更改</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo g -d</span><br></pre></td></tr></table></figure><h1 id="本地网站"><a href="#本地网站" class="headerlink" title="本地网站"></a>本地网站</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure>]]></content>
       
       
       
