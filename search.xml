@@ -4,6 +4,19 @@
   
     
     <entry>
+      <title>Markdown语法</title>
+      <link href="/2025/02/24/Markdown%E8%AF%AD%E6%B3%95/"/>
+      <url>/2025/02/24/Markdown%E8%AF%AD%E6%B3%95/</url>
+      
+        <content type="html"><![CDATA[<h1 id="一-标题"><a href="#一-标题" class="headerlink" title="一.标题"></a>一.标题</h1><p>使用#</p><h1 id="二-字体"><a href="#二-字体" class="headerlink" title="二.字体"></a>二.字体</h1><h2 id="1-粗体"><a href="#1-粗体" class="headerlink" title="1.粗体"></a>1.粗体</h2><p>两个*</p><p><strong>M</strong></p><p><strong>M</strong></p><h2 id="2-斜体"><a href="#2-斜体" class="headerlink" title="2.斜体"></a>2.斜体</h2><p>一个*</p><p><em>M</em></p><p><em>M</em></p><h2 id="3-粗体加斜体"><a href="#3-粗体加斜体" class="headerlink" title="3.粗体加斜体"></a>3.粗体加斜体</h2><p>三个*</p><p><em><strong>M</strong></em></p><p><em><strong>M</strong></em></p><h2 id="4-删除"><a href="#4-删除" class="headerlink" title="4.删除"></a>4.删除</h2><p>使用两个波浪线</p><p><del>M</del></p><p><del>M</del></p><h1 id="三-引用"><a href="#三-引用" class="headerlink" title="三.引用"></a>三.引用</h1><p>使用大于号</p><blockquote><p>M</p></blockquote><blockquote><p>M</p></blockquote><h1 id="四-分割线"><a href="#四-分割线" class="headerlink" title="四.分割线"></a>四.分割线</h1><p>三个*或者三个-</p><h1 id="五-图片"><a href="#五-图片" class="headerlink" title="五.图片"></a>五.图片</h1><p>!+[]+()，其中[]内填写名字，()内填写图片地址</p><p><img src="/"></p><h1 id="六-超链接"><a href="#六-超链接" class="headerlink" title="六.超链接"></a>六.超链接</h1><p>[]+()，其中[]内填写名字，()内填写网址</p><p><a href="www.baidu.com">hh</a></p><h1 id="七-列表"><a href="#七-列表" class="headerlink" title="七.列表"></a>七.列表</h1><h2 id="有序列表"><a href="#有序列表" class="headerlink" title="有序列表"></a>有序列表</h2><p>数字加”.”,再加空格，即生成有序列表</p><ol><li>A</li><li>B</li></ol><h2 id="无序列表"><a href="#无序列表" class="headerlink" title="无序列表"></a>无序列表</h2><p>-加空格</p><ul><li>1</li><li>2</li></ul><h1 id="八-表格"><a href="#八-表格" class="headerlink" title="八.表格"></a>八.表格</h1><p>1.右键，选择插入，选择表格</p><p>2.Ctrl+T</p><p>3.原始人模式</p><p>先写好格式如下</p><p>X|Y|Z</p><p>–|–|–</p><p>1|2|3</p><p>然后点击左下角图案&lt;&#x2F;&gt;，开启源代码模式，把各行之间的空行删除，即可生成表格。</p><h1 id="九-插入代码块"><a href="#九-插入代码块" class="headerlink" title="九.插入代码块"></a>九.插入代码块</h1><p>使用三个&#96;</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>SQL数据库</title>
       <link href="/2025/02/24/SQL%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
       <url>/2025/02/24/SQL%E6%95%B0%E6%8D%AE%E5%BA%93/</url>
