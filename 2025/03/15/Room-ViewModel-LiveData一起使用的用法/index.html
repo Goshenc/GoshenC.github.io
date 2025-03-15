@@ -1,0 +1,294 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Room+ViewModel+LiveData一起使用的用法 | GoshenC</title><meta name="author" content="GoshenC"><meta name="copyright" content="GoshenC"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="在 Android 开发中，Room、ViewModel 和 LiveData 经常一起使用，以实现 MVVM 架构，并提供持久化数据存储、生命周期感知的数据管理和自动更新 UI 的能力。  📌 1. 主要作用   组件 作用    Room（数据库） 提供 SQLite 的抽象层，管理本地数据存储   ViewModel 管理 UI 相关的数据，确保数据在配置变更（如旋转屏幕）时不会丢失">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Room+ViewModel+LiveData一起使用的用法">
+<meta property="og:url" content="http://example.com/2025/03/15/Room-ViewModel-LiveData%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8%E7%9A%84%E7%94%A8%E6%B3%95/index.html">
+<meta property="og:site_name" content="GoshenC">
+<meta property="og:description" content="在 Android 开发中，Room、ViewModel 和 LiveData 经常一起使用，以实现 MVVM 架构，并提供持久化数据存储、生命周期感知的数据管理和自动更新 UI 的能力。  📌 1. 主要作用   组件 作用    Room（数据库） 提供 SQLite 的抽象层，管理本地数据存储   ViewModel 管理 UI 相关的数据，确保数据在配置变更（如旋转屏幕）时不会丢失">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/avatar.jpg">
+<meta property="article:published_time" content="2025-03-15T04:01:59.000Z">
+<meta property="article:modified_time" content="2025-03-15T04:02:50.790Z">
+<meta property="article:author" content="GoshenC">
+<meta property="article:tag" content="安卓知识">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/avatar.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Room+ViewModel+LiveData一起使用的用法",
+  "url": "http://example.com/2025/03/15/Room-ViewModel-LiveData%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8%E7%9A%84%E7%94%A8%E6%B3%95/",
+  "image": "http://example.com/img/avatar.jpg",
+  "datePublished": "2025-03-15T04:01:59.000Z",
+  "dateModified": "2025-03-15T04:02:50.790Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "GoshenC",
+      "url": "http://example.com/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/circularavatar.jpg"><link rel="canonical" href="http://example.com/2025/03/15/Room-ViewModel-LiveData%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8%E7%9A%84%E7%94%A8%E6%B3%95/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"No results found for: ${query}","hits_stats":"${hits} articles found"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Room+ViewModel+LiveData一起使用的用法',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">17</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/gotcha,hahaha"><span> 简体中文/Chinese-CN</span></a></div><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Timeline</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" target="_blank" rel="noopener" href="https://www.kugou.com/"><i class="fa-fw fas fa-music"></i><span> Music(音乐)</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie(电影)</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(img/mainbackground.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/circularavatar.jpg" alt="Logo"><span class="site-name">GoshenC</span></a><a class="nav-page-title" href="/"><span class="site-name">Room+ViewModel+LiveData一起使用的用法</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/gotcha,hahaha"><span> 简体中文/Chinese-CN</span></a></div><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Timeline</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" target="_blank" rel="noopener" href="https://www.kugou.com/"><i class="fa-fw fas fa-music"></i><span> Music(音乐)</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie(电影)</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Room+ViewModel+LiveData一起使用的用法</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2025-03-15T04:01:59.000Z" title="Created 2025-03-15 12:01:59">2025-03-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2025-03-15T04:02:50.790Z" title="Updated 2025-03-15 12:02:50">2025-03-15</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word Count:</span><span class="word-count">1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading Time:</span><span>4mins</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>在 <code>Android</code> 开发中，<code>Room</code>、<code>ViewModel</code> 和 <code>LiveData</code> 经常一起使用，以实现 <strong>MVVM 架构</strong>，并提供持久化数据存储、生命周期感知的数据管理和自动更新 UI 的能力。</p>
+<hr>
+<h1 id="📌-1-主要作用"><a href="#📌-1-主要作用" class="headerlink" title="📌 1. 主要作用"></a><strong>📌 1. 主要作用</strong></h1><table>
+<thead>
+<tr>
+<th><strong>组件</strong></th>
+<th><strong>作用</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Room（数据库）</strong></td>
+<td>提供 SQLite 的抽象层，管理本地数据存储</td>
+</tr>
+<tr>
+<td><strong>ViewModel</strong></td>
+<td>管理 UI 相关的数据，确保数据在配置变更（如旋转屏幕）时不会丢失</td>
+</tr>
+<tr>
+<td><strong>LiveData</strong></td>
+<td>观察数据变化，并在 UI 组件生命周期内自动更新</td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="🚀-2-使用-Room-ViewModel-LiveData-的完整示例"><a href="#🚀-2-使用-Room-ViewModel-LiveData-的完整示例" class="headerlink" title="🚀 2. 使用 Room + ViewModel + LiveData 的完整示例"></a><strong>🚀 2. 使用 <code>Room + ViewModel + LiveData</code> 的完整示例</strong></h1><h3 id="📌-功能："><a href="#📌-功能：" class="headerlink" title="📌 功能："></a><strong>📌 功能</strong>：</h3><p>我们实现一个<strong>简单的待办事项（ToDo List）应用</strong>，可以：</p>
+<ul>
+<li><strong>增删查改任务</strong>，数据存储在 <code>Room</code> 数据库中。</li>
+<li><strong>使用 <code>LiveData</code></strong> 让 UI <strong>自动更新</strong>，而不需要手动刷新。</li>
+<li><strong><code>ViewModel</code> 负责管理数据</strong>，避免 <code>Activity</code> 直接操作数据库。</li>
+</ul>
+<hr>
+<h2 id="📌-3-创建-Room-数据库"><a href="#📌-3-创建-Room-数据库" class="headerlink" title="📌 3. 创建 Room 数据库"></a><strong>📌 3. 创建 Room 数据库</strong></h2><h3 id="（1）定义-Entity（数据库表）"><a href="#（1）定义-Entity（数据库表）" class="headerlink" title="（1）定义 Entity（数据库表）"></a><strong>（1）定义 <code>Entity</code>（数据库表）</strong></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">import androidx.room.Entity</span><br><span class="line">import androidx.room.PrimaryKey</span><br><span class="line"></span><br><span class="line">@Entity(tableName = &quot;todo_table&quot;)</span><br><span class="line">data class Todo(</span><br><span class="line">    @PrimaryKey(autoGenerate = true) val id: Int = 0,</span><br><span class="line">    val task: String,</span><br><span class="line">    val isCompleted: Boolean</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>@Entity</code>：表示这是一个数据库表，表名是 <code>todo_table</code>。</li>
+<li><code>@PrimaryKey(autoGenerate = true)</code>：<code>id</code> 是主键，<code>Room</code> 会自动生成。</li>
+</ul>
+<hr>
+<h3 id="（2）创建-DAO（数据访问对象）"><a href="#（2）创建-DAO（数据访问对象）" class="headerlink" title="（2）创建 DAO（数据访问对象）"></a><strong>（2）创建 DAO（数据访问对象）</strong></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">import androidx.lifecycle.LiveData</span><br><span class="line">import androidx.room.*</span><br><span class="line"></span><br><span class="line">@Dao</span><br><span class="line">interface TodoDao &#123;</span><br><span class="line">    @Insert(onConflict = OnConflictStrategy.REPLACE)</span><br><span class="line">    suspend fun insert(todo: Todo)</span><br><span class="line"></span><br><span class="line">    @Update</span><br><span class="line">    suspend fun update(todo: Todo)</span><br><span class="line"></span><br><span class="line">    @Delete</span><br><span class="line">    suspend fun delete(todo: Todo)</span><br><span class="line"></span><br><span class="line">    @Query(&quot;SELECT * FROM todo_table ORDER BY id DESC&quot;)</span><br><span class="line">    fun getAllTodos(): LiveData&lt;List&lt;Todo&gt;&gt; // 使用 LiveData 让 UI 自动更新</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>@Dao</code>：数据访问对象，定义数据库操作。</li>
+<li><code>@Insert</code> &#x2F; <code>@Update</code> &#x2F; <code>@Delete</code>：操作数据库的基本增、删、改。</li>
+<li><code>getAllTodos()</code> 返回 <code>LiveData&lt;List&lt;Todo&gt;&gt;</code>，<strong>Room 会自动监听数据变化，并更新 UI</strong>。</li>
+</ul>
+<hr>
+<h3 id="（3）创建-Room-数据库"><a href="#（3）创建-Room-数据库" class="headerlink" title="（3）创建 Room 数据库"></a><strong>（3）创建 Room 数据库</strong></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">import android.content.Context</span><br><span class="line">import androidx.room.Database</span><br><span class="line">import androidx.room.Room</span><br><span class="line">import androidx.room.RoomDatabase</span><br><span class="line"></span><br><span class="line">@Database(entities = [Todo::class], version = 1, exportSchema = false)</span><br><span class="line">abstract class TodoDatabase : RoomDatabase() &#123;</span><br><span class="line">    abstract fun todoDao(): TodoDao</span><br><span class="line"></span><br><span class="line">    companion object &#123;</span><br><span class="line">        @Volatile</span><br><span class="line">        private var INSTANCE: TodoDatabase? = null</span><br><span class="line"></span><br><span class="line">        fun getDatabase(context: Context): TodoDatabase &#123;</span><br><span class="line">            return INSTANCE ?: synchronized(this) &#123;</span><br><span class="line">                val instance = Room.databaseBuilder(</span><br><span class="line">                    context.applicationContext,</span><br><span class="line">                    TodoDatabase::class.java,</span><br><span class="line">                    &quot;todo_database&quot;</span><br><span class="line">                ).build()</span><br><span class="line">                INSTANCE = instance</span><br><span class="line">                instance</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>@Database(entities = [Todo::class], version = 1)</code>：定义数据库，包含 <code>Todo</code> 表。</li>
+<li><code>synchronized(this)</code>：保证数据库实例的线程安全。</li>
+<li><code>Room.databaseBuilder()</code>：构建 <code>Room</code> 数据库实例。</li>
+</ul>
+<hr>
+<h2 id="📌-4-创建-Repository"><a href="#📌-4-创建-Repository" class="headerlink" title="📌 4. 创建 Repository"></a><strong>📌 4. 创建 Repository</strong></h2><p><code>Repository</code> 负责处理 <code>DAO</code> 操作，避免 <code>ViewModel</code> 直接操作数据库。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">import androidx.lifecycle.LiveData</span><br><span class="line"></span><br><span class="line">class TodoRepository(private val todoDao: TodoDao) &#123;</span><br><span class="line">    val allTodos: LiveData&lt;List&lt;Todo&gt;&gt; = todoDao.getAllTodos()</span><br><span class="line"></span><br><span class="line">    suspend fun insert(todo: Todo) &#123;</span><br><span class="line">        todoDao.insert(todo)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    suspend fun update(todo: Todo) &#123;</span><br><span class="line">        todoDao.update(todo)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    suspend fun delete(todo: Todo) &#123;</span><br><span class="line">        todoDao.delete(todo)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>Repository</code> 封装 <code>DAO</code>，<strong>ViewModel 只需要调用 <code>Repository</code>，而不直接操作 <code>Room</code></strong>。</li>
+</ul>
+<hr>
+<h2 id="📌-5-创建-ViewModel"><a href="#📌-5-创建-ViewModel" class="headerlink" title="📌 5. 创建 ViewModel"></a><strong>📌 5. 创建 ViewModel</strong></h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">import androidx.lifecycle.*</span><br><span class="line">import kotlinx.coroutines.launch</span><br><span class="line"></span><br><span class="line">class TodoViewModel(private val repository: TodoRepository) : ViewModel() &#123;</span><br><span class="line">    val allTodos: LiveData&lt;List&lt;Todo&gt;&gt; = repository.allTodos</span><br><span class="line"></span><br><span class="line">    fun insert(todo: Todo) = viewModelScope.launch &#123;</span><br><span class="line">        repository.insert(todo)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fun update(todo: Todo) = viewModelScope.launch &#123;</span><br><span class="line">        repository.update(todo)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fun delete(todo: Todo) = viewModelScope.launch &#123;</span><br><span class="line">        repository.delete(todo)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>viewModelScope.launch &#123;&#125;</code> 让数据库操作在 <strong>后台线程执行</strong>（<code>suspend</code> 需要 <code>Coroutine</code>）。</li>
+<li><code>LiveData&lt;List&lt;Todo&gt;&gt;</code> 确保 UI 自动更新。</li>
+</ul>
+<hr>
+<h2 id="📌-6-创建-ViewModelFactory"><a href="#📌-6-创建-ViewModelFactory" class="headerlink" title="📌 6. 创建 ViewModelFactory"></a><strong>📌 6. 创建 ViewModelFactory</strong></h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">import androidx.lifecycle.ViewModel</span><br><span class="line">import androidx.lifecycle.ViewModelProvider</span><br><span class="line"></span><br><span class="line">class TodoViewModelFactory(private val repository: TodoRepository) : ViewModelProvider.Factory &#123;</span><br><span class="line">    override fun &lt;T : ViewModel&gt; create(modelClass: Class&lt;T&gt;): T &#123;</span><br><span class="line">        if (modelClass.isAssignableFrom(TodoViewModel::class.java)) &#123;</span><br><span class="line">            @Suppress(&quot;UNCHECKED_CAST&quot;)</span><br><span class="line">            return TodoViewModel(repository) as T</span><br><span class="line">        &#125;</span><br><span class="line">        throw IllegalArgumentException(&quot;Unknown ViewModel class&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>ViewModelFactory</code> 用于 <strong>传递 <code>Repository</code></strong>，让 <code>ViewModel</code> 使用 <code>Room</code>。</li>
+</ul>
+<hr>
+<h2 id="📌-7-在-Activity-里使用"><a href="#📌-7-在-Activity-里使用" class="headerlink" title="📌 7. 在 Activity 里使用"></a><strong>📌 7. 在 <code>Activity</code> 里使用</strong></h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">class MainActivity : AppCompatActivity() &#123;</span><br><span class="line">    private lateinit var todoViewModel: TodoViewModel</span><br><span class="line"></span><br><span class="line">    override fun onCreate(savedInstanceState: Bundle?) &#123;</span><br><span class="line">        super.onCreate(savedInstanceState)</span><br><span class="line">        setContentView(R.layout.activity_main)</span><br><span class="line"></span><br><span class="line">        // 获取数据库实例和 DAO</span><br><span class="line">        val database = TodoDatabase.getDatabase(this)</span><br><span class="line">        val repository = TodoRepository(database.todoDao())</span><br><span class="line"></span><br><span class="line">        // 创建 ViewModel</span><br><span class="line">        val factory = TodoViewModelFactory(repository)</span><br><span class="line">        todoViewModel = ViewModelProvider(this, factory).get(TodoViewModel::class.java)</span><br><span class="line"></span><br><span class="line">        // 监听 LiveData，更新 UI</span><br><span class="line">        todoViewModel.allTodos.observe(this) &#123; todos -&gt;</span><br><span class="line">            // 更新 RecyclerView 或 UI</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // 添加任务</span><br><span class="line">        buttonAdd.setOnClickListener &#123;</span><br><span class="line">            val newTodo = Todo(task = &quot;New Task&quot;, isCompleted = false)</span><br><span class="line">            todoViewModel.insert(newTodo)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>getDatabase(this)</code> 获取数据库实例。</li>
+<li><code>ViewModelProvider(this, factory)</code> 创建 <code>ViewModel</code>。</li>
+<li><code>LiveData.observe()</code> 监听数据变化，<strong>UI 自动更新</strong>。</li>
+</ul>
+<hr>
+<h1 id="📌-8-总结"><a href="#📌-8-总结" class="headerlink" title="📌 8. 总结"></a><strong>📌 8. 总结</strong></h1><p>✅ <strong>Room 负责存储数据</strong>，<code>DAO</code> 负责数据库操作。<br> ✅ <strong>ViewModel 负责持久化数据</strong>，避免因屏幕旋转导致数据丢失。<br> ✅ <strong>LiveData 让 UI 自动更新</strong>，不需要手动刷新数据。<br> ✅ <strong>Repository 作为数据中介</strong>，避免 <code>ViewModel</code> 直接操作 <code>Room</code>。</p>
+<p>📌 <strong>最终效果</strong>：</p>
+<ol>
+<li><strong>数据库变更时，UI 自动更新</strong>（<code>LiveData</code>）。</li>
+<li><strong>ViewModel 让数据在 Activity&#x2F;Fragment 生命周期内持久化</strong>。</li>
+<li><strong>Repository 让数据管理更清晰</strong>，避免 <code>ViewModel</code> 直接访问数据库。</li>
+</ol>
+<p>💡 <strong>这样，我们的 <code>MVVM + Room</code> 架构更加清晰，可维护性更强！</strong> 🚀</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="http://example.com">GoshenC</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="http://example.com/2025/03/15/Room-ViewModel-LiveData%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8%E7%9A%84%E7%94%A8%E6%B3%95/">http://example.com/2025/03/15/Room-ViewModel-LiveData%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8%E7%9A%84%E7%94%A8%E6%B3%95/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%AE%89%E5%8D%93%E7%9F%A5%E8%AF%86/">安卓知识</a></div><div class="post-share"><div class="social-share" data-image="/img/avatar.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2025/03/15/ViewModel%E7%94%A8%E6%B3%95/" title="ViewModel用法"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">Previous</div><div class="info-item-2">ViewModel用法</div></div><div class="info-2"><div class="info-item-1">ViewModel 是 Android 架构组件之一，用于管理 UI 相关的数据，并在 配置更改（如屏幕旋转）时保持数据不丢失。  🔹 1. 添加 ViewModel 依赖在 build.gradle.kts（模块级）中添加： 123dependencies &#123;    implementation(&quot;androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2&quot;)&#125;   🔹 2. 创建 ViewModel（1）基础 ViewModel123456789import androidx.lifecycle.ViewModelclass CounterViewModel : ViewModel() &#123;    var count = 0 // ViewModel 变量（Activity 重建后不会丢失）    fun increment() &#123;        count++    &#125;&#125;   🔹 3. 在 Activity&#x2F;Fragment...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2025/03/15/Room%E7%94%A8%E6%B3%95/" title="Room用法"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-15</div><div class="info-item-2">Room用法</div></div><div class="info-2"><div class="info-item-1">Room 是 Android 官方推荐的数据库框架，它是 SQLite 的抽象封装，提供了更便捷的数据库操作方式，支持 Kotlin 协程和 LiveData。以下是 Room 的基本使用方法：  1. 添加 Room 依赖在 build.gradle.kts（模块级）中添加 Room 相关依赖： 12345678dependencies &#123;    val room_version = &quot;2.6.1&quot; // 确保使用最新版本    implementation(&quot;androidx.room:room-runtime:$room_version&quot;)    kapt(&quot;androidx.room:room-compiler:$room_version&quot;) // 用于注解处理器    implementation(&quot;androidx.room:room-ktx:$room_version&quot;) // 支持 Kotlin 协程&#125;  如果项目使用 Kotlin Symbol...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">GoshenC</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">17</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Goshenc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:gx.c221434@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Welcome</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%F0%9F%93%8C-1-%E4%B8%BB%E8%A6%81%E4%BD%9C%E7%94%A8"><span class="toc-number">1.</span> <span class="toc-text">📌 1. 主要作用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%F0%9F%9A%80-2-%E4%BD%BF%E7%94%A8-Room-ViewModel-LiveData-%E7%9A%84%E5%AE%8C%E6%95%B4%E7%A4%BA%E4%BE%8B"><span class="toc-number">2.</span> <span class="toc-text">🚀 2. 使用 Room + ViewModel + LiveData 的完整示例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%93%8C-%E5%8A%9F%E8%83%BD%EF%BC%9A"><span class="toc-number">2.0.1.</span> <span class="toc-text">📌 功能：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%8C-3-%E5%88%9B%E5%BB%BA-Room-%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">2.1.</span> <span class="toc-text">📌 3. 创建 Room 数据库</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%881%EF%BC%89%E5%AE%9A%E4%B9%89-Entity%EF%BC%88%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A1%A8%EF%BC%89"><span class="toc-number">2.1.1.</span> <span class="toc-text">（1）定义 Entity（数据库表）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%882%EF%BC%89%E5%88%9B%E5%BB%BA-DAO%EF%BC%88%E6%95%B0%E6%8D%AE%E8%AE%BF%E9%97%AE%E5%AF%B9%E8%B1%A1%EF%BC%89"><span class="toc-number">2.1.2.</span> <span class="toc-text">（2）创建 DAO（数据访问对象）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%883%EF%BC%89%E5%88%9B%E5%BB%BA-Room-%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">2.1.3.</span> <span class="toc-text">（3）创建 Room 数据库</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%8C-4-%E5%88%9B%E5%BB%BA-Repository"><span class="toc-number">2.2.</span> <span class="toc-text">📌 4. 创建 Repository</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%8C-5-%E5%88%9B%E5%BB%BA-ViewModel"><span class="toc-number">2.3.</span> <span class="toc-text">📌 5. 创建 ViewModel</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%8C-6-%E5%88%9B%E5%BB%BA-ViewModelFactory"><span class="toc-number">2.4.</span> <span class="toc-text">📌 6. 创建 ViewModelFactory</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%8C-7-%E5%9C%A8-Activity-%E9%87%8C%E4%BD%BF%E7%94%A8"><span class="toc-number">2.5.</span> <span class="toc-text">📌 7. 在 Activity 里使用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%F0%9F%93%8C-8-%E6%80%BB%E7%BB%93"><span class="toc-number">3.</span> <span class="toc-text">📌 8. 总结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Posts</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/15/Room-ViewModel-LiveData%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8%E7%9A%84%E7%94%A8%E6%B3%95/" title="Room+ViewModel+LiveData一起使用的用法">Room+ViewModel+LiveData一起使用的用法</a><time datetime="2025-03-15T04:01:59.000Z" title="Created 2025-03-15 12:01:59">2025-03-15</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/15/ViewModel%E7%94%A8%E6%B3%95/" title="ViewModel用法">ViewModel用法</a><time datetime="2025-03-15T02:40:46.000Z" title="Created 2025-03-15 10:40:46">2025-03-15</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/15/Room%E7%94%A8%E6%B3%95/" title="Room用法">Room用法</a><time datetime="2025-03-15T02:07:34.000Z" title="Created 2025-03-15 10:07:34">2025-03-15</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/14/startActivity%E5%92%8CregisterForActivityResult%E7%9A%84%E7%94%A8%E6%B3%95/" title="startActivity和registerForActivityResult的用法">startActivity和registerForActivityResult的用法</a><time datetime="2025-03-14T14:15:25.000Z" title="Created 2025-03-14 22:15:25">2025-03-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/14/Retrofit%E7%94%A8%E6%B3%95%E7%A4%BA%E4%BE%8B/" title="Retrofit用法示例">Retrofit用法示例</a><time datetime="2025-03-14T14:12:51.000Z" title="Created 2025-03-14 22:12:51">2025-03-14</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2025 By GoshenC</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'none',
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          enableMenu: true,
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="100" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading Database</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>
