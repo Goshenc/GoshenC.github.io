@@ -1,0 +1,311 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>DrawerLayout详解 | GoshenC</title><meta name="author" content="GoshenC"><meta name="copyright" content="GoshenC"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="📘 DrawerLayout 技术文档（2025 年版） 1. 🧭 简介DrawerLayout 是 Android 官方支持的布局容器，用于实现侧边滑出的导航抽屉效果（Navigation Drawer）。广泛应用于包含多个导航项的 App 中，例如邮箱客户端、新闻阅读器、社交类应用等。 特性：  支持左侧&#x2F;右侧抽屉（或同时存在） 支持滑动手势与菜单图标触发 与 Navigatio">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DrawerLayout详解">
+<meta property="og:url" content="http://example.com/2025/04/04/DrawerLayout%E8%AF%A6%E8%A7%A3/index.html">
+<meta property="og:site_name" content="GoshenC">
+<meta property="og:description" content="📘 DrawerLayout 技术文档（2025 年版） 1. 🧭 简介DrawerLayout 是 Android 官方支持的布局容器，用于实现侧边滑出的导航抽屉效果（Navigation Drawer）。广泛应用于包含多个导航项的 App 中，例如邮箱客户端、新闻阅读器、社交类应用等。 特性：  支持左侧&#x2F;右侧抽屉（或同时存在） 支持滑动手势与菜单图标触发 与 Navigatio">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/avatar.jpg">
+<meta property="article:published_time" content="2025-04-04T07:49:42.000Z">
+<meta property="article:modified_time" content="2025-04-04T07:51:54.948Z">
+<meta property="article:author" content="GoshenC">
+<meta property="article:tag" content="安卓开发">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/avatar.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "DrawerLayout详解",
+  "url": "http://example.com/2025/04/04/DrawerLayout%E8%AF%A6%E8%A7%A3/",
+  "image": "http://example.com/img/avatar.jpg",
+  "datePublished": "2025-04-04T07:49:42.000Z",
+  "dateModified": "2025-04-04T07:51:54.948Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "GoshenC",
+      "url": "http://example.com/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/circularavatar.jpg"><link rel="canonical" href="http://example.com/2025/04/04/DrawerLayout%E8%AF%A6%E8%A7%A3/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"No results found for: ${query}","hits_stats":"${hits} articles found"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":250,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'DrawerLayout详解',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(img/mainbackground.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">39</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">5</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/gotcha,hahaha"><span> 简体中文/Chinese-CN</span></a></div><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Timeline</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" target="_blank" rel="noopener" href="https://www.kugou.com/"><i class="fa-fw fas fa-music"></i><span> Music(音乐)</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie(电影)</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(img/mainbackground.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/circularavatar.jpg" alt="Logo"><span class="site-name">GoshenC</span></a><a class="nav-page-title" href="/"><span class="site-name">DrawerLayout详解</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/gotcha,hahaha"><span> 简体中文/Chinese-CN</span></a></div><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Timeline</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" target="_blank" rel="noopener" href="https://www.kugou.com/"><i class="fa-fw fas fa-music"></i><span> Music(音乐)</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie(电影)</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">DrawerLayout详解</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2025-04-04T07:49:42.000Z" title="Created 2025-04-04 15:49:42">2025-04-04</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2025-04-04T07:51:54.948Z" title="Updated 2025-04-04 15:51:54">2025-04-04</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word Count:</span><span class="word-count">1.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading Time:</span><span>4mins</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="📘-DrawerLayout-技术文档（2025-年版）"><a href="#📘-DrawerLayout-技术文档（2025-年版）" class="headerlink" title="📘 DrawerLayout 技术文档（2025 年版）"></a>📘 DrawerLayout 技术文档（2025 年版）</h1><hr>
+<h2 id="1-🧭-简介"><a href="#1-🧭-简介" class="headerlink" title="1. 🧭 简介"></a>1. 🧭 简介</h2><p><code>DrawerLayout</code> 是 Android 官方支持的布局容器，用于实现侧边滑出的导航抽屉效果（Navigation Drawer）。广泛应用于包含多个导航项的 App 中，例如邮箱客户端、新闻阅读器、社交类应用等。</p>
+<p><strong>特性：</strong></p>
+<ul>
+<li>支持左侧&#x2F;右侧抽屉（或同时存在）</li>
+<li>支持滑动手势与菜单图标触发</li>
+<li>与 <code>NavigationView</code> 和 Jetpack Navigation 组件良好兼容</li>
+<li>支持 Material Design 风格</li>
+</ul>
+<hr>
+<h2 id="2-🧩-核心概念与组件结构"><a href="#2-🧩-核心概念与组件结构" class="headerlink" title="2. 🧩 核心概念与组件结构"></a>2. 🧩 核心概念与组件结构</h2><p><code>DrawerLayout</code> 是一个 <code>ViewGroup</code> 容器，至少包含两个子布局：</p>
+<ul>
+<li><strong>主内容区域</strong>：通常为主界面，如 <code>FragmentContainerView</code> 或 <code>ConstraintLayout</code></li>
+<li><strong>抽屉内容区域</strong>：通常放置 <code>NavigationView</code>，用于显示导航菜单项</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">plaintext复制编辑DrawerLayout</span><br><span class="line">├── 主界面内容（Main Content）</span><br><span class="line">└── 抽屉内容（Drawer - NavigationView）</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-🛠️-基础用法"><a href="#3-🛠️-基础用法" class="headerlink" title="3. 🛠️ 基础用法"></a>3. 🛠️ 基础用法</h2><h3 id="3-1-XML-示例"><a href="#3-1-XML-示例" class="headerlink" title="3.1 XML 示例"></a>3.1 XML 示例</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">xml复制编辑&lt;androidx.drawerlayout.widget.DrawerLayout</span><br><span class="line">    xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;</span><br><span class="line">    android:id=&quot;@+id/drawer_layout&quot;</span><br><span class="line">    android:layout_width=&quot;match_parent&quot;</span><br><span class="line">    android:layout_height=&quot;match_parent&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- 主界面内容 --&gt;</span><br><span class="line">    &lt;FrameLayout</span><br><span class="line">        android:id=&quot;@+id/content_frame&quot;</span><br><span class="line">        android:layout_width=&quot;match_parent&quot;</span><br><span class="line">        android:layout_height=&quot;match_parent&quot; /&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- 侧边抽屉菜单 --&gt;</span><br><span class="line">    &lt;com.google.android.material.navigation.NavigationView</span><br><span class="line">        android:id=&quot;@+id/navigation_view&quot;</span><br><span class="line">        android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">        android:layout_height=&quot;match_parent&quot;</span><br><span class="line">        android:layout_gravity=&quot;start&quot;</span><br><span class="line">        app:menu=&quot;@menu/drawer_menu&quot;</span><br><span class="line">        app:headerLayout=&quot;@layout/nav_header&quot; /&gt;</span><br><span class="line">&lt;/androidx.drawerlayout.widget.DrawerLayout&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-Kotlin-控制打开与关闭"><a href="#3-2-Kotlin-控制打开与关闭" class="headerlink" title="3.2 Kotlin 控制打开与关闭"></a>3.2 Kotlin 控制打开与关闭</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">kotlin复制编辑val drawerLayout = findViewById&lt;DrawerLayout&gt;(R.id.drawer_layout)</span><br><span class="line"></span><br><span class="line">drawerLayout.openDrawer(GravityCompat.START)  // 打开抽屉</span><br><span class="line">drawerLayout.closeDrawer(GravityCompat.START) // 关闭抽屉</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="4-🔗-与-NavigationView-搭配使用"><a href="#4-🔗-与-NavigationView-搭配使用" class="headerlink" title="4. 🔗 与 NavigationView 搭配使用"></a>4. 🔗 与 NavigationView 搭配使用</h2><p><code>NavigationView</code> 是 Material Design 提供的控件，用于在抽屉中显示菜单项。</p>
+<h3 id="4-1-menu-drawer-menu-xml"><a href="#4-1-menu-drawer-menu-xml" class="headerlink" title="4.1 menu&#x2F;drawer_menu.xml"></a>4.1 menu&#x2F;drawer_menu.xml</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">xml复制编辑&lt;menu xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&gt;</span><br><span class="line">    &lt;item android:id=&quot;@+id/nav_home&quot;</span><br><span class="line">          android:title=&quot;首页&quot;</span><br><span class="line">          android:icon=&quot;@drawable/ic_home&quot;/&gt;</span><br><span class="line">    &lt;item android:id=&quot;@+id/nav_settings&quot;</span><br><span class="line">          android:title=&quot;设置&quot;</span><br><span class="line">          android:icon=&quot;@drawable/ic_settings&quot;/&gt;</span><br><span class="line">&lt;/menu&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-Kotlin-中监听菜单点击"><a href="#4-2-Kotlin-中监听菜单点击" class="headerlink" title="4.2 Kotlin 中监听菜单点击"></a>4.2 Kotlin 中监听菜单点击</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">kotlin复制编辑navigationView.setNavigationItemSelectedListener &#123; menuItem -&gt;</span><br><span class="line">    when (menuItem.itemId) &#123;</span><br><span class="line">        R.id.nav_home -&gt; &#123;</span><br><span class="line">            // TODO: 导航到首页</span><br><span class="line">        &#125;</span><br><span class="line">        R.id.nav_settings -&gt; &#123;</span><br><span class="line">            // TODO: 导航到设置页</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    drawerLayout.closeDrawer(GravityCompat.START)</span><br><span class="line">    true</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="5-🚀-与-Jetpack-Navigation-集成（推荐方式）"><a href="#5-🚀-与-Jetpack-Navigation-集成（推荐方式）" class="headerlink" title="5. 🚀 与 Jetpack Navigation 集成（推荐方式）"></a>5. 🚀 与 Jetpack Navigation 集成（推荐方式）</h2><p>现代 Android 推荐使用 <strong>Navigation Component</strong> 管理 Fragment 导航。</p>
+<h3 id="5-1-添加-Navigation-依赖"><a href="#5-1-添加-Navigation-依赖" class="headerlink" title="5.1 添加 Navigation 依赖"></a>5.1 添加 Navigation 依赖</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">groovy复制编辑implementation &quot;androidx.navigation:navigation-fragment-ktx:2.7.7&quot;</span><br><span class="line">implementation &quot;androidx.navigation:navigation-ui-ktx:2.7.7&quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-2-使用-NavHostFragment-替换-FrameLayout"><a href="#5-2-使用-NavHostFragment-替换-FrameLayout" class="headerlink" title="5.2 使用 NavHostFragment 替换 FrameLayout"></a>5.2 使用 NavHostFragment 替换 FrameLayout</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">xml复制编辑&lt;androidx.fragment.app.FragmentContainerView</span><br><span class="line">    android:id=&quot;@+id/nav_host_fragment&quot;</span><br><span class="line">    android:name=&quot;androidx.navigation.fragment.NavHostFragment&quot;</span><br><span class="line">    app:navGraph=&quot;@navigation/nav_graph&quot;</span><br><span class="line">    app:defaultNavHost=&quot;true&quot;</span><br><span class="line">    android:layout_width=&quot;match_parent&quot;</span><br><span class="line">    android:layout_height=&quot;match_parent&quot; /&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-3-Kotlin-中配置-AppBar-和-DrawerLayout"><a href="#5-3-Kotlin-中配置-AppBar-和-DrawerLayout" class="headerlink" title="5.3 Kotlin 中配置 AppBar 和 DrawerLayout"></a>5.3 Kotlin 中配置 AppBar 和 DrawerLayout</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">kotlin复制编辑val navController = findNavController(R.id.nav_host_fragment)</span><br><span class="line">val appBarConfig = AppBarConfiguration(</span><br><span class="line">    setOf(R.id.nav_home, R.id.nav_settings), drawerLayout</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">setupActionBarWithNavController(navController, appBarConfig)</span><br><span class="line">navigationView.setupWithNavController(navController)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="6-🎨-UI-自定义与最佳实践"><a href="#6-🎨-UI-自定义与最佳实践" class="headerlink" title="6. 🎨 UI 自定义与最佳实践"></a>6. 🎨 UI 自定义与最佳实践</h2><h3 id="✅-建议使用-Material-主题"><a href="#✅-建议使用-Material-主题" class="headerlink" title="✅ 建议使用 Material 主题"></a>✅ 建议使用 Material 主题</h3><p>确保你的主题继承自 <code>Theme.Material3.DayNight</code>，以获得最新 UI 支持。</p>
+<h3 id="✅-自定义头部布局"><a href="#✅-自定义头部布局" class="headerlink" title="✅ 自定义头部布局"></a>✅ 自定义头部布局</h3><p>你可以自定义一个布局用于 <code>NavigationView</code> 的 <code>app:headerLayout</code> 属性。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">xml</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">复制编辑</span><br><span class="line">app:headerLayout=&quot;@layout/nav_header&quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="✅-支持暗色模式"><a href="#✅-支持暗色模式" class="headerlink" title="✅ 支持暗色模式"></a>✅ 支持暗色模式</h3><p>确保资源使用 <code>night</code> 目录支持夜间模式，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">pgsql复制编辑res/</span><br><span class="line">├── layout/</span><br><span class="line">│   └── nav_header.xml</span><br><span class="line">├── values-night/</span><br><span class="line">│   └── themes.xml</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="7-✋-手势控制与监听抽屉状态"><a href="#7-✋-手势控制与监听抽屉状态" class="headerlink" title="7. ✋ 手势控制与监听抽屉状态"></a>7. ✋ 手势控制与监听抽屉状态</h2><h3 id="7-1-控制是否允许手势打开"><a href="#7-1-控制是否允许手势打开" class="headerlink" title="7.1 控制是否允许手势打开"></a>7.1 控制是否允许手势打开</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">kotlin</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">复制编辑</span><br><span class="line">drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-2-监听抽屉滑动-打开-关闭事件"><a href="#7-2-监听抽屉滑动-打开-关闭事件" class="headerlink" title="7.2 监听抽屉滑动&#x2F;打开&#x2F;关闭事件"></a>7.2 监听抽屉滑动&#x2F;打开&#x2F;关闭事件</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">kotlin复制编辑drawerLayout.addDrawerListener(object : DrawerLayout.DrawerListener &#123;</span><br><span class="line">    override fun onDrawerSlide(drawerView: View, slideOffset: Float) &#123;&#125;</span><br><span class="line">    override fun onDrawerOpened(drawerView: View) &#123;</span><br><span class="line">        Log.d(&quot;Drawer&quot;, &quot;已打开&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    override fun onDrawerClosed(drawerView: View) &#123;</span><br><span class="line">        Log.d(&quot;Drawer&quot;, &quot;已关闭&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    override fun onDrawerStateChanged(newState: Int) &#123;&#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="8-🧰-常见问题与排查技巧"><a href="#8-🧰-常见问题与排查技巧" class="headerlink" title="8. 🧰 常见问题与排查技巧"></a>8. 🧰 常见问题与排查技巧</h2><table>
+<thead>
+<tr>
+<th>问题</th>
+<th>原因和解决方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>抽屉滑不出来</td>
+<td>检查是否设置了错误的 <code>layout_gravity</code>；应为 <code>start</code> 或 <code>left</code></td>
+</tr>
+<tr>
+<td>菜单图标未显示</td>
+<td>使用 <code>app:showAsAction=&quot;always&quot;</code> 或使用 MaterialIcons</td>
+</tr>
+<tr>
+<td>点击菜单项后抽屉不自动关闭</td>
+<td>手动调用 <code>drawerLayout.closeDrawer(GravityCompat.START)</code></td>
+</tr>
+<tr>
+<td>和返回按钮冲突（按返回时不关闭抽屉）</td>
+<td>在 <code>onBackPressedDispatcher</code> 中优先关闭抽屉</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="9-✅-总结"><a href="#9-✅-总结" class="headerlink" title="9. ✅ 总结"></a>9. ✅ 总结</h2><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>原生支持</td>
+<td>AndroidX 中的官方组件</td>
+</tr>
+<tr>
+<td>强大灵活</td>
+<td>支持左&#x2F;右抽屉、手势控制、状态监听</td>
+</tr>
+<tr>
+<td>可组合性强</td>
+<td>可与 <code>NavigationView</code> 和 Jetpack Navigation 搭配</td>
+</tr>
+<tr>
+<td>UI 可自定义</td>
+<td>支持头部、暗色模式、动画、图标样式等</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="🔚-推荐实践"><a href="#🔚-推荐实践" class="headerlink" title="🔚 推荐实践"></a>🔚 推荐实践</h3><ul>
+<li>使用 <code>Navigation Component</code> 实现导航逻辑，简洁可靠。</li>
+<li>遵循 Material Design 指南，优化用户体验。</li>
+<li>抽屉内菜单不宜过多，推荐不超过 6 项。</li>
+<li>主界面内容建议使用 <code>Fragment</code> 承载，便于后续维护。</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="http://example.com">GoshenC</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="http://example.com/2025/04/04/DrawerLayout%E8%AF%A6%E8%A7%A3/">http://example.com/2025/04/04/DrawerLayout%E8%AF%A6%E8%A7%A3/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%AE%89%E5%8D%93%E5%BC%80%E5%8F%91/">安卓开发</a></div><div class="post-share"><div class="social-share" data-image="/img/avatar.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2025/04/01/TiniList%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3/" title="TiniList使用详解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">Previous</div><div class="info-item-2">TiniList使用详解</div></div><div class="info-2"><div class="info-item-1">TintList 使用技术文档本文档详细介绍 Android 开发中 TintList 的概念、作用以及使用方法，帮助开发者掌握如何利用 TintList 动态改变控件的颜色。  1. 概述在 Android 应用开发中，经常需要对控件的背景、图标等元素进行着色处理，以便实现动态主题、状态变化反馈或与应用整体风格保持一致。ColorStateList 是 Android 中一种描述颜色状态的对象，而 TintList 则通常指控件的背景或图标的“着色列表”，其底层实现就是使用 ColorStateList 对控件进行着色处理。 例如，许多控件（如 Button、ImageView、FloatingActionButton 等）提供了 setBackgroundTintList()、setImageTintList() 等方法，使得开发者可以轻松地为控件设置不同状态下的颜色。  2. ColorStateList 基础具体可看我的另一篇文章ColorStateList使用详解 | GoshenC 2.1 什么是 ColorStateListColorStateList...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">GoshenC</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">39</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">5</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Goshenc"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Goshenc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:gx.c221434@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Welcome</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%F0%9F%93%98-DrawerLayout-%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3%EF%BC%882025-%E5%B9%B4%E7%89%88%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">📘 DrawerLayout 技术文档（2025 年版）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%F0%9F%A7%AD-%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.</span> <span class="toc-text">1. 🧭 简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%F0%9F%A7%A9-%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B8%8E%E7%BB%84%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="toc-number">1.2.</span> <span class="toc-text">2. 🧩 核心概念与组件结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%F0%9F%9B%A0%EF%B8%8F-%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95"><span class="toc-number">1.3.</span> <span class="toc-text">3. 🛠️ 基础用法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-XML-%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.3.1.</span> <span class="toc-text">3.1 XML 示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-Kotlin-%E6%8E%A7%E5%88%B6%E6%89%93%E5%BC%80%E4%B8%8E%E5%85%B3%E9%97%AD"><span class="toc-number">1.3.2.</span> <span class="toc-text">3.2 Kotlin 控制打开与关闭</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%F0%9F%94%97-%E4%B8%8E-NavigationView-%E6%90%AD%E9%85%8D%E4%BD%BF%E7%94%A8"><span class="toc-number">1.4.</span> <span class="toc-text">4. 🔗 与 NavigationView 搭配使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-menu-drawer-menu-xml"><span class="toc-number">1.4.1.</span> <span class="toc-text">4.1 menu&#x2F;drawer_menu.xml</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-Kotlin-%E4%B8%AD%E7%9B%91%E5%90%AC%E8%8F%9C%E5%8D%95%E7%82%B9%E5%87%BB"><span class="toc-number">1.4.2.</span> <span class="toc-text">4.2 Kotlin 中监听菜单点击</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%F0%9F%9A%80-%E4%B8%8E-Jetpack-Navigation-%E9%9B%86%E6%88%90%EF%BC%88%E6%8E%A8%E8%8D%90%E6%96%B9%E5%BC%8F%EF%BC%89"><span class="toc-number">1.5.</span> <span class="toc-text">5. 🚀 与 Jetpack Navigation 集成（推荐方式）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E6%B7%BB%E5%8A%A0-Navigation-%E4%BE%9D%E8%B5%96"><span class="toc-number">1.5.1.</span> <span class="toc-text">5.1 添加 Navigation 依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E4%BD%BF%E7%94%A8-NavHostFragment-%E6%9B%BF%E6%8D%A2-FrameLayout"><span class="toc-number">1.5.2.</span> <span class="toc-text">5.2 使用 NavHostFragment 替换 FrameLayout</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-Kotlin-%E4%B8%AD%E9%85%8D%E7%BD%AE-AppBar-%E5%92%8C-DrawerLayout"><span class="toc-number">1.5.3.</span> <span class="toc-text">5.3 Kotlin 中配置 AppBar 和 DrawerLayout</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%F0%9F%8E%A8-UI-%E8%87%AA%E5%AE%9A%E4%B9%89%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="toc-number">1.6.</span> <span class="toc-text">6. 🎨 UI 自定义与最佳实践</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%9C%85-%E5%BB%BA%E8%AE%AE%E4%BD%BF%E7%94%A8-Material-%E4%B8%BB%E9%A2%98"><span class="toc-number">1.6.1.</span> <span class="toc-text">✅ 建议使用 Material 主题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%9C%85-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%A4%B4%E9%83%A8%E5%B8%83%E5%B1%80"><span class="toc-number">1.6.2.</span> <span class="toc-text">✅ 自定义头部布局</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%9C%85-%E6%94%AF%E6%8C%81%E6%9A%97%E8%89%B2%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.6.3.</span> <span class="toc-text">✅ 支持暗色模式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E2%9C%8B-%E6%89%8B%E5%8A%BF%E6%8E%A7%E5%88%B6%E4%B8%8E%E7%9B%91%E5%90%AC%E6%8A%BD%E5%B1%89%E7%8A%B6%E6%80%81"><span class="toc-number">1.7.</span> <span class="toc-text">7. ✋ 手势控制与监听抽屉状态</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-%E6%8E%A7%E5%88%B6%E6%98%AF%E5%90%A6%E5%85%81%E8%AE%B8%E6%89%8B%E5%8A%BF%E6%89%93%E5%BC%80"><span class="toc-number">1.7.1.</span> <span class="toc-text">7.1 控制是否允许手势打开</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-2-%E7%9B%91%E5%90%AC%E6%8A%BD%E5%B1%89%E6%BB%91%E5%8A%A8-%E6%89%93%E5%BC%80-%E5%85%B3%E9%97%AD%E4%BA%8B%E4%BB%B6"><span class="toc-number">1.7.2.</span> <span class="toc-text">7.2 监听抽屉滑动&#x2F;打开&#x2F;关闭事件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%F0%9F%A7%B0-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E4%B8%8E%E6%8E%92%E6%9F%A5%E6%8A%80%E5%B7%A7"><span class="toc-number">1.8.</span> <span class="toc-text">8. 🧰 常见问题与排查技巧</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E2%9C%85-%E6%80%BB%E7%BB%93"><span class="toc-number">1.9.</span> <span class="toc-text">9. ✅ 总结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%94%9A-%E6%8E%A8%E8%8D%90%E5%AE%9E%E8%B7%B5"><span class="toc-number">1.9.1.</span> <span class="toc-text">🔚 推荐实践</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Posts</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/04/04/DrawerLayout%E8%AF%A6%E8%A7%A3/" title="DrawerLayout详解">DrawerLayout详解</a><time datetime="2025-04-04T07:49:42.000Z" title="Created 2025-04-04 15:49:42">2025-04-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/04/01/TiniList%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3/" title="TiniList使用详解">TiniList使用详解</a><time datetime="2025-04-01T13:36:38.000Z" title="Created 2025-04-01 21:36:38">2025-04-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/04/01/ColorStateList%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3/" title="ColorStateList使用详解">ColorStateList使用详解</a><time datetime="2025-04-01T13:31:10.000Z" title="Created 2025-04-01 21:31:10">2025-04-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/31/Android%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86%E5%85%A8%E8%A7%A3%E6%9E%90-Color-String-Style-Dimen-Array/" title="Android Material3 资源管理全解析:Color,String,Style,Dimen,Array">Android Material3 资源管理全解析:Color,String,Style,Dimen,Array</a><time datetime="2025-03-31T14:06:02.000Z" title="Created 2025-03-31 22:06:02">2025-03-31</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/31/Vector-Asset%E7%9A%84%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B/" title="Vector Asset的使用示例">Vector Asset的使用示例</a><time datetime="2025-03-31T09:00:23.000Z" title="Created 2025-03-31 17:00:23">2025-03-31</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2025 By GoshenC</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'none',
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          enableMenu: true,
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="100" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading Database</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>
