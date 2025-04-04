@@ -1,0 +1,277 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>MaterialCardView用法详解 | GoshenC</title><meta name="author" content="GoshenC"><meta name="copyright" content="GoshenC"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="一、概述MaterialCardView 是 Android Material Components 库中的一个视图控件，它基于 CardView 进行了增强，加入了更多 Material Design 风格的特性，使其更适合现代 Android 应用的设计要求。MaterialCardView 提供了简洁的卡片式界面，能够方便地实现圆角、阴影、背景等效果，从而帮助开发者构建更加美观、易于交互的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MaterialCardView用法详解">
+<meta property="og:url" content="http://example.com/2025/04/04/MateriaCardView%E7%94%A8%E6%B3%95%E8%AF%A6%E8%A7%A3/index.html">
+<meta property="og:site_name" content="GoshenC">
+<meta property="og:description" content="一、概述MaterialCardView 是 Android Material Components 库中的一个视图控件，它基于 CardView 进行了增强，加入了更多 Material Design 风格的特性，使其更适合现代 Android 应用的设计要求。MaterialCardView 提供了简洁的卡片式界面，能够方便地实现圆角、阴影、背景等效果，从而帮助开发者构建更加美观、易于交互的">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/avatar.jpg">
+<meta property="article:published_time" content="2025-04-04T08:30:49.000Z">
+<meta property="article:modified_time" content="2025-04-04T08:33:53.317Z">
+<meta property="article:author" content="GoshenC">
+<meta property="article:tag" content="安卓开发">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/avatar.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "MaterialCardView用法详解",
+  "url": "http://example.com/2025/04/04/MateriaCardView%E7%94%A8%E6%B3%95%E8%AF%A6%E8%A7%A3/",
+  "image": "http://example.com/img/avatar.jpg",
+  "datePublished": "2025-04-04T08:30:49.000Z",
+  "dateModified": "2025-04-04T08:33:53.317Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "GoshenC",
+      "url": "http://example.com/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/circularavatar.jpg"><link rel="canonical" href="http://example.com/2025/04/04/MateriaCardView%E7%94%A8%E6%B3%95%E8%AF%A6%E8%A7%A3/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"No results found for: ${query}","hits_stats":"${hits} articles found"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":250,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'MaterialCardView用法详解',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(img/mainbackground.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">43</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">5</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/gotcha,hahaha"><span> 简体中文/Chinese-CN</span></a></div><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Timeline</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" target="_blank" rel="noopener" href="https://www.kugou.com/"><i class="fa-fw fas fa-music"></i><span> Music(音乐)</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie(电影)</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(img/mainbackground.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/circularavatar.jpg" alt="Logo"><span class="site-name">GoshenC</span></a><a class="nav-page-title" href="/"><span class="site-name">MaterialCardView用法详解</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/gotcha,hahaha"><span> 简体中文/Chinese-CN</span></a></div><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Timeline</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" target="_blank" rel="noopener" href="https://www.kugou.com/"><i class="fa-fw fas fa-music"></i><span> Music(音乐)</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie(电影)</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">MaterialCardView用法详解</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2025-04-04T08:30:49.000Z" title="Created 2025-04-04 16:30:49">2025-04-04</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2025-04-04T08:33:53.317Z" title="Updated 2025-04-04 16:33:53">2025-04-04</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word Count:</span><span class="word-count">1.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading Time:</span><span>5mins</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h2 id="一、概述"><a href="#一、概述" class="headerlink" title="一、概述"></a>一、概述</h2><p><code>MaterialCardView</code> 是 Android Material Components 库中的一个视图控件，它基于 <code>CardView</code> 进行了增强，加入了更多 Material Design 风格的特性，使其更适合现代 Android 应用的设计要求。<code>MaterialCardView</code> 提供了简洁的卡片式界面，能够方便地实现圆角、阴影、背景等效果，从而帮助开发者构建更加美观、易于交互的 UI 元素。</p>
+<p>与 <code>CardView</code> 相比，<code>MaterialCardView</code> 支持更多的功能，例如：</p>
+<ul>
+<li><strong>形状</strong>：支持更复杂的形状，除了圆角外，还支持自定义的形状和阴影效果。</li>
+<li><strong>背景</strong>：可以设置与背景相关的更多属性。</li>
+<li><strong>Ripple 效果</strong>：内置 Material Design 风格的水波纹点击效果。</li>
+</ul>
+<p><code>MaterialCardView</code> 适合用于展示内容卡片、列表项、照片、产品展示等，尤其是需要圆角和阴影效果的场景。</p>
+<hr>
+<h2 id="二、依赖与导入"><a href="#二、依赖与导入" class="headerlink" title="二、依赖与导入"></a>二、依赖与导入</h2><p>在使用 <code>MaterialCardView</code> 之前，需要确保你的项目已经加入了 Material Components 库的依赖。可以在项目的 <code>build.gradle</code> 文件中添加以下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    implementation &#x27;com.google.android.material:material:1.4.0&#x27;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="三、基本使用"><a href="#三、基本使用" class="headerlink" title="三、基本使用"></a>三、基本使用</h2><h3 id="1-使用-XML-布局"><a href="#1-使用-XML-布局" class="headerlink" title="1. 使用 XML 布局"></a>1. 使用 XML 布局</h3><p><code>MaterialCardView</code> 的基本使用方法类似于 <code>CardView</code>，只需在布局文件中添加该控件。以下是一个简单的例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;com.google.android.material.card.MaterialCardView</span><br><span class="line">    android:layout_width=&quot;match_parent&quot;</span><br><span class="line">    android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">    app:cardCornerRadius=&quot;8dp&quot;</span><br><span class="line">    app:cardElevation=&quot;4dp&quot;</span><br><span class="line">    app:strokeColor=&quot;@color/colorAccent&quot;</span><br><span class="line">    app:strokeWidth=&quot;2dp&quot;</span><br><span class="line">    android:padding=&quot;16dp&quot;&gt;</span><br><span class="line">    </span><br><span class="line">    &lt;!-- 卡片内容 --&gt;</span><br><span class="line">    &lt;TextView</span><br><span class="line">        android:layout_width=&quot;match_parent&quot;</span><br><span class="line">        android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">        android:text=&quot;This is a MaterialCardView&quot;</span><br><span class="line">        android:textSize=&quot;16sp&quot;</span><br><span class="line">        android:textColor=&quot;@android:color/black&quot;/&gt;</span><br><span class="line">&lt;/com.google.android.material.card.MaterialCardView&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在上面的 XML 布局中：</p>
+<ul>
+<li><code>app:cardCornerRadius</code> 用于设置卡片的圆角半径。</li>
+<li><code>app:cardElevation</code> 用于设置卡片的阴影深度，影响卡片的浮动效果。</li>
+<li><code>app:strokeColor</code> 用于设置卡片的边框颜色。</li>
+<li><code>app:strokeWidth</code> 用于设置卡片边框的宽度。</li>
+<li><code>android:padding</code> 用于设置卡片内边距。</li>
+</ul>
+<h3 id="2-在代码中使用"><a href="#2-在代码中使用" class="headerlink" title="2. 在代码中使用"></a>2. 在代码中使用</h3><p>你也可以在 Java 或 Kotlin 代码中动态创建和设置 <code>MaterialCardView</code>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">val materialCardView = MaterialCardView(this).apply &#123;</span><br><span class="line">    layoutParams = ViewGroup.LayoutParams(</span><br><span class="line">        ViewGroup.LayoutParams.MATCH_PARENT, </span><br><span class="line">        ViewGroup.LayoutParams.WRAP_CONTENT</span><br><span class="line">    )</span><br><span class="line">    radius = 8f</span><br><span class="line">    elevation = 4f</span><br><span class="line">    setCardBackgroundColor(ContextCompat.getColor(context, R.color.white))</span><br><span class="line">    setContentPadding(16, 16, 16, 16)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">val textView = TextView(this).apply &#123;</span><br><span class="line">    text = &quot;This is a MaterialCardView&quot;</span><br><span class="line">    textSize = 16f</span><br><span class="line">    setTextColor(Color.BLACK)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">materialCardView.addView(textView)</span><br><span class="line">container.addView(materialCardView)</span><br></pre></td></tr></table></figure>
+
+<p>这里，我们通过代码创建了一个 <code>MaterialCardView</code>，并为它设置了圆角、阴影、内边距等属性。</p>
+<hr>
+<h2 id="四、MaterialCardView-特性"><a href="#四、MaterialCardView-特性" class="headerlink" title="四、MaterialCardView 特性"></a>四、MaterialCardView 特性</h2><h3 id="1-圆角和阴影"><a href="#1-圆角和阴影" class="headerlink" title="1. 圆角和阴影"></a>1. 圆角和阴影</h3><p><code>MaterialCardView</code> 通过 <code>app:cardCornerRadius</code> 和 <code>app:cardElevation</code> 属性提供了圆角和阴影效果，适用于大多数需要卡片风格的 UI 元素。例如，带有圆角和阴影的卡片可以用于商品列表、用户信息展示等场景。</p>
+<ul>
+<li><strong>圆角</strong>：通过 <code>cardCornerRadius</code> 设置圆角半径，使得卡片的角落呈现圆形效果。</li>
+<li><strong>阴影</strong>：通过 <code>cardElevation</code> 设置阴影的深度，影响卡片与背景的分离感，提升视觉效果。</li>
+</ul>
+<h3 id="2-背景与边框"><a href="#2-背景与边框" class="headerlink" title="2. 背景与边框"></a>2. 背景与边框</h3><p><code>MaterialCardView</code> 支持设置背景色和边框样式，可以使卡片看起来更具层次感。你可以通过 <code>setCardBackgroundColor()</code> 方法设置卡片的背景颜色，或者通过 <code>app:strokeColor</code> 和 <code>app:strokeWidth</code> 设置边框的颜色和宽度。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;com.google.android.material.card.MaterialCardView</span><br><span class="line">    app:strokeColor=&quot;@color/colorPrimary&quot;</span><br><span class="line">    app:strokeWidth=&quot;2dp&quot;</span><br><span class="line">    app:cardBackgroundColor=&quot;@android:color/white&quot;</span><br><span class="line">    app:cardCornerRadius=&quot;12dp&quot;</span><br><span class="line">    app:cardElevation=&quot;6dp&quot; /&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-水波纹效果（Ripple）"><a href="#3-水波纹效果（Ripple）" class="headerlink" title="3. 水波纹效果（Ripple）"></a>3. 水波纹效果（Ripple）</h3><p><code>MaterialCardView</code> 内置了 Material Design 的水波纹效果（Ripple），即点击时卡片会显示水波纹扩展的动画效果。这种效果增强了用户交互感，使得应用看起来更加现代化。</p>
+<p><code>MaterialCardView</code> 的水波纹效果默认启用，你可以通过 <code>android:clickable</code> 属性控制点击事件的响应。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;com.google.android.material.card.MaterialCardView</span><br><span class="line">    android:clickable=&quot;true&quot;</span><br><span class="line">    android:focusable=&quot;true&quot;</span><br><span class="line">    app:rippleColor=&quot;@color/ripple_color&quot;</span><br><span class="line">    ... /&gt;</span><br></pre></td></tr></table></figure>
+
+<p>你可以使用 <code>app:rippleColor</code> 属性自定义水波纹的颜色。</p>
+<h3 id="4-动态启用和禁用"><a href="#4-动态启用和禁用" class="headerlink" title="4. 动态启用和禁用"></a>4. 动态启用和禁用</h3><p><code>MaterialCardView</code> 的启用与禁用状态与其他视图组件类似，可以使用 <code>setEnabled()</code> 方法控制。禁用时，卡片的点击和交互效果都会失效。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">materialCardView.isEnabled = false</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-设置点击监听器"><a href="#5-设置点击监听器" class="headerlink" title="5. 设置点击监听器"></a>5. 设置点击监听器</h3><p>你可以为 <code>MaterialCardView</code> 设置点击监听器，当卡片被点击时触发某些操作：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">materialCardView.setOnClickListener &#123;</span><br><span class="line">    Toast.makeText(this, &quot;Card Clicked&quot;, Toast.LENGTH_SHORT).show()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="五、使用场景"><a href="#五、使用场景" class="headerlink" title="五、使用场景"></a>五、使用场景</h2><p><code>MaterialCardView</code> 广泛应用于需要视觉层次和交互效果的场景。例如：</p>
+<ol>
+<li><strong>商品卡片</strong>：用于展示商品信息的卡片，可以结合图片、价格、商品名称等内容。</li>
+<li><strong>用户卡片</strong>：展示用户头像、昵称等信息，支持点击进入详细页面。</li>
+<li><strong>信息展示</strong>：用于展示某些提示信息或操作按钮，卡片式设计能够使界面更加清晰。</li>
+<li><strong>列表项</strong>：在列表中使用 <code>MaterialCardView</code> 来展示每一项，提供交互性。</li>
+</ol>
+<hr>
+<h2 id="六、总结"><a href="#六、总结" class="headerlink" title="六、总结"></a>六、总结</h2><p><code>MaterialCardView</code> 是 Android Material Design 库中的重要组件，它为开发者提供了更为丰富和现代化的卡片式界面设计工具。通过支持圆角、阴影、边框、背景以及水波纹效果，<code>MaterialCardView</code> 使得 UI 元素的表现更加生动与灵活。</p>
+<ul>
+<li><strong>优势</strong>：<ul>
+<li>丰富的 Material Design 特性，提升界面视觉效果。</li>
+<li>自带水波纹点击效果，增强用户体验。</li>
+<li>可以非常方便地与其他视图组件（如 <code>RecyclerView</code>、<code>TextView</code> 等）结合使用，构建更加复杂的 UI。</li>
+</ul>
+</li>
+<li><strong>使用场景</strong>：<ul>
+<li>商品卡片、用户卡片、列表项等多种场景。</li>
+<li>提供简洁、现代、交互性强的界面设计。</li>
+</ul>
+</li>
+</ul>
+<p><code>MaterialCardView</code> 是现代 Android 应用设计中不可或缺的控件之一，通过它，开发者能够创建出更加美观且易于交互的用户界面。如果你正在构建 Material Design 风格的应用，不妨尝试使用 <code>MaterialCardView</code>，它将帮助你打造更加出色的 UI。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="http://example.com">GoshenC</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="http://example.com/2025/04/04/MateriaCardView%E7%94%A8%E6%B3%95%E8%AF%A6%E8%A7%A3/">http://example.com/2025/04/04/MateriaCardView%E7%94%A8%E6%B3%95%E8%AF%A6%E8%A7%A3/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%AE%89%E5%8D%93%E5%BC%80%E5%8F%91/">安卓开发</a></div><div class="post-share"><div class="social-share" data-image="/img/avatar.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2025/04/04/CoordinatorLayout%E7%94%A8%E6%B3%95%E8%AF%A6%E8%A7%A3/" title="CoordinatorLayout用法详解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">Previous</div><div class="info-item-2">CoordinatorLayout用法详解</div></div><div class="info-2"><div class="info-item-1">一、概述CoordinatorLayout 是 Android 支持库（Support Library）提供的一个高级布局容器，它继承自 FrameLayout，是一个强大的布局容器，能够协调并支持更复杂的交互设计，尤其是在 Material Design 中。它提供了一种灵活的方式来协作处理子视图之间的行为，如与 AppBarLayout、FloatingActionButton、Snackbar 等组件的交互效果。 CoordinatorLayout 主要目的是提供一种“协调”各个视图行为的机制，可以通过自定义或现成的行为（Behavior）来控制子视图的滑动、动画和响应。  二、CoordinatorLayout 特性CoordinatorLayout 提供了以下几个重要特性：  响应滚动和手势：CoordinatorLayout 能够捕捉子视图的滚动和手势事件，并根据需要调整布局位置。 子视图行为协调：可以让不同的视图（如 AppBarLayout 和 FloatingActionButton）之间协调运动，确保界面一致性和流畅的过渡效果。 支持自定义行为：通过自定义...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2025/04/04/DrawerLayout%E8%AF%A6%E8%A7%A3/" title="DrawerLayout详解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-04-04</div><div class="info-item-2">DrawerLayout详解</div></div><div class="info-2"><div class="info-item-1">📘 DrawerLayout 技术文档（2025 年版） 1. 🧭 简介DrawerLayout 是 Android 官方支持的布局容器，用于实现侧边滑出的导航抽屉效果（Navigation Drawer）。广泛应用于包含多个导航项的 App 中，例如邮箱客户端、新闻阅读器、社交类应用等。 特性：  支持左侧&#x2F;右侧抽屉（或同时存在） 支持滑动手势与菜单图标触发 与 NavigationView 和 Jetpack Navigation 组件良好兼容 支持 Material Design 风格   2. 🧩 核心概念与组件结构DrawerLayout 是一个 ViewGroup 容器，至少包含两个子布局：  主内容区域：通常为主界面，如 FragmentContainerView 或 ConstraintLayout 抽屉内容区域：通常放置 NavigationView，用于显示导航菜单项  123plaintext复制编辑DrawerLayout├── 主界面内容（Main Content）└── 抽屉内容（Drawer -...</div></div></div></a><a class="pagination-related" href="/2025/04/04/NavigationView%E8%AF%A6%E8%A7%A3/" title="NavigationView详解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-04-04</div><div class="info-item-2">NavigationView详解</div></div><div class="info-2"><div class="info-item-1">📌 Android NavigationView 技术详解（2025 年版）在现代 Android 应用中，良好的导航体验是提升用户满意度的关键。NavigationView 是 Google Material Design 指南推荐的组件之一，常与 DrawerLayout 结合使用，为应用提供侧滑导航菜单（Side Navigation Drawer）功能。本文将全面解析 NavigationView 的用法、特性与最佳实践，帮助你构建符合现代设计规范的 Android 应用。  🔧 什么是 NavigationView？NavigationView 是 com.google.android.material.navigation.NavigationView，它是 Material Components 提供的 UI 组件，用于构建左侧侧滑菜单，通常嵌套在 DrawerLayout 中。  📌 NavigationView 实际上是一个带有菜单项（Menu）和可选头部视图（Header）的 FrameLayout。   🧱...</div></div></div></a><a class="pagination-related" href="/2025/04/04/Snackbar%E7%94%A8%E6%B3%95%E8%AF%A6%E8%A7%A3/" title="Snackbar用法详解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-04-04</div><div class="info-item-2">Snackbar用法详解</div></div><div class="info-2"><div class="info-item-1">一、概述Snackbar 是 Android 提供的一种简洁、轻量级的提示框，用于在屏幕底部展示短暂的信息提示。它的设计初衷是为了提供一种比 Toast 更具互动性和灵活性的提示方式。与 Toast 的静态提示不同，Snackbar 提供了更多的交互功能，例如：支持撤销操作、自动隐藏和手动关闭。 Snackbar 适用于展示短期通知，尤其是需要用户进行交互（如撤销操作）的场景。  二、Snackbar 与 Toast 的对比   特性 Snackbar Toast    显示位置 屏幕底部 屏幕中间或底部   显示时间 可定制（一般显示 2-3 秒） 自动消失（一般 2-3 秒）   可交互性 支持按钮操作（如撤销） 无法交互   可以设置自定义动作 可以添加撤销按钮、动作 只能显示文本   Snackbar 的主要优势在于支持交互操作和自定义动作，比如用户可以点击“撤销”按钮撤回某个操作，而 Toast 仅是展示提示信息并自动消失。  三、Snackbar 基本使用1. 导入必要的依赖在使用 Snackbar 之前，首先需要确保你的项目已经包含了 Material...</div></div></div></a><a class="pagination-related" href="/2025/04/04/CoordinatorLayout%E7%94%A8%E6%B3%95%E8%AF%A6%E8%A7%A3/" title="CoordinatorLayout用法详解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-04-04</div><div class="info-item-2">CoordinatorLayout用法详解</div></div><div class="info-2"><div class="info-item-1">一、概述CoordinatorLayout 是 Android 支持库（Support Library）提供的一个高级布局容器，它继承自 FrameLayout，是一个强大的布局容器，能够协调并支持更复杂的交互设计，尤其是在 Material Design 中。它提供了一种灵活的方式来协作处理子视图之间的行为，如与 AppBarLayout、FloatingActionButton、Snackbar 等组件的交互效果。 CoordinatorLayout 主要目的是提供一种“协调”各个视图行为的机制，可以通过自定义或现成的行为（Behavior）来控制子视图的滑动、动画和响应。  二、CoordinatorLayout 特性CoordinatorLayout 提供了以下几个重要特性：  响应滚动和手势：CoordinatorLayout 能够捕捉子视图的滚动和手势事件，并根据需要调整布局位置。 子视图行为协调：可以让不同的视图（如 AppBarLayout 和 FloatingActionButton）之间协调运动，确保界面一致性和流畅的过渡效果。 支持自定义行为：通过自定义...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">GoshenC</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">43</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">5</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Goshenc"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Goshenc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:gx.c221434@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Welcome</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">一、概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E4%BE%9D%E8%B5%96%E4%B8%8E%E5%AF%BC%E5%85%A5"><span class="toc-number">2.</span> <span class="toc-text">二、依赖与导入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text">三、基本使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%BD%BF%E7%94%A8-XML-%E5%B8%83%E5%B1%80"><span class="toc-number">3.1.</span> <span class="toc-text">1. 使用 XML 布局</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%9C%A8%E4%BB%A3%E7%A0%81%E4%B8%AD%E4%BD%BF%E7%94%A8"><span class="toc-number">3.2.</span> <span class="toc-text">2. 在代码中使用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81MaterialCardView-%E7%89%B9%E6%80%A7"><span class="toc-number">4.</span> <span class="toc-text">四、MaterialCardView 特性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%9C%86%E8%A7%92%E5%92%8C%E9%98%B4%E5%BD%B1"><span class="toc-number">4.1.</span> <span class="toc-text">1. 圆角和阴影</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%83%8C%E6%99%AF%E4%B8%8E%E8%BE%B9%E6%A1%86"><span class="toc-number">4.2.</span> <span class="toc-text">2. 背景与边框</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%B0%B4%E6%B3%A2%E7%BA%B9%E6%95%88%E6%9E%9C%EF%BC%88Ripple%EF%BC%89"><span class="toc-number">4.3.</span> <span class="toc-text">3. 水波纹效果（Ripple）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%8A%A8%E6%80%81%E5%90%AF%E7%94%A8%E5%92%8C%E7%A6%81%E7%94%A8"><span class="toc-number">4.4.</span> <span class="toc-text">4. 动态启用和禁用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E8%AE%BE%E7%BD%AE%E7%82%B9%E5%87%BB%E7%9B%91%E5%90%AC%E5%99%A8"><span class="toc-number">4.5.</span> <span class="toc-text">5. 设置点击监听器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">5.</span> <span class="toc-text">五、使用场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E6%80%BB%E7%BB%93"><span class="toc-number">6.</span> <span class="toc-text">六、总结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Posts</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/04/04/MateriaCardView%E7%94%A8%E6%B3%95%E8%AF%A6%E8%A7%A3/" title="MaterialCardView用法详解">MaterialCardView用法详解</a><time datetime="2025-04-04T08:30:49.000Z" title="Created 2025-04-04 16:30:49">2025-04-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/04/04/CoordinatorLayout%E7%94%A8%E6%B3%95%E8%AF%A6%E8%A7%A3/" title="CoordinatorLayout用法详解">CoordinatorLayout用法详解</a><time datetime="2025-04-04T08:28:28.000Z" title="Created 2025-04-04 16:28:28">2025-04-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/04/04/Snackbar%E7%94%A8%E6%B3%95%E8%AF%A6%E8%A7%A3/" title="Snackbar用法详解">Snackbar用法详解</a><time datetime="2025-04-04T08:23:37.000Z" title="Created 2025-04-04 16:23:37">2025-04-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/04/04/NavigationView%E8%AF%A6%E8%A7%A3/" title="NavigationView详解">NavigationView详解</a><time datetime="2025-04-04T07:59:44.000Z" title="Created 2025-04-04 15:59:44">2025-04-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/04/04/DrawerLayout%E8%AF%A6%E8%A7%A3/" title="DrawerLayout详解">DrawerLayout详解</a><time datetime="2025-04-04T07:49:42.000Z" title="Created 2025-04-04 15:49:42">2025-04-04</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2025 By GoshenC</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'none',
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          enableMenu: true,
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="100" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading Database</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>
