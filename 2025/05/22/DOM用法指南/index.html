@@ -1,0 +1,297 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>DOM用法指南 | GoshenC</title><meta name="author" content="GoshenC"><meta name="copyright" content="GoshenC"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="完整版：DOM 操作详解技术文档一、DOM 概述 DOM（Document Object Model）：浏览器将 HTML&#x2F;XML 文档解析后，生成的以节点（Node）为单位的树形结构。 目标：提供一组标准 API，通过脚本访问、修改、插入或删除文档内容和结构，实现页面动态互动。  DOM 树示例： 123456789Document├─ html   ├─ head   └─ bod">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DOM用法指南">
+<meta property="og:url" content="http://example.com/2025/05/22/DOM%E7%94%A8%E6%B3%95%E6%8C%87%E5%8D%97/index.html">
+<meta property="og:site_name" content="GoshenC">
+<meta property="og:description" content="完整版：DOM 操作详解技术文档一、DOM 概述 DOM（Document Object Model）：浏览器将 HTML&#x2F;XML 文档解析后，生成的以节点（Node）为单位的树形结构。 目标：提供一组标准 API，通过脚本访问、修改、插入或删除文档内容和结构，实现页面动态互动。  DOM 树示例： 123456789Document├─ html   ├─ head   └─ bod">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/avatar.jpg">
+<meta property="article:published_time" content="2025-05-22T14:09:36.000Z">
+<meta property="article:modified_time" content="2025-05-22T14:23:34.168Z">
+<meta property="article:author" content="GoshenC">
+<meta property="article:tag" content="前端">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/avatar.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "DOM用法指南",
+  "url": "http://example.com/2025/05/22/DOM%E7%94%A8%E6%B3%95%E6%8C%87%E5%8D%97/",
+  "image": "http://example.com/img/avatar.jpg",
+  "datePublished": "2025-05-22T14:09:36.000Z",
+  "dateModified": "2025-05-22T14:23:34.168Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "GoshenC",
+      "url": "http://example.com/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/circularavatar.jpg"><link rel="canonical" href="http://example.com/2025/05/22/DOM%E7%94%A8%E6%B3%95%E6%8C%87%E5%8D%97/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"No results found for: ${query}","hits_stats":"${hits} articles found"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":250,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'DOM用法指南',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(img/mainbackground.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">61</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">7</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/gotcha,hahaha"><span> 简体中文/Chinese-CN</span></a></div><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Timeline</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" target="_blank" rel="noopener" href="https://www.kugou.com/"><i class="fa-fw fas fa-music"></i><span> Music(音乐)</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie(电影)</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(img/mainbackground.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/circularavatar.jpg" alt="Logo"><span class="site-name">GoshenC</span></a><a class="nav-page-title" href="/"><span class="site-name">DOM用法指南</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/gotcha,hahaha"><span> 简体中文/Chinese-CN</span></a></div><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Timeline</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" target="_blank" rel="noopener" href="https://www.kugou.com/"><i class="fa-fw fas fa-music"></i><span> Music(音乐)</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie(电影)</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">DOM用法指南</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2025-05-22T14:09:36.000Z" title="Created 2025-05-22 22:09:36">2025-05-22</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2025-05-22T14:23:34.168Z" title="Updated 2025-05-22 22:23:34">2025-05-22</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word Count:</span><span class="word-count">1.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading Time:</span><span>5mins</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><ol>
+<li><h2 id="完整版：DOM-操作详解技术文档"><a href="#完整版：DOM-操作详解技术文档" class="headerlink" title="完整版：DOM 操作详解技术文档"></a>完整版：DOM 操作详解技术文档</h2><h3 id="一、DOM-概述"><a href="#一、DOM-概述" class="headerlink" title="一、DOM 概述"></a>一、DOM 概述</h3><ul>
+<li><strong>DOM（Document Object Model）</strong>：浏览器将 HTML&#x2F;XML 文档解析后，生成的以节点（Node）为单位的树形结构。</li>
+<li><strong>目标</strong>：提供一组标准 API，通过脚本访问、修改、插入或删除文档内容和结构，实现页面动态互动。</li>
+</ul>
+<p><strong>DOM 树示例</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Document</span><br><span class="line">├─ html</span><br><span class="line">   ├─ head</span><br><span class="line">   └─ body</span><br><span class="line">      ├─ header</span><br><span class="line">      ├─ main</span><br><span class="line">      │   ├─ section</span><br><span class="line">      │   └─ article</span><br><span class="line">      └─ footer</span><br></pre></td></tr></table></figure>
+
+<h3 id="二、DOM-节点类型"><a href="#二、DOM-节点类型" class="headerlink" title="二、DOM 节点类型"></a>二、DOM 节点类型</h3><table>
+<thead>
+<tr>
+<th>节点类型</th>
+<th>常量</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>元素节点</td>
+<td><code>Node.ELEMENT_NODE</code> (1)</td>
+<td><code>&lt;div&gt;</code>, <code>&lt;p&gt;</code> 等标签</td>
+</tr>
+<tr>
+<td>文本节点</td>
+<td><code>Node.TEXT_NODE</code> (3)</td>
+<td>标签或属性中的文本内容</td>
+</tr>
+<tr>
+<td>属性节点</td>
+<td><code>Node.ATTRIBUTE_NODE</code> (2)</td>
+<td>元素的属性，如 <code>class=&quot;item&quot;</code></td>
+</tr>
+<tr>
+<td>注释节点</td>
+<td><code>Node.COMMENT_NODE</code> (8)&#96;</td>
+<td><code>&lt;!-- 注释 --&gt;</code></td>
+</tr>
+<tr>
+<td>文档节点</td>
+<td><code>Node.DOCUMENT_NODE</code> (9)&#96;</td>
+<td>根节点，代表整个文档</td>
+</tr>
+</tbody></table>
+<h3 id="三、节点选取（Selection）"><a href="#三、节点选取（Selection）" class="headerlink" title="三、节点选取（Selection）"></a>三、节点选取（Selection）</h3><h4 id="1-传统方法"><a href="#1-传统方法" class="headerlink" title="1. 传统方法"></a>1. 传统方法</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">const el1 = document.getElementById(&#x27;id&#x27;);</span><br><span class="line">const els1 = document.getElementsByClassName(&#x27;class&#x27;);    // HTMLCollection,返回页面上所有 class 名为 &quot;class&quot; 的元素。</span><br><span class="line">const els2 = document.getElementsByTagName(&#x27;div&#x27;);         // HTMLCollection,返回页面上所有 &lt;div&gt; 标签元素</span><br></pre></td></tr></table></figure>
+
+<p>假设你的 HTML 是这样：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class=&quot;class&quot;&gt;A&lt;/div&gt;</span><br><span class="line">&lt;div class=&quot;class&quot;&gt;B&lt;/div&gt;</span><br><span class="line">&lt;div&gt;C&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+
+<p>你可以这样选取：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const els1 = document.getEleme	ntsByClassName(&#x27;class&#x27;); // 包含 A 和 B</span><br><span class="line">const els2 = document.getElementsByTagName(&#x27;div&#x27;);     // 包含 A、B 和 C</span><br><span class="line"></span><br><span class="line">console.log(els1.length); // 输出 2</span><br><span class="line">console.log(els2.length); // 输出 3</span><br><span class="line">console.log(els1[0].textContent); // 输出 A</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="2-CSS-选择器（推荐）"><a href="#2-CSS-选择器（推荐）" class="headerlink" title="2. CSS 选择器（推荐）"></a>2. CSS 选择器（推荐）</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">const el2 = document.querySelector(&#x27;.container &gt; p&#x27;);      // 第一个匹配元素</span><br><span class="line">const allEls = document.querySelectorAll(&#x27;ul li.active&#x27;); // NodeList</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>区别</strong>：<code>HTMLCollection</code> 实时更新，<code>NodeList</code> 静态（部分浏览器支持实时）。</p>
+</blockquote>
+<h3 id="四、节点遍历（Traversal）"><a href="#四、节点遍历（Traversal）" class="headerlink" title="四、节点遍历（Traversal）"></a>四、节点遍历（Traversal）</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const parent = el.parentNode;       // 父节点</span><br><span class="line">const children = el.childNodes;     // 所有子节点（含文本、注释）</span><br><span class="line">const first = el.firstChild;        // 第一个子节点</span><br><span class="line">const last  = el.lastChild;         // 最后一个子节点</span><br><span class="line">const next  = el.nextSibling;       // 下一个同级节点</span><br><span class="line">const prev  = el.previousSibling;   // 上一个同级节点</span><br></pre></td></tr></table></figure>
+
+<p><strong>遍历元素节点</strong>（忽略文本）可以用：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const childrenEls = el.children;    // 只包含元素节点的 HTMLCollection</span><br></pre></td></tr></table></figure>
+
+<h3 id="五、节点读取与写入（Read-Write）"><a href="#五、节点读取与写入（Read-Write）" class="headerlink" title="五、节点读取与写入（Read &amp; Write）"></a>五、节点读取与写入（Read &amp; Write）</h3><h4 id="1-文本和-HTML-内容"><a href="#1-文本和-HTML-内容" class="headerlink" title="1. 文本和 HTML 内容"></a>1. 文本和 HTML 内容</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// 读取</span><br><span class="line">let text = el.textContent;      // 纯文本（包括子元素文本）</span><br><span class="line">let html = el.innerHTML;        // 包含子元素标签的 HTML</span><br><span class="line"></span><br><span class="line">// 写入</span><br><span class="line">el.textContent = &#x27;新文本&#x27;;        // 自动转义，不会解析 HTML</span><br><span class="line">el.innerHTML = &#x27;&lt;strong&gt;加粗文本&lt;/strong&gt;&#x27;; // 插入 HTML 结构</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-属性与数据属性"><a href="#2-属性与数据属性" class="headerlink" title="2. 属性与数据属性"></a>2. 属性与数据属性</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// 属性操作</span><br><span class="line">el.setAttribute(&#x27;data-id&#x27;, &#x27;123&#x27;);</span><br><span class="line">let id = el.getAttribute(&#x27;data-id&#x27;);</span><br><span class="line">el.removeAttribute(&#x27;data-id&#x27;);</span><br><span class="line"></span><br><span class="line">// dataset 快捷访问</span><br><span class="line">el.dataset.user = &#x27;alice&#x27;;       // 对应 data-user=&quot;alice&quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="六、结构修改（Manipulation）"><a href="#六、结构修改（Manipulation）" class="headerlink" title="六、结构修改（Manipulation）"></a>六、结构修改（Manipulation）</h3><h4 id="1-创建与插入"><a href="#1-创建与插入" class="headerlink" title="1. 创建与插入"></a>1. 创建与插入</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">let newDiv = document.createElement(&#x27;div&#x27;);</span><br><span class="line">newDiv.classList.add(&#x27;card&#x27;);</span><br><span class="line">newDiv.textContent = &#x27;新卡片&#x27;;</span><br><span class="line"></span><br><span class="line">// append</span><br><span class="line">document.body.appendChild(newDiv);</span><br><span class="line"></span><br><span class="line">// insertBefore</span><br><span class="line">let container = document.querySelector(&#x27;#container&#x27;);</span><br><span class="line">container.insertBefore(newDiv, container.firstChild);</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-克隆与替换"><a href="#2-克隆与替换" class="headerlink" title="2. 克隆与替换"></a>2. 克隆与替换</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">let clone = newDiv.cloneNode(true);      // 深克隆（包含子节点）</span><br><span class="line">container.replaceChild(clone, newDiv);   // 替换节点</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-删除节点"><a href="#3-删除节点" class="headerlink" title="3. 删除节点"></a>3. 删除节点</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">container.removeChild(clone);</span><br><span class="line">// 或者</span><br><span class="line">newDiv.remove();  // 现代浏览器可用</span><br></pre></td></tr></table></figure>
+
+<h3 id="七、CSS-样式与类名操作"><a href="#七、CSS-样式与类名操作" class="headerlink" title="七、CSS 样式与类名操作"></a>七、CSS 样式与类名操作</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// 类名</span><br><span class="line">el.classList.add(&#x27;active&#x27;);</span><br><span class="line">el.classList.remove(&#x27;hidden&#x27;);</span><br><span class="line">el.classList.toggle(&#x27;open&#x27;);</span><br><span class="line"></span><br><span class="line">// 样式</span><br><span class="line">el.style.width = &#x27;100px&#x27;;</span><br><span class="line">el.style.cssText += &#x27;margin:10px; padding:5px;&#x27;;</span><br><span class="line">// 读取计算后的样式</span><br><span class="line">let computed = window.getComputedStyle(el).display;</span><br></pre></td></tr></table></figure>
+
+<h3 id="八、事件绑定（Events）"><a href="#八、事件绑定（Events）" class="headerlink" title="八、事件绑定（Events）"></a>八、事件绑定（Events）</h3><h4 id="1-直接绑定"><a href="#1-直接绑定" class="headerlink" title="1. 直接绑定"></a>1. 直接绑定</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">function handleClick(e) &#123;</span><br><span class="line">  console.log(&#x27;Clicked:&#x27;, e.target);</span><br><span class="line">&#125;</span><br><span class="line">el.addEventListener(&#x27;click&#x27;, handleClick);</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-事件委托"><a href="#2-事件委托" class="headerlink" title="2. 事件委托"></a>2. 事件委托</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">let list = document.querySelector(&#x27;ul&#x27;);</span><br><span class="line">list.addEventListener(&#x27;click&#x27;, (e) =&gt; &#123;</span><br><span class="line">  if (e.target.matches(&#x27;li.item&#x27;)) &#123;</span><br><span class="line">    console.log(&#x27;点击了列表项：&#x27;, e.target.textContent);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-移除监听器"><a href="#3-移除监听器" class="headerlink" title="3. 移除监听器"></a>3. 移除监听器</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">el.removeEventListener(&#x27;click&#x27;, handleClick);</span><br></pre></td></tr></table></figure>
+
+<h3 id="九、综合示例：动态图文列表"><a href="#九、综合示例：动态图文列表" class="headerlink" title="九、综合示例：动态图文列表"></a>九、综合示例：动态图文列表</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;ul id=&quot;gallery&quot;&gt;&lt;/ul&gt;</span><br><span class="line">const data = [</span><br><span class="line">  &#123; title: &#x27;图1&#x27;, src: &#x27;1.jpg&#x27; &#125;,</span><br><span class="line">  &#123; title: &#x27;图2&#x27;, src: &#x27;2.jpg&#x27; &#125;</span><br><span class="line">];</span><br><span class="line">const gallery = document.getElementById(&#x27;gallery&#x27;);</span><br><span class="line">// 使用 DocumentFragment 批量插入</span><br><span class="line">let frag = document.createDocumentFragment();</span><br><span class="line">data.forEach(item =&gt; &#123;</span><br><span class="line">  let li = document.createElement(&#x27;li&#x27;);</span><br><span class="line">  let img = document.createElement(&#x27;img&#x27;); img.src = item.src;</span><br><span class="line">  let caption = document.createElement(&#x27;p&#x27;); caption.textContent = item.title;</span><br><span class="line">  li.appendChild(img);</span><br><span class="line">  li.appendChild(caption);</span><br><span class="line">  frag.appendChild(li);</span><br><span class="line">&#125;);</span><br><span class="line">gallery.appendChild(frag);</span><br></pre></td></tr></table></figure>
+
+<h3 id="十、性能优化与最佳实践"><a href="#十、性能优化与最佳实践" class="headerlink" title="十、性能优化与最佳实践"></a>十、性能优化与最佳实践</h3><ol>
+<li><strong>批量修改</strong>：使用 <code>DocumentFragment</code> 或模板字符串拼接后一次渲染。</li>
+<li><strong>节点缓存</strong>：频繁操作同一节点时，先查询并保存引用。</li>
+<li><strong>事件委托</strong>：避免大量子元素的单独监听。</li>
+<li><strong>最小重绘</strong>：减少对 layout 触发的读取&#x2F;写入混合。</li>
+<li><strong>安全</strong>：避免直接插入未经过滤的用户内容，防范 XSS 攻击。</li>
+</ol>
+<h3 id="十一、总结"><a href="#十一、总结" class="headerlink" title="十一、总结"></a>十一、总结</h3><p>本档详细介绍了从<strong>节点类型、选取、遍历、读写</strong>到<strong>结构修改、样式、事件、性能</strong>等全方位的 DOM 操作技术。掌握这些知识，可帮助你构建交互丰富、高性能的网页应用。</p>
+</li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="http://example.com">GoshenC</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="http://example.com/2025/05/22/DOM%E7%94%A8%E6%B3%95%E6%8C%87%E5%8D%97/">http://example.com/2025/05/22/DOM%E7%94%A8%E6%B3%95%E6%8C%87%E5%8D%97/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%89%8D%E7%AB%AF/">前端</a></div><div class="post-share"><div class="social-share" data-image="/img/avatar.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2025/05/22/JSON%E8%AF%A6%E8%A7%A3/" title="JSON详解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">Previous</div><div class="info-item-2">JSON详解</div></div><div class="info-2"><div class="info-item-1">📘 一站式详解：什么是 JSON？ 一、🌟 JSON 的定义JSON（JavaScript Object Notation） 是一种基于文本的、用于结构化数据表示的格式。它来源于 JavaScript，但现在是独立于语言的通用格式。  用来表示数据结构：如对象、数组、键值对。 最常用于：前后端数据交互、配置文件、数据存储、API 响应等。  ✅ 官方定义（来自 json.org）： “JSON is a lightweight data-interchange format. It is easy for humans to read and write. It is easy for machines to parse and generate.”   二、📦 JSON 的结构和语法JSON 支持两种基本结构： 1. 对象（Object） 用 &#123;&#125; 包裹 内部是键值对 键必须是字符串，值可以是任意 JSON 支持的数据类型  12345&#123;  &quot;name&quot;: &quot;Tom&quot;, ...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2025/05/17/HTML-CSS-%E5%B8%B8%E8%A7%81%E6%A0%87%E7%AD%BE%E5%92%8C%E6%A0%B7%E5%BC%8F/" title="HTML-CSS-常见标签和样式"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-05-17</div><div class="info-item-2">HTML-CSS-常见标签和样式</div></div><div class="info-2"><div class="info-item-1">25&#x2F;5&#x2F;17![526c1749361129a3a58ccfd9f47a2c4d](C:\Users\67546\Documents\Tencent Files\675466480\nt_qq\nt_data\Pic\2025-05\Ori\526c1749361129a3a58ccfd9f47a2c4d.jpg) ![3fa1ae4321620dfa861b6b97670f0f74](C:\Users\67546\Documents\Tencent Files\675466480\nt_qq\nt_data\Pic\2025-05\Ori\3fa1ae4321620dfa861b6b97670f0f74.jpg) 25&#x2F;5&#x2F;18![bac1a385d20a296b528555d9c7fbc395](C:\Users\67546\Documents\Tencent...</div></div></div></a><a class="pagination-related" href="/2025/05/20/HTML-CSS-%E9%80%89%E6%8B%A9%E5%99%A8%E7%94%A8%E6%B3%95%E8%AF%A6%E8%A7%A3/" title="HTML + CSS 选择器用法详解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-05-20</div><div class="info-item-2">HTML + CSS 选择器用法详解</div></div><div class="info-2"><div class="info-item-1">🌟 一、基础选择器（Basic Selectors）1. 元素选择器选择某种标签的所有元素。 123456789p &#123;  color: blue;&#125;&lt;p&gt;我是段落文字&lt;/p&gt;&lt;div&gt;我不会变蓝&lt;/div&gt;   2. 类选择器（Class Selector）使用 . 开头，选择 class 属性的元素。 1234567.box &#123;  border: 1px solid black;&#125;&lt;div class=&quot;box&quot;&gt;我是一个盒子&lt;/div&gt;   3. ID 选择器使用 # 开头，选中具有特定 id 的元素（一个页面中只能有一个相同 ID）。 123456789#main &#123;  background-color: yellow;&#125;&lt;div id=&quot;main&quot;&gt;我是主区域&lt;/div&gt;   🌟 二、组合选择器（Group, Descendant, Child, etc）4....</div></div></div></a><a class="pagination-related" href="/2025/05/22/JS%E5%85%A5%E9%97%A8/" title="JS入门"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-05-22</div><div class="info-item-2">JS入门</div></div><div class="info-2"><div class="info-item-1">25&#x2F;5&#x2F;22![7cbd3fa2817909ec0840651b9e786743_720](C:\Users\67546\Documents\Tencent Files\675466480\nt_qq\nt_data\Pic\2025-05\Thumb\7cbd3fa2817909ec0840651b9e786743_720.jpg) ![53fcee7cedd8c1d25629e32043f74091_720](C:\Users\67546\Documents\Tencent Files\675466480\nt_qq\nt_data\Pic\2025-05\Thumb\53fcee7cedd8c1d25629e32043f74091_720.jpg) ![721ec4e948770e70f1210515a02d81d3_720](C:\Users\67546\Documents\Tencent...</div></div></div></a><a class="pagination-related" href="/2025/05/22/JSON%E8%AF%A6%E8%A7%A3/" title="JSON详解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-05-22</div><div class="info-item-2">JSON详解</div></div><div class="info-2"><div class="info-item-1">📘 一站式详解：什么是 JSON？ 一、🌟 JSON 的定义JSON（JavaScript Object Notation） 是一种基于文本的、用于结构化数据表示的格式。它来源于 JavaScript，但现在是独立于语言的通用格式。  用来表示数据结构：如对象、数组、键值对。 最常用于：前后端数据交互、配置文件、数据存储、API 响应等。  ✅ 官方定义（来自 json.org）： “JSON is a lightweight data-interchange format. It is easy for humans to read and write. It is easy for machines to parse and generate.”   二、📦 JSON 的结构和语法JSON 支持两种基本结构： 1. 对象（Object） 用 &#123;&#125; 包裹 内部是键值对 键必须是字符串，值可以是任意 JSON 支持的数据类型  12345&#123;  &quot;name&quot;: &quot;Tom&quot;, ...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">GoshenC</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">61</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">7</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Goshenc"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Goshenc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:gx.c221434@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Welcome</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%8C%E6%95%B4%E7%89%88%EF%BC%9ADOM-%E6%93%8D%E4%BD%9C%E8%AF%A6%E8%A7%A3%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3"><span class="toc-number">1.</span> <span class="toc-text">完整版：DOM 操作详解技术文档</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81DOM-%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.</span> <span class="toc-text">一、DOM 概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81DOM-%E8%8A%82%E7%82%B9%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.2.</span> <span class="toc-text">二、DOM 节点类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E8%8A%82%E7%82%B9%E9%80%89%E5%8F%96%EF%BC%88Selection%EF%BC%89"><span class="toc-number">1.3.</span> <span class="toc-text">三、节点选取（Selection）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E4%BC%A0%E7%BB%9F%E6%96%B9%E6%B3%95"><span class="toc-number">1.3.1.</span> <span class="toc-text">1. 传统方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-CSS-%E9%80%89%E6%8B%A9%E5%99%A8%EF%BC%88%E6%8E%A8%E8%8D%90%EF%BC%89"><span class="toc-number">1.3.2.</span> <span class="toc-text">2. CSS 选择器（推荐）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E8%8A%82%E7%82%B9%E9%81%8D%E5%8E%86%EF%BC%88Traversal%EF%BC%89"><span class="toc-number">1.4.</span> <span class="toc-text">四、节点遍历（Traversal）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E8%8A%82%E7%82%B9%E8%AF%BB%E5%8F%96%E4%B8%8E%E5%86%99%E5%85%A5%EF%BC%88Read-Write%EF%BC%89"><span class="toc-number">1.5.</span> <span class="toc-text">五、节点读取与写入（Read &amp; Write）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E6%96%87%E6%9C%AC%E5%92%8C-HTML-%E5%86%85%E5%AE%B9"><span class="toc-number">1.5.1.</span> <span class="toc-text">1. 文本和 HTML 内容</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E5%B1%9E%E6%80%A7%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%B1%9E%E6%80%A7"><span class="toc-number">1.5.2.</span> <span class="toc-text">2. 属性与数据属性</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E7%BB%93%E6%9E%84%E4%BF%AE%E6%94%B9%EF%BC%88Manipulation%EF%BC%89"><span class="toc-number">1.6.</span> <span class="toc-text">六、结构修改（Manipulation）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E5%88%9B%E5%BB%BA%E4%B8%8E%E6%8F%92%E5%85%A5"><span class="toc-number">1.6.1.</span> <span class="toc-text">1. 创建与插入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E5%85%8B%E9%9A%86%E4%B8%8E%E6%9B%BF%E6%8D%A2"><span class="toc-number">1.6.2.</span> <span class="toc-text">2. 克隆与替换</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E5%88%A0%E9%99%A4%E8%8A%82%E7%82%B9"><span class="toc-number">1.6.3.</span> <span class="toc-text">3. 删除节点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%83%E3%80%81CSS-%E6%A0%B7%E5%BC%8F%E4%B8%8E%E7%B1%BB%E5%90%8D%E6%93%8D%E4%BD%9C"><span class="toc-number">1.7.</span> <span class="toc-text">七、CSS 样式与类名操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AB%E3%80%81%E4%BA%8B%E4%BB%B6%E7%BB%91%E5%AE%9A%EF%BC%88Events%EF%BC%89"><span class="toc-number">1.8.</span> <span class="toc-text">八、事件绑定（Events）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E7%9B%B4%E6%8E%A5%E7%BB%91%E5%AE%9A"><span class="toc-number">1.8.1.</span> <span class="toc-text">1. 直接绑定</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E4%BA%8B%E4%BB%B6%E5%A7%94%E6%89%98"><span class="toc-number">1.8.2.</span> <span class="toc-text">2. 事件委托</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E7%A7%BB%E9%99%A4%E7%9B%91%E5%90%AC%E5%99%A8"><span class="toc-number">1.8.3.</span> <span class="toc-text">3. 移除监听器</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B9%9D%E3%80%81%E7%BB%BC%E5%90%88%E7%A4%BA%E4%BE%8B%EF%BC%9A%E5%8A%A8%E6%80%81%E5%9B%BE%E6%96%87%E5%88%97%E8%A1%A8"><span class="toc-number">1.9.</span> <span class="toc-text">九、综合示例：动态图文列表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%81%E3%80%81%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="toc-number">1.10.</span> <span class="toc-text">十、性能优化与最佳实践</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%81%E4%B8%80%E3%80%81%E6%80%BB%E7%BB%93"><span class="toc-number">1.11.</span> <span class="toc-text">十一、总结</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Posts</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/05/22/DOM%E7%94%A8%E6%B3%95%E6%8C%87%E5%8D%97/" title="DOM用法指南">DOM用法指南</a><time datetime="2025-05-22T14:09:36.000Z" title="Created 2025-05-22 22:09:36">2025-05-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/05/22/JSON%E8%AF%A6%E8%A7%A3/" title="JSON详解">JSON详解</a><time datetime="2025-05-22T13:43:07.000Z" title="Created 2025-05-22 21:43:07">2025-05-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/05/22/JS%E5%85%A5%E9%97%A8/" title="JS入门">JS入门</a><time datetime="2025-05-22T08:29:45.000Z" title="Created 2025-05-22 16:29:45">2025-05-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/05/20/HTML-CSS-%E9%80%89%E6%8B%A9%E5%99%A8%E7%94%A8%E6%B3%95%E8%AF%A6%E8%A7%A3/" title="HTML + CSS 选择器用法详解">HTML + CSS 选择器用法详解</a><time datetime="2025-05-20T12:31:43.000Z" title="Created 2025-05-20 20:31:43">2025-05-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/05/17/HTML-CSS-%E5%B8%B8%E8%A7%81%E6%A0%87%E7%AD%BE%E5%92%8C%E6%A0%B7%E5%BC%8F/" title="HTML-CSS-常见标签和样式">HTML-CSS-常见标签和样式</a><time datetime="2025-05-17T14:06:07.000Z" title="Created 2025-05-17 22:06:07">2025-05-17</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2025 By GoshenC</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'none',
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          enableMenu: true,
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="100" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading Database</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>
