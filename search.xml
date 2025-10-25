@@ -4,6 +4,44 @@
   
     
     <entry>
+      <title>css布局</title>
+      <link href="/2025/10/25/css%E5%B8%83%E5%B1%80/"/>
+      <url>/2025/10/25/css%E5%B8%83%E5%B1%80/</url>
+      
+        <content type="html"><![CDATA[<h1 id="display-模式转换"><a href="#display-模式转换" class="headerlink" title="display 模式转换"></a>display 模式转换</h1><p><img src="C:\Users\67546\AppData\Roaming\Typora\typora-user-images\image-20251025224017770.png" alt="image-20251025224017770"></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 前端 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>盒子模型</title>
+      <link href="/2025/10/25/%E7%9B%92%E5%AD%90%E6%A8%A1%E5%9E%8B/"/>
+      <url>/2025/10/25/%E7%9B%92%E5%AD%90%E6%A8%A1%E5%9E%8B/</url>
+      
+        <content type="html"><![CDATA[<h1 id="background"><a href="#background" class="headerlink" title="background"></a>background</h1><p><img src="C:\Users\67546\AppData\Roaming\Typora\typora-user-images\image-20251025194242754.png" alt="image-20251025194242754"></p><p><img src="C:\Users\67546\AppData\Roaming\Typora\typora-user-images\image-20251025200417070.png" alt="image-20251025200417070"></p><h1 id="背景渐变"><a href="#背景渐变" class="headerlink" title="背景渐变"></a>背景渐变</h1><p><img src="C:\Users\67546\AppData\Roaming\Typora\typora-user-images\image-20251025205830820.png" alt="image-20251025205830820"></p><h1 id="盒子阴影"><a href="#盒子阴影" class="headerlink" title="盒子阴影"></a>盒子阴影</h1><p><img src="C:\Users\67546\AppData\Roaming\Typora\typora-user-images\image-20251025212018882.png" alt="image-20251025212018882"></p><h1 id="过渡"><a href="#过渡" class="headerlink" title="过渡"></a>过渡</h1><p><img src="C:\Users\67546\AppData\Roaming\Typora\typora-user-images\image-20251025211939977.png" alt="image-20251025211939977"></p><h1 id="文本省略"><a href="#文本省略" class="headerlink" title="文本省略"></a>文本省略</h1><p><img src="C:\Users\67546\AppData\Roaming\Typora\typora-user-images\image-20251025214021571.png" alt="image-20251025214021571"></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 前端 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>css优先级</title>
       <link href="/2025/10/24/css%E4%BC%98%E5%85%88%E7%BA%A7/"/>
       <url>/2025/10/24/css%E4%BC%98%E5%85%88%E7%BA%A7/</url>
