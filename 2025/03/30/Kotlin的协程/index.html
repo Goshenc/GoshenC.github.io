@@ -1,0 +1,354 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Kotlin的协程 | GoshenC</title><meta name="author" content="GoshenC"><meta name="copyright" content="GoshenC"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Kotlin 协程技术文档 简介Kotlin 协程是 Kotlin 官方提供的一种用于简化异步编程和并发任务处理的工具。它能够让你用同步的写法实现异步代码，大大简化了回调地狱（callback hell）问题，提高了代码的可读性和维护性。协程在 Android 开发、服务器开发等场景中都有广泛应用。  协程基本概念什么是协程协程是一种轻量级的线程，能够在单个线程内并发执行多个任务。它基于挂起（su">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kotlin的协程">
+<meta property="og:url" content="http://example.com/2025/03/30/Kotlin%E7%9A%84%E5%8D%8F%E7%A8%8B/index.html">
+<meta property="og:site_name" content="GoshenC">
+<meta property="og:description" content="Kotlin 协程技术文档 简介Kotlin 协程是 Kotlin 官方提供的一种用于简化异步编程和并发任务处理的工具。它能够让你用同步的写法实现异步代码，大大简化了回调地狱（callback hell）问题，提高了代码的可读性和维护性。协程在 Android 开发、服务器开发等场景中都有广泛应用。  协程基本概念什么是协程协程是一种轻量级的线程，能够在单个线程内并发执行多个任务。它基于挂起（su">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/avatar.jpg">
+<meta property="article:published_time" content="2025-03-30T14:10:45.000Z">
+<meta property="article:modified_time" content="2025-03-30T16:01:14.736Z">
+<meta property="article:author" content="GoshenC">
+<meta property="article:tag" content="Kotlin">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/avatar.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Kotlin的协程",
+  "url": "http://example.com/2025/03/30/Kotlin%E7%9A%84%E5%8D%8F%E7%A8%8B/",
+  "image": "http://example.com/img/avatar.jpg",
+  "datePublished": "2025-03-30T14:10:45.000Z",
+  "dateModified": "2025-03-30T16:01:14.736Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "GoshenC",
+      "url": "http://example.com/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="../../../../img/circularavatar.jpg"><link rel="canonical" href="http://example.com/2025/03/30/Kotlin%E7%9A%84%E5%8D%8F%E7%A8%8B/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="../../../../css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"No results found for: ${query}","hits_stats":"${hits} articles found"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":250,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Kotlin的协程',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(img/mainbackground.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="../../../../img/avatar.jpg" onerror="this.onerror=null;this.src='../../../../img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="../../../../archives/"><div class="headline">Articles</div><div class="length-num">69</div></a><a href="../../../../tags/"><div class="headline">Tags</div><div class="length-num">7</div></a><a href="../../../../categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="../../../../gotcha,hahaha"><span> 简体中文/Chinese-CN</span></a></div><div class="menus_item"><a class="site-page" href="../../../../index.html"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="../../../../archives/"><i class="fa-fw fas fa-archive"></i><span> Timeline</span></a></div><div class="menus_item"><a class="site-page" href="../../../../tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="../../../../categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="../../../../link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="../../../../about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" target="_blank" rel="noopener" href="https://www.kugou.com/"><i class="fa-fw fas fa-music"></i><span> Music(音乐)</span></a></li><li><a class="site-page child" href="../../../../movies/"><i class="fa-fw fas fa-video"></i><span> Movie(电影)</span></a></li><li><a class="site-page child" href="../../../../music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(img/mainbackground.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="../../../../index.html"><img class="site-icon" src="../../../../img/circularavatar.jpg" alt="Logo"><span class="site-name">GoshenC</span></a><a class="nav-page-title" href="../../../../index.html"><span class="site-name">Kotlin的协程</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="../../../../gotcha,hahaha"><span> 简体中文/Chinese-CN</span></a></div><div class="menus_item"><a class="site-page" href="../../../../index.html"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="../../../../archives/"><i class="fa-fw fas fa-archive"></i><span> Timeline</span></a></div><div class="menus_item"><a class="site-page" href="../../../../tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="../../../../categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="../../../../link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="../../../../about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" target="_blank" rel="noopener" href="https://www.kugou.com/"><i class="fa-fw fas fa-music"></i><span> Music(音乐)</span></a></li><li><a class="site-page child" href="../../../../movies/"><i class="fa-fw fas fa-video"></i><span> Movie(电影)</span></a></li><li><a class="site-page child" href="../../../../music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Kotlin的协程</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2025-03-30T14:10:45.000Z" title="Created 2025-03-30 22:10:45">2025-03-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2025-03-30T16:01:14.736Z" title="Updated 2025-03-31 00:01:14">2025-03-31</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word Count:</span><span class="word-count">2.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading Time:</span><span>9mins</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="Kotlin-协程技术文档"><a href="#Kotlin-协程技术文档" class="headerlink" title="Kotlin 协程技术文档"></a>Kotlin 协程技术文档</h1><hr>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Kotlin 协程是 Kotlin 官方提供的一种用于简化异步编程和并发任务处理的工具。它能够让你用同步的写法实现异步代码，大大简化了回调地狱（callback hell）问题，提高了代码的可读性和维护性。协程在 Android 开发、服务器开发等场景中都有广泛应用。</p>
+<hr>
+<h2 id="协程基本概念"><a href="#协程基本概念" class="headerlink" title="协程基本概念"></a>协程基本概念</h2><h3 id="什么是协程"><a href="#什么是协程" class="headerlink" title="什么是协程"></a>什么是协程</h3><p>协程是一种轻量级的线程，能够在单个线程内并发执行多个任务。它基于挂起（suspending）和恢复（resuming）机制，在任务遇到耗时操作（如 IO、网络请求）时挂起执行，不阻塞线程，待条件满足后恢复执行。</p>
+<h3 id="协程与线程的对比"><a href="#协程与线程的对比" class="headerlink" title="协程与线程的对比"></a>协程与线程的对比</h3><ul>
+<li><strong>轻量性</strong>：协程比线程更加轻量，一个应用可以同时启动成千上万个协程，而线程数量通常受限于系统资源。</li>
+<li><strong>调度模型</strong>：协程由调度器（Dispatchers）管理，可以在多个线程间灵活调度，而线程调度依赖于操作系统。</li>
+<li><strong>切换成本</strong>：协程的上下文切换成本远低于线程切换，性能开销较小。</li>
+<li><strong>编程模型</strong>：协程可以用顺序化的代码编写异步逻辑，避免回调嵌套，使代码更直观。</li>
+</ul>
+<hr>
+<h2 id="协程构建块"><a href="#协程构建块" class="headerlink" title="协程构建块"></a>协程构建块</h2><h3 id="CoroutineScope"><a href="#CoroutineScope" class="headerlink" title="CoroutineScope"></a>CoroutineScope</h3><ul>
+<li><strong>定义</strong>：<code>CoroutineScope</code> 表示一个协程作用域，它限定了协程的生命周期。所有在该作用域内启动的协程都遵循同一个生命周期，便于集中管理。</li>
+<li><strong>创建</strong>：可以通过 <code>GlobalScope</code>（不推荐使用）、<code>CoroutineScope(Job())</code> 或 Android 的 <code>viewModelScope</code>、<code>lifecycleScope</code> 来创建作用域。</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 自定义 CoroutineScope</span><br><span class="line">val myScope = CoroutineScope(Dispatchers.Main + Job())</span><br></pre></td></tr></table></figure>
+
+<h3 id="启动协程：launch-与-async"><a href="#启动协程：launch-与-async" class="headerlink" title="启动协程：launch 与 async"></a>启动协程：launch 与 async</h3><ul>
+<li><p><strong>launch</strong><br> 用于启动一个不需要返回结果的协程，返回一个 <code>Job</code> 对象。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">myScope.launch &#123;</span><br><span class="line">    // 在协程中执行耗时操作</span><br><span class="line">    delay(1000)</span><br><span class="line">    println(&quot;Hello from launch!&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>async</strong><br> 用于启动一个协程并返回一个 <code>Deferred</code> 对象，表示未来可能返回的结果。常用于并行计算。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">val deferredResult = myScope.async &#123;</span><br><span class="line">    // 执行计算并返回结果</span><br><span class="line">    delay(500)</span><br><span class="line">    return@async 42</span><br><span class="line">&#125;</span><br><span class="line">// 获取结果，注意：await() 是挂起函数</span><br><span class="line">val result = deferredResult.await()</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="Job-与-Deferred"><a href="#Job-与-Deferred" class="headerlink" title="Job 与 Deferred"></a>Job 与 Deferred</h3><ul>
+<li><strong>Job</strong>：表示一个协程任务，主要用于管理协程的生命周期（如取消协程）。</li>
+<li><strong>Deferred</strong>：继承自 Job，表示一个带有返回值的任务，使用 <code>await()</code> 方法可以挂起协程等待结果。</li>
+</ul>
+<hr>
+<h2 id="调度器-Dispatchers"><a href="#调度器-Dispatchers" class="headerlink" title="调度器 (Dispatchers)"></a>调度器 (Dispatchers)</h2><p>调度器决定协程在哪个线程或线程池上运行。常用的调度器包括：</p>
+<h3 id="常见调度器"><a href="#常见调度器" class="headerlink" title="常见调度器"></a>常见调度器</h3><ul>
+<li><strong>Dispatchers.Main</strong><br> 用于更新 UI 的主线程，适用于 Android 中与 UI 相关的操作。</li>
+<li><strong>Dispatchers.IO</strong><br> 用于执行 IO 密集型任务，如网络请求、磁盘操作等。</li>
+<li><strong>Dispatchers.Default</strong><br> 用于执行 CPU 密集型任务，如复杂计算。</li>
+<li><strong>Dispatchers.Unconfined</strong><br> 不受限于特定线程，立即在当前线程中执行，通常用于测试或特殊场景。</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 在 IO 线程中执行网络请求</span><br><span class="line">CoroutineScope(Dispatchers.IO).launch &#123;</span><br><span class="line">    val data = fetchDataFromNetwork()</span><br><span class="line">    // 切换回主线程更新 UI</span><br><span class="line">    withContext(Dispatchers.Main) &#123;</span><br><span class="line">        updateUI(data)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="自定义调度器"><a href="#自定义调度器" class="headerlink" title="自定义调度器"></a>自定义调度器</h3><p>可以创建自定义线程池，并用 <code>asCoroutineDispatcher()</code> 方法转换为协程调度器：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">val myExecutor = Executors.newFixedThreadPool(4)</span><br><span class="line">val myDispatcher = myExecutor.asCoroutineDispatcher()</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="withContext-的使用"><a href="#withContext-的使用" class="headerlink" title="withContext() 的使用"></a><code>withContext()</code> 的使用</h2><p><code>withContext()</code> 是 Kotlin 协程中的 <strong>挂起函数</strong>，用于 <strong>在协程中切换执行的调度器</strong>。它不会创建新的协程，而是挂起当前协程并在指定的调度器上执行代码块，执行完成后恢复到原来的调度器。</p>
+<p><code>withContext()</code> <strong>会挂起外部协程，直到内部代码执行完毕，才继续执行外部协程的后续代码</strong>，但<strong>不会阻塞线程</strong>。</p>
+<hr>
+<h3 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a><strong>基本用法</strong></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">import kotlinx.coroutines.*</span><br><span class="line"></span><br><span class="line">fun main() = runBlocking &#123;</span><br><span class="line">    println(&quot;Start: $&#123;Thread.currentThread().name&#125;&quot;)</span><br><span class="line"></span><br><span class="line">    withContext(Dispatchers.IO) &#123;</span><br><span class="line">        println(&quot;Switch to IO: $&#123;Thread.currentThread().name&#125;&quot;)</span><br><span class="line">        delay(1000) // 模拟耗时操作</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    println(&quot;Back to main: $&#123;Thread.currentThread().name&#125;&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="执行过程"><a href="#执行过程" class="headerlink" title="执行过程"></a><strong>执行过程</strong></h3><ol>
+<li><code>runBlocking</code> 在 <strong>主线程</strong> 中运行。</li>
+<li><code>withContext(Dispatchers.IO)</code> 切换到 <strong>IO 线程池</strong> 并执行代码块。</li>
+<li><code>delay(1000)</code> 让协程挂起 <strong>1 秒</strong>，但不会阻塞线程。</li>
+<li><code>withContext</code> 执行完毕，恢复到 <strong>原来的调度器（主线程）</strong>。</li>
+</ol>
+<hr>
+<h3 id="常见用途"><a href="#常见用途" class="headerlink" title="常见用途"></a><strong>常见用途</strong></h3><h4 id="1-在-Dispatchers-Main-执行-UI-更新"><a href="#1-在-Dispatchers-Main-执行-UI-更新" class="headerlink" title="1. 在 Dispatchers.Main 执行 UI 更新"></a><strong>1. 在 <code>Dispatchers.Main</code> 执行 UI 更新</strong></h4><p>适用于 <strong>Android 开发</strong>，用于 <strong>在后台线程执行任务，并回到主线程更新 UI</strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">class MainActivity : AppCompatActivity() &#123;</span><br><span class="line">    override fun onCreate(savedInstanceState: Bundle?) &#123;</span><br><span class="line">        super.onCreate(savedInstanceState)</span><br><span class="line"></span><br><span class="line">        lifecycleScope.launch &#123;</span><br><span class="line">            val data = withContext(Dispatchers.IO) &#123; fetchData() &#125;</span><br><span class="line">            textView.text = data // 回到主线程更新 UI</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private suspend fun fetchData(): String &#123;</span><br><span class="line">        delay(2000) // 模拟网络请求</span><br><span class="line">        return &quot;Data from server&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>🔹 <code>fetchData()</code> 在 <strong>IO 线程执行</strong>，获取数据后 <code>withContext</code> 自动 <strong>回到主线程</strong> 更新 <code>textView</code>。</p>
+<hr>
+<h4 id="2-计算密集型任务-Dispatchers-Default"><a href="#2-计算密集型任务-Dispatchers-Default" class="headerlink" title="2. 计算密集型任务 (Dispatchers.Default)"></a><strong>2. 计算密集型任务 (<code>Dispatchers.Default</code>)</strong></h4><p>适用于 <strong>CPU 密集型计算</strong>（如排序、加密、数据处理）。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">suspend fun heavyComputation() &#123;</span><br><span class="line">    withContext(Dispatchers.Default) &#123;</span><br><span class="line">        val result = (1..1_000_000).sum()</span><br><span class="line">        println(&quot;Computation result: $result&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>🔹 计算任务会在 <strong>默认线程池</strong>（<code>Default</code>）运行，不会阻塞 UI。</p>
+<hr>
+<h4 id="3-读取本地文件（IO-线程）"><a href="#3-读取本地文件（IO-线程）" class="headerlink" title="3. 读取本地文件（IO 线程）"></a><strong>3. 读取本地文件（IO 线程）</strong></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">suspend fun readFile(): String &#123;</span><br><span class="line">    return withContext(Dispatchers.IO) &#123;</span><br><span class="line">        File(&quot;data.txt&quot;).readText()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>🔹 <strong>避免主线程阻塞</strong>，文件读取在 <strong>IO 线程</strong> 完成。</p>
+<hr>
+<h3 id="⚠️-注意事项"><a href="#⚠️-注意事项" class="headerlink" title="⚠️ 注意事项"></a><strong>⚠️ 注意事项</strong></h3><ol>
+<li><strong><code>withContext()</code> 不会创建新的协程</strong>，只是切换执行环境。</li>
+<li><strong><code>withContext()</code> 适合执行一个需要返回结果的任务</strong>，如果要 <strong>同时运行多个任务</strong>，用 <code>launch</code> 或 <code>async</code>。</li>
+<li><strong>不要在 <code>Dispatchers.Main</code> 中使用 <code>withContext(Dispatchers.Main)</code></strong>，会导致 <strong>额外的调度开销</strong>。</li>
+</ol>
+<hr>
+<h3 id="🚀-总结"><a href="#🚀-总结" class="headerlink" title="🚀 总结"></a><strong>🚀 总结</strong></h3><ul>
+<li><code>withContext()</code> 用于 <strong>切换线程并执行代码</strong>，执行完自动回到原来的线程。</li>
+<li><strong>适用于</strong> IO 操作、计算任务、UI 更新等场景。</li>
+<li><strong>不会创建新协程</strong>，而是 <strong>挂起当前协程</strong> 并切换调度器。</li>
+</ul>
+<p>💡 <strong>适用场景</strong>： ✅ <strong>网络请求</strong>（<code>Dispatchers.IO</code>）<br> ✅ <strong>数据库操作</strong>（<code>Dispatchers.IO</code>）<br> ✅ <strong>计算密集型任务</strong>（<code>Dispatchers.Default</code>）<br> ✅ <strong>UI 更新</strong>（<code>Dispatchers.Main</code>）</p>
+<h2 id="结构化并发"><a href="#结构化并发" class="headerlink" title="结构化并发"></a>结构化并发</h2><h3 id="作用域与协程层级关系"><a href="#作用域与协程层级关系" class="headerlink" title="作用域与协程层级关系"></a>作用域与协程层级关系</h3><p>结构化并发（Structured Concurrency）要求协程在层次化的作用域内启动，确保父协程管理子协程的生命周期，避免出现未管理的孤儿协程。这样可以保证资源的及时释放与错误的统一处理。</p>
+<h3 id="CoroutineScope-与-supervisorScope"><a href="#CoroutineScope-与-supervisorScope" class="headerlink" title="CoroutineScope 与 supervisorScope"></a>CoroutineScope 与 supervisorScope</h3><ul>
+<li><p><strong>CoroutineScope</strong><br> 默认情况下，如果子协程发生异常，会取消整个作用域内所有协程。</p>
+</li>
+<li><p><strong>supervisorScope</strong><br> 在 <code>supervisorScope</code> 内，一个子协程的异常不会传播到其他子协程，可以实现部分任务失败而不影响整体流程。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">supervisorScope &#123;</span><br><span class="line">    val job1 = launch &#123;</span><br><span class="line">        // 子任务 1</span><br><span class="line">    &#125;</span><br><span class="line">    val job2 = launch &#123;</span><br><span class="line">        // 子任务 2</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h2 id="协程取消与超时控制"><a href="#协程取消与超时控制" class="headerlink" title="协程取消与超时控制"></a>协程取消与超时控制</h2><h3 id="取消协程"><a href="#取消协程" class="headerlink" title="取消协程"></a>取消协程</h3><p>协程取消是一种协作机制，被取消的协程需要在合适的地方检测取消状态。常用方法包括：</p>
+<ul>
+<li><strong>调用 <code>job.cancel()</code></strong>：取消当前 Job 以及其所有子协程。</li>
+<li><strong>挂起点检测</strong>：例如 <code>delay()</code>、<code>withContext()</code> 都会检查取消状态。</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">val job = myScope.launch &#123;</span><br><span class="line">    repeat(1000) &#123; i -&gt;</span><br><span class="line">        if (!isActive) return@launch // 检查协程是否被取消</span><br><span class="line">        println(&quot;Processing $i&quot;)</span><br><span class="line">        delay(100)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">// 取消协程</span><br><span class="line">job.cancel()</span><br></pre></td></tr></table></figure>
+
+<h3 id="withTimeout-与-withTimeoutOrNull"><a href="#withTimeout-与-withTimeoutOrNull" class="headerlink" title="withTimeout 与 withTimeoutOrNull"></a>withTimeout 与 withTimeoutOrNull</h3><ul>
+<li><p><strong>withTimeout</strong><br> 规定一段时间内未完成任务，则抛出 <code>TimeoutCancellationException</code>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">try &#123;</span><br><span class="line">    withTimeout(3000) &#123;</span><br><span class="line">        // 如果 3 秒内没有完成，则异常退出</span><br><span class="line">        performLongRunningTask()</span><br><span class="line">    &#125;</span><br><span class="line">&#125; catch (e: TimeoutCancellationException) &#123;</span><br><span class="line">    println(&quot;任务超时&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>withTimeoutOrNull</strong><br> 超时返回 <code>null</code>，不会抛异常。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">val result = withTimeoutOrNull(3000) &#123;</span><br><span class="line">    performLongRunningTask()</span><br><span class="line">&#125;</span><br><span class="line">if (result == null) &#123;</span><br><span class="line">    println(&quot;任务超时&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h2 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h2><h3 id="CoroutineExceptionHandler"><a href="#CoroutineExceptionHandler" class="headerlink" title="CoroutineExceptionHandler"></a>CoroutineExceptionHandler</h3><p>用于全局捕获协程未处理的异常。通过在协程上下文中添加 <code>CoroutineExceptionHandler</code>，可以统一处理异常。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">val handler = CoroutineExceptionHandler &#123; _, exception -&gt;</span><br><span class="line">    println(&quot;捕获到异常：$&#123;exception.message&#125;&quot;)</span><br><span class="line">&#125;</span><br><span class="line">myScope.launch(handler) &#123;</span><br><span class="line">    throw RuntimeException(&quot;测试异常&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="try-catch-在协程中的使用"><a href="#try-catch-在协程中的使用" class="headerlink" title="try&#x2F;catch 在协程中的使用"></a>try&#x2F;catch 在协程中的使用</h3><p>在挂起函数内部，同步代码中的 <code>try/catch</code> 同样适用，用于捕获特定的异常。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">myScope.launch &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">        val result = performRiskOperation()</span><br><span class="line">        println(&quot;结果：$result&quot;)</span><br><span class="line">    &#125; catch (e: Exception) &#123;</span><br><span class="line">        println(&quot;错误：$&#123;e.message&#125;&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="协程通信与同步"><a href="#协程通信与同步" class="headerlink" title="协程通信与同步"></a>协程通信与同步</h2><h3 id="Channel"><a href="#Channel" class="headerlink" title="Channel"></a>Channel</h3><p>Channel 提供了一种在协程之间进行通信的方式，类似于阻塞队列。通过 Channel，可以实现生产者-消费者模型。</p>
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">import kotlinx.coroutines.channels.Channel</span><br><span class="line"></span><br><span class="line">val channel = Channel&lt;Int&gt;()</span><br><span class="line">// 生产者协程</span><br><span class="line">launch &#123;</span><br><span class="line">    for (i in 1..5) &#123;</span><br><span class="line">        channel.send(i)</span><br><span class="line">    &#125;</span><br><span class="line">    channel.close() // 关闭 Channel</span><br><span class="line">&#125;</span><br><span class="line">// 消费者协程</span><br><span class="line">launch &#123;</span><br><span class="line">    for (number in channel) &#123;</span><br><span class="line">        println(&quot;接收数据: $number&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Flow"><a href="#Flow" class="headerlink" title="Flow"></a>Flow</h3><p>Flow 是 Kotlin 协程中的响应式流，用于处理异步数据流和背压控制。</p>
+<ul>
+<li><strong>定义 Flow</strong>：使用 <code>flow &#123;&#125;</code> 构建数据流</li>
+<li><strong>收集数据</strong>：使用 <code>collect &#123;&#125;</code> 处理数据</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">import kotlinx.coroutines.flow.*</span><br><span class="line"></span><br><span class="line">fun simpleFlow(): Flow&lt;Int&gt; = flow &#123;</span><br><span class="line">    for (i in 1..3) &#123;</span><br><span class="line">        delay(100)</span><br><span class="line">        emit(i) // 发射数据</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">launch &#123;</span><br><span class="line">    simpleFlow().collect &#123; value -&gt;</span><br><span class="line">        println(&quot;收到：$value&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="与-Android-集成"><a href="#与-Android-集成" class="headerlink" title="与 Android 集成"></a>与 Android 集成</h2><p>在 Android 开发中，协程可以很好地解决异步任务和 UI 更新问题。常见的集成方式包括：</p>
+<h3 id="在-UI-线程中启动协程"><a href="#在-UI-线程中启动协程" class="headerlink" title="在 UI 线程中启动协程"></a>在 UI 线程中启动协程</h3><p>利用 <code>Dispatchers.Main</code> 在主线程中更新 UI：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">CoroutineScope(Dispatchers.Main).launch &#123;</span><br><span class="line">    val data = withContext(Dispatchers.IO) &#123; fetchDataFromNetwork() &#125;</span><br><span class="line">    textView.text = data</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用-ViewModelScope-和-LifecycleScope"><a href="#使用-ViewModelScope-和-LifecycleScope" class="headerlink" title="使用 ViewModelScope 和 LifecycleScope"></a>使用 ViewModelScope 和 LifecycleScope</h3><ul>
+<li><p><strong>viewModelScope</strong><br> 适用于 ViewModel 中启动协程，与 ViewModel 生命周期绑定，避免内存泄漏。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class MyViewModel : ViewModel() &#123;</span><br><span class="line">    init &#123;</span><br><span class="line">        viewModelScope.launch &#123;</span><br><span class="line">            // 执行网络请求或数据加载</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>lifecycleScope</strong><br> 适用于 Activity 或 Fragment，自动管理协程生命周期。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class MainActivity : AppCompatActivity() &#123;</span><br><span class="line">    override fun onCreate(savedInstanceState: Bundle?) &#123;</span><br><span class="line">        super.onCreate(savedInstanceState)</span><br><span class="line">        lifecycleScope.launch &#123;</span><br><span class="line">            // 执行与 UI 相关的协程操作</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h2 id="最佳实践与常见问题"><a href="#最佳实践与常见问题" class="headerlink" title="最佳实践与常见问题"></a>最佳实践与常见问题</h2><h3 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h3><ol>
+<li><strong>避免使用 GlobalScope</strong><br> 全局作用域容易导致协程泄漏，建议使用结构化并发的 CoroutineScope。</li>
+<li><strong>选择合适的调度器</strong><br> 根据任务类型（IO、CPU、UI）选择对应的调度器。</li>
+<li><strong>合理使用超时与取消</strong><br> 对长时间等待的任务使用 withTimeout&#x2F;withTimeoutOrNull，确保协程及时取消。</li>
+<li><strong>异常捕获</strong><br> 在关键业务逻辑中使用 try&#x2F;catch，同时配置 CoroutineExceptionHandler 捕获全局异常。</li>
+<li><strong>整洁代码</strong><br> 将协程相关代码放入专门的 Repository 或 UseCase 层，分离 UI 层逻辑。</li>
+</ol>
+<h3 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h3><ul>
+<li><strong>协程泄漏</strong><br> 未取消的协程会导致内存泄漏。确保在合适时机调用 cancel() 或使用绑定生命周期的 Scope。</li>
+<li><strong>异常未捕获</strong><br> 子协程异常可能不会传递给父协程，使用 supervisorScope 或者合适的异常处理器来保证异常处理一致性。</li>
+<li><strong>线程切换问题</strong><br> 协程中的上下文切换需要显式指定 withContext，否则可能导致 UI 阻塞或后台线程操作 UI。</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="http://example.com">GoshenC</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="http://example.com/2025/03/30/Kotlin%E7%9A%84%E5%8D%8F%E7%A8%8B/">http://example.com/2025/03/30/Kotlin%E7%9A%84%E5%8D%8F%E7%A8%8B/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="../../../../tags/Kotlin/">Kotlin</a></div><div class="post-share"><div class="social-share" data-image="../../../../img/avatar.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="../%E8%A7%A3%E6%9E%90JSON%E6%A0%BC%E5%BC%8F%E6%95%B0%E6%8D%AE%E7%A4%BA%E4%BE%8B/" title="解析JSON格式数据示例"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">Previous</div><div class="info-item-2">解析JSON格式数据示例</div></div><div class="info-2"><div class="info-item-1">书上P444讲的更好 1. 概述JSON（JavaScript Object Notation）是一种轻量级的数据交换格式，常用于 Web API 交互。Kotlin 提供了多种解析 JSON 数据的方法，其中 org.json.JSONObject 和 Gson 是常见的选择。 2. 适用场景 解析网络请求返回的 JSON 数据 存储和读取本地 JSON 配置文件 序列化&#x2F;反序列化 Kotlin 数据类  3. JSON 示例假设有如下 JSON 数据 sample.json： 1234567891011121314&#123;  &quot;apps&quot;: [    &#123;      &quot;id&quot;: 1,      &quot;name&quot;: &quot;MyApp&quot;,      &quot;version&quot;: &quot;1.0.0&quot;    &#125;,    &#123;      &quot;id&quot;: 2,      &quot;name&quot;:...</div></div></div></a><a class="pagination-related" href="../../31/Vector-Asset%E7%9A%84%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B/" title="Vector Asset的使用示例"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">Next</div><div class="info-item-2">Vector Asset的使用示例</div></div><div class="info-2"><div class="info-item-1">Android 使用 Vector Asset 的技术解析在 Android 开发中，图形资源一直是用户体验的重要组成部分。传统上，开发者常常依赖位图（Bitmap）资源，但随着多种屏幕分辨率的设备不断涌现，位图资源在扩展性和存储效率上逐渐暴露出不足。为了解决这一问题，Google 引入了 Vector Asset（矢量资源），它能够以较小的体积提供高质量且可伸缩的图形表现。本文将详细介绍 Android 中 Vector Asset 的使用方法、优势、注意事项以及最佳实践。  1. 什么是 Vector Asset？Vector Asset 是基于 XML 定义的矢量图形资源，不同于位图资源，它通过数学公式来描述图形的轮廓和颜色，从而实现无限放大而不会失真。主要优点包括：  无失真缩放： 无论在何种分辨率下，矢量图形都能保持清晰的显示效果。 文件体积小： 相对于同等质量的位图资源，矢量图通常占用更少的存储空间。 灵活的颜色和尺寸调整： 可在运行时动态修改颜色和大小，适应不同的主题和布局需求。   2. Android Studio 中导入 Vector...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><a class="pagination-related" href="../../../04/05/Kotlin-DSL/" title="Kotlin DSL"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-04-05</div><div class="info-item-2">Kotlin DSL</div></div><div class="info-2"><div class="info-item-1">💬 什么是 Kotlin DSL？DSL 就像你用 Kotlin 写的“小语言”或“专属语法”。 比如你写一个配置文件或者描述页面内容时，希望这样写： 123456789page &#123;    title = &quot;欢迎来到我的网站&quot;    header &#123;        text = &quot;Hello!&quot;    &#125;    paragraph &#123;        text = &quot;这里是正文内容&quot;    &#125;&#125;  看起来像“自己发明的语言”，对吧？这个就是 Kotlin DSL 的目标：写出接近自然语言的代码，让代码更“会说话”。  🧱 怎么做？用 Kotlin 的 3 个小技巧就可以了：1️⃣ 高阶函数（函数里面传函数）123fun doSomething(block: () -&gt; Unit) &#123;    block()&#125;  你可以这样用： 123doSomething &#123;   ...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="../../../../img/avatar.jpg" onerror="this.onerror=null;this.src='../../../../img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">GoshenC</div><div class="author-info-description"></div><div class="site-data"><a href="../../../../archives/"><div class="headline">Articles</div><div class="length-num">69</div></a><a href="../../../../tags/"><div class="headline">Tags</div><div class="length-num">7</div></a><a href="../../../../categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Goshenc"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Goshenc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="../../../../mailto:gx.c221434@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Welcome</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Kotlin-%E5%8D%8F%E7%A8%8B%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3"><span class="toc-number">1.</span> <span class="toc-text">Kotlin 协程技术文档</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%8F%E7%A8%8B%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">1.2.</span> <span class="toc-text">协程基本概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%8D%8F%E7%A8%8B"><span class="toc-number">1.2.1.</span> <span class="toc-text">什么是协程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%8F%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%AF%B9%E6%AF%94"><span class="toc-number">1.2.2.</span> <span class="toc-text">协程与线程的对比</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%8F%E7%A8%8B%E6%9E%84%E5%BB%BA%E5%9D%97"><span class="toc-number">1.3.</span> <span class="toc-text">协程构建块</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CoroutineScope"><span class="toc-number">1.3.1.</span> <span class="toc-text">CoroutineScope</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E5%8D%8F%E7%A8%8B%EF%BC%9Alaunch-%E4%B8%8E-async"><span class="toc-number">1.3.2.</span> <span class="toc-text">启动协程：launch 与 async</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Job-%E4%B8%8E-Deferred"><span class="toc-number">1.3.3.</span> <span class="toc-text">Job 与 Deferred</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%83%E5%BA%A6%E5%99%A8-Dispatchers"><span class="toc-number">1.4.</span> <span class="toc-text">调度器 (Dispatchers)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E8%B0%83%E5%BA%A6%E5%99%A8"><span class="toc-number">1.4.1.</span> <span class="toc-text">常见调度器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E8%B0%83%E5%BA%A6%E5%99%A8"><span class="toc-number">1.4.2.</span> <span class="toc-text">自定义调度器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#withContext-%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-number">1.5.</span> <span class="toc-text">withContext() 的使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95"><span class="toc-number">1.5.1.</span> <span class="toc-text">基本用法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B"><span class="toc-number">1.5.2.</span> <span class="toc-text">执行过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%94%A8%E9%80%94"><span class="toc-number">1.5.3.</span> <span class="toc-text">常见用途</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E5%9C%A8-Dispatchers-Main-%E6%89%A7%E8%A1%8C-UI-%E6%9B%B4%E6%96%B0"><span class="toc-number">1.5.3.1.</span> <span class="toc-text">1. 在 Dispatchers.Main 执行 UI 更新</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E8%AE%A1%E7%AE%97%E5%AF%86%E9%9B%86%E5%9E%8B%E4%BB%BB%E5%8A%A1-Dispatchers-Default"><span class="toc-number">1.5.3.2.</span> <span class="toc-text">2. 计算密集型任务 (Dispatchers.Default)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E8%AF%BB%E5%8F%96%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6%EF%BC%88IO-%E7%BA%BF%E7%A8%8B%EF%BC%89"><span class="toc-number">1.5.3.3.</span> <span class="toc-text">3. 读取本地文件（IO 线程）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%9A%A0%EF%B8%8F-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">1.5.4.</span> <span class="toc-text">⚠️ 注意事项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%9A%80-%E6%80%BB%E7%BB%93"><span class="toc-number">1.5.5.</span> <span class="toc-text">🚀 总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E6%9E%84%E5%8C%96%E5%B9%B6%E5%8F%91"><span class="toc-number">1.6.</span> <span class="toc-text">结构化并发</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8%E5%9F%9F%E4%B8%8E%E5%8D%8F%E7%A8%8B%E5%B1%82%E7%BA%A7%E5%85%B3%E7%B3%BB"><span class="toc-number">1.6.1.</span> <span class="toc-text">作用域与协程层级关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CoroutineScope-%E4%B8%8E-supervisorScope"><span class="toc-number">1.6.2.</span> <span class="toc-text">CoroutineScope 与 supervisorScope</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%8F%E7%A8%8B%E5%8F%96%E6%B6%88%E4%B8%8E%E8%B6%85%E6%97%B6%E6%8E%A7%E5%88%B6"><span class="toc-number">1.7.</span> <span class="toc-text">协程取消与超时控制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%96%E6%B6%88%E5%8D%8F%E7%A8%8B"><span class="toc-number">1.7.1.</span> <span class="toc-text">取消协程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#withTimeout-%E4%B8%8E-withTimeoutOrNull"><span class="toc-number">1.7.2.</span> <span class="toc-text">withTimeout 与 withTimeoutOrNull</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="toc-number">1.8.</span> <span class="toc-text">异常处理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CoroutineExceptionHandler"><span class="toc-number">1.8.1.</span> <span class="toc-text">CoroutineExceptionHandler</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#try-catch-%E5%9C%A8%E5%8D%8F%E7%A8%8B%E4%B8%AD%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-number">1.8.2.</span> <span class="toc-text">try&#x2F;catch 在协程中的使用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%8F%E7%A8%8B%E9%80%9A%E4%BF%A1%E4%B8%8E%E5%90%8C%E6%AD%A5"><span class="toc-number">1.9.</span> <span class="toc-text">协程通信与同步</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Channel"><span class="toc-number">1.9.1.</span> <span class="toc-text">Channel</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Flow"><span class="toc-number">1.9.2.</span> <span class="toc-text">Flow</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8E-Android-%E9%9B%86%E6%88%90"><span class="toc-number">1.10.</span> <span class="toc-text">与 Android 集成</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8-UI-%E7%BA%BF%E7%A8%8B%E4%B8%AD%E5%90%AF%E5%8A%A8%E5%8D%8F%E7%A8%8B"><span class="toc-number">1.10.1.</span> <span class="toc-text">在 UI 线程中启动协程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-ViewModelScope-%E5%92%8C-LifecycleScope"><span class="toc-number">1.10.2.</span> <span class="toc-text">使用 ViewModelScope 和 LifecycleScope</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E4%B8%8E%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="toc-number">1.11.</span> <span class="toc-text">最佳实践与常见问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="toc-number">1.11.1.</span> <span class="toc-text">最佳实践</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="toc-number">1.11.2.</span> <span class="toc-text">常见问题</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Posts</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="../../../12/07/%E8%99%9A%E6%8B%9F%E5%88%97%E8%A1%A8/" title="虚拟列表">虚拟列表</a><time datetime="2025-12-07T13:27:21.000Z" title="Created 2025-12-07 21:27:21">2025-12-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="../../../11/30/npm%E6%95%99%E7%A8%8B/" title="npm教程">npm教程</a><time datetime="2025-11-30T12:13:50.000Z" title="Created 2025-11-30 20:13:50">2025-11-30</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="../../../10/26/%E5%BC%B9%E6%80%A7%E7%9B%92%E5%B8%83%E5%B1%80/" title="弹性盒布局">弹性盒布局</a><time datetime="2025-10-26T07:58:57.000Z" title="Created 2025-10-26 15:58:57">2025-10-26</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="../../../10/25/css%E5%B8%83%E5%B1%80/" title="css布局">css布局</a><time datetime="2025-10-25T14:24:09.000Z" title="Created 2025-10-25 22:24:09">2025-10-25</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="../../../10/25/%E7%9B%92%E5%AD%90%E6%A8%A1%E5%9E%8B/" title="盒子模型">盒子模型</a><time datetime="2025-10-25T11:42:00.000Z" title="Created 2025-10-25 19:42:00">2025-10-25</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2025 By GoshenC</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="../../../../js/utils.js"></script><script src="../../../../js/main.js"></script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'none',
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          enableMenu: true,
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="100" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading Database</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="../../../../js/search/local-search.js"></script></div></div></body></html>

@@ -1,0 +1,516 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Kotlin语法 | GoshenC</title><meta name="author" content="GoshenC"><meta name="copyright" content="GoshenC"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="1. 作用域函数Kotlin 提供了一系列作用域函数，它们可以让你在对象的特定作用域内执行代码，从而避免重复引用对象（如 this 或 it），提高代码简洁性与可读性。 1.1 apply - 在对象自身作用域内修改对象 返回值：调用者本身（this） 使用场景： 用于初始化对象，避免多次调用 set 方法 支持链式调用    示例： 1234567891011class Person &amp;#123">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kotlin语法">
+<meta property="og:url" content="http://example.com/2025/03/03/Kotlin%E8%AF%AD%E6%B3%95/index.html">
+<meta property="og:site_name" content="GoshenC">
+<meta property="og:description" content="1. 作用域函数Kotlin 提供了一系列作用域函数，它们可以让你在对象的特定作用域内执行代码，从而避免重复引用对象（如 this 或 it），提高代码简洁性与可读性。 1.1 apply - 在对象自身作用域内修改对象 返回值：调用者本身（this） 使用场景： 用于初始化对象，避免多次调用 set 方法 支持链式调用    示例： 1234567891011class Person &amp;#123">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/avatar.jpg">
+<meta property="article:published_time" content="2025-03-03T08:48:45.000Z">
+<meta property="article:modified_time" content="2025-03-29T02:58:51.259Z">
+<meta property="article:author" content="GoshenC">
+<meta property="article:tag" content="Kotlin语法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/avatar.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Kotlin语法",
+  "url": "http://example.com/2025/03/03/Kotlin%E8%AF%AD%E6%B3%95/",
+  "image": "http://example.com/img/avatar.jpg",
+  "datePublished": "2025-03-03T08:48:45.000Z",
+  "dateModified": "2025-03-29T02:58:51.259Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "GoshenC",
+      "url": "http://example.com/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="../../../../img/circularavatar.jpg"><link rel="canonical" href="http://example.com/2025/03/03/Kotlin%E8%AF%AD%E6%B3%95/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="../../../../css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"No results found for: ${query}","hits_stats":"${hits} articles found"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":250,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Kotlin语法',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(img/mainbackground.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="../../../../img/avatar.jpg" onerror="this.onerror=null;this.src='../../../../img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="../../../../archives/"><div class="headline">Articles</div><div class="length-num">69</div></a><a href="../../../../tags/"><div class="headline">Tags</div><div class="length-num">7</div></a><a href="../../../../categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="../../../../gotcha,hahaha"><span> 简体中文/Chinese-CN</span></a></div><div class="menus_item"><a class="site-page" href="../../../../index.html"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="../../../../archives/"><i class="fa-fw fas fa-archive"></i><span> Timeline</span></a></div><div class="menus_item"><a class="site-page" href="../../../../tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="../../../../categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="../../../../link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="../../../../about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" target="_blank" rel="noopener" href="https://www.kugou.com/"><i class="fa-fw fas fa-music"></i><span> Music(音乐)</span></a></li><li><a class="site-page child" href="../../../../movies/"><i class="fa-fw fas fa-video"></i><span> Movie(电影)</span></a></li><li><a class="site-page child" href="../../../../music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(img/mainbackground.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="../../../../index.html"><img class="site-icon" src="../../../../img/circularavatar.jpg" alt="Logo"><span class="site-name">GoshenC</span></a><a class="nav-page-title" href="../../../../index.html"><span class="site-name">Kotlin语法</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="../../../../gotcha,hahaha"><span> 简体中文/Chinese-CN</span></a></div><div class="menus_item"><a class="site-page" href="../../../../index.html"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="../../../../archives/"><i class="fa-fw fas fa-archive"></i><span> Timeline</span></a></div><div class="menus_item"><a class="site-page" href="../../../../tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="../../../../categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="../../../../link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="../../../../about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" target="_blank" rel="noopener" href="https://www.kugou.com/"><i class="fa-fw fas fa-music"></i><span> Music(音乐)</span></a></li><li><a class="site-page child" href="../../../../movies/"><i class="fa-fw fas fa-video"></i><span> Movie(电影)</span></a></li><li><a class="site-page child" href="../../../../music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Kotlin语法</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2025-03-03T08:48:45.000Z" title="Created 2025-03-03 16:48:45">2025-03-03</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2025-03-29T02:58:51.259Z" title="Updated 2025-03-29 10:58:51">2025-03-29</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word Count:</span><span class="word-count">4.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading Time:</span><span>17mins</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h2 id="1-作用域函数"><a href="#1-作用域函数" class="headerlink" title="1. 作用域函数"></a>1. 作用域函数</h2><p>Kotlin 提供了一系列作用域函数，它们可以让你在对象的特定作用域内执行代码，从而避免重复引用对象（如 <code>this</code> 或 <code>it</code>），提高代码简洁性与可读性。</p>
+<h3 id="1-1-apply-在对象自身作用域内修改对象"><a href="#1-1-apply-在对象自身作用域内修改对象" class="headerlink" title="1.1 apply - 在对象自身作用域内修改对象"></a>1.1 apply - 在对象自身作用域内修改对象</h3><ul>
+<li><strong>返回值</strong>：调用者本身（this）</li>
+<li><strong>使用场景</strong>：<ul>
+<li>用于初始化对象，避免多次调用 set 方法</li>
+<li>支持链式调用</li>
+</ul>
+</li>
+</ul>
+<p><strong>示例：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class Person &#123;</span><br><span class="line">    var name: String = &quot;&quot;</span><br><span class="line">    var age: Int = 0</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">val person = Person().apply &#123;</span><br><span class="line">    name = &quot;Alice&quot;</span><br><span class="line">    age = 20</span><br><span class="line">&#125;</span><br><span class="line">println(person.name) // Alice</span><br><span class="line">println(person.age)  // 20</span><br></pre></td></tr></table></figure>
+
+<p><strong>分析</strong>：<br> 在 <code>apply</code> 的代码块中，<code>this</code> 代表当前对象，通过直接修改属性，最后返回修改后的对象本身。</p>
+<hr>
+<h3 id="1-2-let-适用于非空值的操作"><a href="#1-2-let-适用于非空值的操作" class="headerlink" title="1.2 let - 适用于非空值的操作"></a>1.2 let - 适用于非空值的操作</h3><ul>
+<li><strong>返回值</strong>：Lambda 表达式的最后一行结果</li>
+<li><strong>使用场景</strong>：<ul>
+<li>针对可空对象进行操作，避免 NullPointerException</li>
+<li>控制变量的作用域</li>
+</ul>
+</li>
+</ul>
+<p><strong>示例：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">val name: String? = &quot;Kotlin&quot;</span><br><span class="line">name?.let &#123;</span><br><span class="line">    println(it.uppercase())  // KOTLIN</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>另一示例（变量作用域控制）：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">val number = 5</span><br><span class="line">val square = number.let &#123;</span><br><span class="line">    val result = it * it</span><br><span class="line">    result</span><br><span class="line">&#125;</span><br><span class="line">println(square) // 25</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="1-3-run-在对象作用域内执行代码并返回计算结果"><a href="#1-3-run-在对象作用域内执行代码并返回计算结果" class="headerlink" title="1.3 run - 在对象作用域内执行代码并返回计算结果"></a>1.3 run - 在对象作用域内执行代码并返回计算结果</h3><ul>
+<li><strong>返回值</strong>：Lambda 表达式的最后一行结果</li>
+<li><strong>使用场景</strong>：<ul>
+<li>需要在对象上执行多个操作并返回一个结果</li>
+</ul>
+</li>
+</ul>
+<p><strong>示例：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">val personInfo = Person().run &#123;</span><br><span class="line">    name = &quot;Bob&quot;</span><br><span class="line">    age = 25</span><br><span class="line">    &quot;名字是 $name, 年龄是 $age&quot;</span><br><span class="line">&#125;</span><br><span class="line">println(personInfo)  // 名字是 Bob, 年龄是 25</span><br></pre></td></tr></table></figure>
+
+<p><strong>分析</strong>：<br> <code>run</code> 在对象作用域内执行操作，返回最后一行表达式的结果，而不是对象本身。</p>
+<hr>
+<h3 id="1-4-also-适用于对象的额外操作"><a href="#1-4-also-适用于对象的额外操作" class="headerlink" title="1.4 also - 适用于对象的额外操作"></a>1.4 also - 适用于对象的额外操作</h3><ul>
+<li><strong>返回值</strong>：调用者本身（this）</li>
+<li><strong>使用场景</strong>：<ul>
+<li>记录日志、调试等额外操作，不改变对象本身</li>
+</ul>
+</li>
+</ul>
+<p><strong>示例：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">val numbers = mutableListOf(1, 2, 3).also &#123;</span><br><span class="line">    println(&quot;原始列表: $it&quot;) // 输出：原始列表: [1, 2, 3]</span><br><span class="line">&#125;.apply &#123;</span><br><span class="line">    add(4)</span><br><span class="line">&#125;</span><br><span class="line">println(numbers) // 输出：[1, 2, 3, 4]</span><br></pre></td></tr></table></figure>
+
+<p><strong>分析</strong>：<br> <code>also</code> 用于执行副作用（如日志打印），返回原对象，而后续的 <code>apply</code> 则对对象进行修改。</p>
+<hr>
+<h3 id="1-5-with-用于非扩展对象的作用域调用"><a href="#1-5-with-用于非扩展对象的作用域调用" class="headerlink" title="1.5 with - 用于非扩展对象的作用域调用"></a>1.5 with - 用于非扩展对象的作用域调用</h3><ul>
+<li><strong>返回值</strong>：Lambda 表达式的最后一行结果</li>
+<li><strong>使用场景</strong>：<ul>
+<li>对非扩展对象执行一系列操作，并返回计算结果</li>
+</ul>
+</li>
+</ul>
+<p><strong>示例：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">val person = Person()</span><br><span class="line">val result = with(person) &#123;</span><br><span class="line">    name = &quot;Charlie&quot;</span><br><span class="line">    age = 30</span><br><span class="line">    &quot;名字: $name, 年龄: $age&quot;</span><br><span class="line">&#125;</span><br><span class="line">println(result)  // 输出：名字: Charlie, 年龄: 30</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="1-6-作用域函数对比总结"><a href="#1-6-作用域函数对比总结" class="headerlink" title="1.6 作用域函数对比总结"></a>1.6 作用域函数对比总结</h3><table>
+<thead>
+<tr>
+<th>函数</th>
+<th>使用场景</th>
+<th>作用域内对象引用</th>
+<th>返回值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>apply</strong></td>
+<td>修改对象本身</td>
+<td><code>this</code></td>
+<td>对象本身</td>
+</tr>
+<tr>
+<td><strong>let</strong></td>
+<td>针对可空对象或局部变量</td>
+<td><code>it</code></td>
+<td>Lambda 最后一行结果</td>
+</tr>
+<tr>
+<td><strong>run</strong></td>
+<td>执行操作并返回计算结果</td>
+<td><code>this</code></td>
+<td>Lambda 最后一行结果</td>
+</tr>
+<tr>
+<td><strong>also</strong></td>
+<td>执行额外操作（日志、调试等）</td>
+<td><code>it</code></td>
+<td>对象本身</td>
+</tr>
+<tr>
+<td><strong>with</strong></td>
+<td>对普通对象执行操作并返回结果</td>
+<td><code>this</code></td>
+<td>Lambda 最后一行结果</td>
+</tr>
+</tbody></table>
+<p><strong>最佳实践提示：</strong></p>
+<ul>
+<li>修改对象并返回对象本身时，选择 <code>apply</code></li>
+<li>针对可空对象操作时，选择 <code>let</code></li>
+<li>需要返回计算结果时，选择 <code>run</code> 或 <code>with</code></li>
+<li>仅执行副作用操作时，选择 <code>also</code></li>
+</ul>
+<hr>
+<h2 id="2-时间输出"><a href="#2-时间输出" class="headerlink" title="2. 时间输出"></a>2. 时间输出</h2><p>下面的代码展示了如何在 Kotlin 中获取当前时间、格式化时间、解析字符串为日期，以及通过 Calendar 获取时间组件。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">package com.example.diary_final</span><br><span class="line">import java.text.SimpleDateFormat</span><br><span class="line">import java.util.Calendar</span><br><span class="line">import java.util.Date</span><br><span class="line">import java.util.Locale</span><br><span class="line"></span><br><span class="line">fun main() &#123;</span><br><span class="line">    // 获取当前时间，并格式化为字符串</span><br><span class="line">    val date = Date() // 当前时间</span><br><span class="line">    val sdf = SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;, Locale.getDefault())</span><br><span class="line">    val formattedDate = sdf.format(date)</span><br><span class="line">    println(formattedDate)  // 输出格式化日期，例如：2025-03-15 14:08:23</span><br><span class="line">    </span><br><span class="line">    // 将字符串解析为 Date 类型</span><br><span class="line">    val dateString = &quot;2025-03-09 14:45:30&quot;</span><br><span class="line">    val sdfp = SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;, Locale.getDefault())</span><br><span class="line">    val datep = sdfp.parse(dateString)</span><br><span class="line">    println(datep)  // 输出: Sun Mar 09 14:45:30 GMT 2025</span><br><span class="line">    </span><br><span class="line">    // 使用 Calendar 获取当前时间的时、分、秒</span><br><span class="line">    val calendar = Calendar.getInstance()</span><br><span class="line">    val hour = calendar.get(Calendar.HOUR_OF_DAY)</span><br><span class="line">    val minute = calendar.get(Calendar.MINUTE)</span><br><span class="line">    val second = calendar.get(Calendar.SECOND)</span><br><span class="line">    println(&quot;当前时间: $hour:$minute:$second&quot;)</span><br><span class="line">    </span><br><span class="line">    // 格式化输出时间（24小时制）</span><br><span class="line">    val formattedTime = String.format(&quot;%02d:%02d:%02d&quot;, hour, minute, second)</span><br><span class="line">    println(&quot;当前时间: $formattedTime&quot;)</span><br><span class="line">    println(&quot;当前时间: $&#123;String.format(&quot;%02d:%02d:%02d&quot;, hour, minute, second)&#125;&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>说明：</strong></p>
+<ul>
+<li>使用 <code>SimpleDateFormat</code> 格式化和解析日期</li>
+<li><code>Calendar</code> 用于提取当前时间的各个字段</li>
+</ul>
+<hr>
+<h2 id="3-回调机制"><a href="#3-回调机制" class="headerlink" title="3. 回调机制"></a>3. 回调机制</h2><h3 id="3-1-什么是回调？"><a href="#3-1-什么是回调？" class="headerlink" title="3.1 什么是回调？"></a>3.1 什么是回调？</h3><p>回调类似于“任务完成后通知我”。例如，让朋友去买咖啡，买完后打电话告诉你。在编程中，回调指的是任务完成后自动调用的函数。</p>
+<h3 id="3-2-示例：不使用回调（同步等待）"><a href="#3-2-示例：不使用回调（同步等待）" class="headerlink" title="3.2 示例：不使用回调（同步等待）"></a>3.2 示例：不使用回调（同步等待）</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">fun buyGroceries() &#123;</span><br><span class="line">    Thread.sleep(2000) // 模拟买东西耗时2秒</span><br><span class="line">    println(&quot;买完了！&quot;) // 买完后通知</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun main() &#123;</span><br><span class="line">    println(&quot;请帮我去买东西...&quot;)</span><br><span class="line">    buyGroceries()</span><br><span class="line">    println(&quot;我收到通知了&quot;) // 等待任务完成后执行</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>问题</strong>：主线程会被阻塞，无法同时处理其他任务。</p>
+<hr>
+<h3 id="3-3-示例：使用回调（异步通知）"><a href="#3-3-示例：使用回调（异步通知）" class="headerlink" title="3.3 示例：使用回调（异步通知）"></a>3.3 示例：使用回调（异步通知）</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">fun buyGroceries(callback: () -&gt; Unit) &#123;</span><br><span class="line">    Thread &#123;</span><br><span class="line">        Thread.sleep(2000) // 模拟买东西耗时2秒</span><br><span class="line">        println(&quot;买完了！&quot;)</span><br><span class="line">        callback() // 任务完成后执行回调</span><br><span class="line">    &#125;.start()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun main() &#123;</span><br><span class="line">    println(&quot;请帮我去买东西...&quot;)</span><br><span class="line">    buyGroceries &#123;</span><br><span class="line">        println(&quot;我收到通知了！&quot;) // 任务完成后调用回调</span><br><span class="line">    &#125;</span><br><span class="line">    println(&quot;我可以做别的事情，不用等&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>分析</strong>：<br> 使用回调后，任务在后台执行，主线程可继续执行其他操作，待任务完成后自动调用回调函数。</p>
+<hr>
+<h3 id="3-4-回调在-Android-开发中的应用"><a href="#3-4-回调在-Android-开发中的应用" class="headerlink" title="3.4 回调在 Android 开发中的应用"></a>3.4 回调在 Android 开发中的应用</h3><ul>
+<li><p><strong>按钮点击事件：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">button.setOnClickListener &#123;</span><br><span class="line">    println(&quot;按钮被点击了！&quot;) // 按钮点击后的回调</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>网络请求：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">fun fetchData(callback: (String) -&gt; Unit) &#123;</span><br><span class="line">    Thread &#123;</span><br><span class="line">        Thread.sleep(2000) // 模拟网络请求耗时</span><br><span class="line">        callback(&quot;数据加载成功了哈哈哈！&quot;)</span><br><span class="line">    &#125;.start()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun main() &#123;</span><br><span class="line">    println(&quot;开始请求数据...&quot;)</span><br><span class="line">    fetchData &#123; result -&gt;</span><br><span class="line">        println(result) // 数据返回后的回调</span><br><span class="line">    &#125;</span><br><span class="line">    println(&quot;请求已经发送，我先做别的事情&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h2 id="4-Lambda-表达式"><a href="#4-Lambda-表达式" class="headerlink" title="4. Lambda 表达式"></a>4. Lambda 表达式</h2><h3 id="4-1-什么是-Lambda-表达式？"><a href="#4-1-什么是-Lambda-表达式？" class="headerlink" title="4.1 什么是 Lambda 表达式？"></a>4.1 什么是 Lambda 表达式？</h3><p>Lambda 表达式是匿名函数的一种写法，用于简化代码。其基本语法如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; 参数 -&gt; 表达式 &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-示例：基本用法"><a href="#4-2-示例：基本用法" class="headerlink" title="4.2 示例：基本用法"></a>4.2 示例：基本用法</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// 定义一个 Lambda 表达式，接受两个 Int 参数并返回它们的和</span><br><span class="line">val add: (Int, Int) -&gt; Int = &#123; a, b -&gt; a + b &#125;</span><br><span class="line">println(add(2, 3))  // 输出：5</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-Lambda-在高阶函数中的应用"><a href="#4-3-Lambda-在高阶函数中的应用" class="headerlink" title="4.3 Lambda 在高阶函数中的应用"></a>4.3 Lambda 在高阶函数中的应用</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// 定义一个高阶函数，接受一个操作函数作为参数</span><br><span class="line">fun calculate(a: Int, b: Int, operation: (Int, Int) -&gt; Int): Int &#123;</span><br><span class="line">    return operation(a, b)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun main() &#123;</span><br><span class="line">    // 使用尾随 Lambda 语法</span><br><span class="line">    val result = calculate(10, 5) &#123; x, y -&gt; x + y &#125;</span><br><span class="line">    println(result)  // 输出：15</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-4-单参数-Lambda-示例"><a href="#4-4-单参数-Lambda-示例" class="headerlink" title="4.4 单参数 Lambda 示例"></a>4.4 单参数 Lambda 示例</h3><p>当 Lambda 只有一个参数时，可以使用默认变量 <code>it</code>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">val numbers = listOf(1, 2, 3, 4)</span><br><span class="line">val doubled = numbers.map &#123; it * 2 &#125;</span><br><span class="line">println(doubled)  // 输出：[2, 4, 6, 8]</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="5-泛型与委托"><a href="#5-泛型与委托" class="headerlink" title="5. 泛型与委托"></a>5. 泛型与委托</h2><h3 id="5-1-泛型"><a href="#5-1-泛型" class="headerlink" title="5.1 泛型"></a>5.1 泛型</h3><p>泛型允许你编写适用于任意数据类型的通用代码，从而提高代码复用性和类型安全性。</p>
+<h4 id="5-1-1-泛型类示例"><a href="#5-1-1-泛型类示例" class="headerlink" title="5.1.1 泛型类示例"></a>5.1.1 泛型类示例</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// 定义一个泛型类 Box，可以存放任意类型的数据</span><br><span class="line">class Box&lt;T&gt;(var value: T)</span><br><span class="line"></span><br><span class="line">fun main() &#123;</span><br><span class="line">    val intBox = Box(123)      // T 被推断为 Int</span><br><span class="line">    val strBox = Box(&quot;Hello&quot;)  // T 被推断为 String</span><br><span class="line">    println(intBox.value)      // 输出：123</span><br><span class="line">    println(strBox.value)      // 输出：Hello</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-1-2-泛型函数示例"><a href="#5-1-2-泛型函数示例" class="headerlink" title="5.1.2 泛型函数示例"></a>5.1.2 泛型函数示例</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// 定义一个泛型函数，返回一个只包含一个元素的列表</span><br><span class="line">fun &lt;T&gt; singletonList(item: T): List&lt;T&gt; &#123;</span><br><span class="line">    return listOf(item)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun main() &#123;</span><br><span class="line">    val numbers = singletonList(42)      // T 被推断为 Int</span><br><span class="line">    val words = singletonList(&quot;Kotlin&quot;)    // T 被推断为 String</span><br><span class="line">    println(numbers) // 输出：[42]</span><br><span class="line">    println(words)   // 输出：[Kotlin]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-1-3-类型参数的限定"><a href="#5-1-3-类型参数的限定" class="headerlink" title="5.1.3 类型参数的限定"></a>5.1.3 类型参数的限定</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// 泛型 T 限制为 Number 或其子类</span><br><span class="line">fun &lt;T : Number&gt; add(a: T, b: T): Double &#123;</span><br><span class="line">    return a.toDouble() + b.toDouble()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun main() &#123;</span><br><span class="line">    println(add(10, 20))      // 输出：30.0</span><br><span class="line">    // println(add(&quot;a&quot;, &quot;b&quot;)) // 错误，String 不是 Number 的子类</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-1-4-协变与逆变"><a href="#5-1-4-协变与逆变" class="headerlink" title="5.1.4 协变与逆变"></a>5.1.4 协变与逆变</h4><h4 id="感觉不如书上P418讲得好"><a href="#感觉不如书上P418讲得好" class="headerlink" title="(感觉不如书上P418讲得好)"></a>(感觉不如书上P418讲得好)</h4><p><strong>1. 什么是协变和逆变？</strong></p>
+<p>它们解决的是<strong>泛型的子类型关系</strong>，也就是<strong>泛型类 <code>A&lt;T&gt;</code> 和 <code>A&lt;U&gt;</code> 之间是否可以互相赋值</strong>。</p>
+<p>先看普通的子类型：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">kotlin复制编辑open class Parent</span><br><span class="line">class Child : Parent()</span><br><span class="line"></span><br><span class="line">val parent: Parent = Child() // ✅ 子类可以赋值给父类</span><br></pre></td></tr></table></figure>
+
+<p>这个没问题，<code>Child</code> 是 <code>Parent</code> 的子类。但如果是<strong>泛型</strong>呢？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">val childList: List&lt;Child&gt; = listOf(Child())</span><br><span class="line">// val parentList: List&lt;Parent&gt; = childList // ❌ 报错！</span><br></pre></td></tr></table></figure>
+
+<p>Kotlin <strong>不允许</strong> <code>List&lt;Child&gt;</code> 赋值给 <code>List&lt;Parent&gt;</code>，因为泛型默认是**不变（Invariant）**的，即 <code>List&lt;Child&gt;</code> 和 <code>List&lt;Parent&gt;</code> 没有任何继承关系。</p>
+<hr>
+<h5 id="协变（Covariance）——-out-T"><a href="#协变（Covariance）——-out-T" class="headerlink" title="协变（Covariance）—— out T"></a><strong>协变（Covariance）—— <code>out T</code></strong></h5><p> <strong>让 <code>List&lt;Child&gt;</code> 赋值给 <code>List&lt;Parent&gt;</code></strong></p>
+<p>如果我们想让 <code>List&lt;Child&gt;</code> 赋值给 <code>List&lt;Parent&gt;</code>，就要用<strong>协变</strong>（<code>out</code> 关键字）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"> interface Producer&lt;out T&gt; &#123; // T 只能“生产”，不能“消费”</span><br><span class="line">    fun produce(): T</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">val childProducer: Producer&lt;Child&gt; = object : Producer&lt;Child&gt; &#123;</span><br><span class="line">    override fun produce(): Child = Child()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// ✅ 可以把 Producer&lt;Child&gt; 赋值给 Producer&lt;Parent&gt;</span><br><span class="line">val parentProducer: Producer&lt;Parent&gt; = childProducer</span><br></pre></td></tr></table></figure>
+
+<p> <strong>为什么 <code>out</code> 只允许读取（生产）？</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">interface Producer&lt;out T&gt; &#123;</span><br><span class="line">    fun produce(): T // ✅ 只能提供 T</span><br><span class="line">    // fun consume(item: T) // ❌ 错误，不能接收 T</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>out T</code> <strong>只能作为返回值（生产者）</strong>，不能作为参数（消费者）。</li>
+<li>因为 <code>Producer&lt;Child&gt;</code> 赋值给 <code>Producer&lt;Parent&gt;</code> 后，如果允许 <code>consume(item: T)</code>，那就可能往 <code>Producer&lt;Child&gt;</code> 里面放 <code>Parent</code>，导致类型错误。</li>
+</ul>
+<p> <strong>示例：生产者</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">class Book</span><br><span class="line">class ScienceBook : Book()</span><br><span class="line"></span><br><span class="line">fun getScienceBooks(): List&lt;ScienceBook&gt; &#123;</span><br><span class="line">    return listOf(ScienceBook())</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// ✅ 使用 `out T` 让子类泛型可以赋值给父类泛型</span><br><span class="line">fun readBooks(books: List&lt;out Book&gt;) &#123;</span><br><span class="line">    for (book in books) &#123;</span><br><span class="line">        println(book)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">val scienceBooks = getScienceBooks()</span><br><span class="line">readBooks(scienceBooks) // ✅ OK，因为 List&lt;ScienceBook&gt; 可以赋值给 List&lt;out Book&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>口诀：</strong></p>
+<blockquote>
+<p><strong>Producer Out（生产者用 <code>out</code>，只能读，不能写）</strong></p>
+</blockquote>
+<hr>
+<h5 id="逆变（Contravariance）——-in-T"><a href="#逆变（Contravariance）——-in-T" class="headerlink" title="逆变（Contravariance）—— in T"></a><strong>逆变（Contravariance）—— <code>in T</code></strong></h5><p> <strong>让 <code>Consumer&lt;Parent&gt;</code> 赋值给 <code>Consumer&lt;Child&gt;</code></strong></p>
+<p>如果我们想让 <code>Consumer&lt;Parent&gt;</code> 赋值给 <code>Consumer&lt;Child&gt;</code>，就要用<strong>逆变</strong>（<code>in</code> 关键字）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">interface Consumer&lt;in T&gt; &#123; // T 只能“消费”，不能“生产”</span><br><span class="line">    fun consume(item: T)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">val parentConsumer: Consumer&lt;Parent&gt; = object : Consumer&lt;Parent&gt; &#123;</span><br><span class="line">    override fun consume(item: Parent) &#123;</span><br><span class="line">        println(&quot;Consumed a Parent&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// ✅ 可以把 Consumer&lt;Parent&gt; 赋值给 Consumer&lt;Child&gt;</span><br><span class="line">val childConsumer: Consumer&lt;Child&gt; = parentConsumer</span><br></pre></td></tr></table></figure>
+
+<p> <strong>为什么 <code>in</code> 只允许写入（消费）？</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">interface Consumer&lt;in T&gt; &#123;</span><br><span class="line">    fun consume(item: T) // ✅ 只能消费 T</span><br><span class="line">    // fun produce(): T // ❌ 错误，不能返回 T</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>in T</code> <strong>只能作为参数（消费者）</strong>，不能作为返回值（生产者）。</li>
+<li>因为 <code>Consumer&lt;Parent&gt;</code> 赋值给 <code>Consumer&lt;Child&gt;</code> 后，如果允许 <code>produce()</code>，就可能返回 <code>Parent</code>，但 <code>Consumer&lt;Child&gt;</code> 只能处理 <code>Child</code>，导致类型错误。</li>
+</ul>
+<p> <strong>示例：消费者</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">class Animal</span><br><span class="line">class Dog : Animal()</span><br><span class="line"></span><br><span class="line">fun trainDogs(trainers: MutableList&lt;in Dog&gt;) &#123;</span><br><span class="line">    trainers.add(Dog()) // ✅ 可以添加 Dog</span><br><span class="line">    // val dog: Dog = trainers[0] // ❌ 不能安全地读取</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">val animals = mutableListOf&lt;Animal&gt;()</span><br><span class="line">trainDogs(animals) // ✅ OK，因为 `MutableList&lt;in Dog&gt;` 允许 `MutableList&lt;Animal&gt;` 作为参数</span><br></pre></td></tr></table></figure>
+
+<p><strong>口诀：</strong></p>
+<blockquote>
+<p><strong>Consumer In（消费者用 <code>in</code>，只能写，不能读）</strong></p>
+</blockquote>
+<hr>
+<h5 id="记住这两个原则"><a href="#记住这两个原则" class="headerlink" title="记住这两个原则"></a><strong>记住这两个原则</strong></h5><table>
+<thead>
+<tr>
+<th>泛型类型</th>
+<th>关键字</th>
+<th>读取</th>
+<th>写入</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>协变</strong></td>
+<td><code>out T</code></td>
+<td>✅ 允许</td>
+<td>❌ 禁止</td>
+<td><strong>生产者</strong>（只读）</td>
+</tr>
+<tr>
+<td><strong>逆变</strong></td>
+<td><code>in T</code></td>
+<td>❌ 只能用 <code>Any?</code> 读取</td>
+<td>✅ 允许</td>
+<td><strong>消费者</strong>（只写）</td>
+</tr>
+</tbody></table>
+<p> <strong>最简单的记忆口诀</strong></p>
+<ul>
+<li><strong>“生产者用 out”</strong>（Producer Out） → 只能读，不能写。</li>
+<li><strong>“消费者用 in”</strong>（Consumer In） → 只能写，不能安全地读。</li>
+</ul>
+<hr>
+<h5 id="生活中的例子"><a href="#生活中的例子" class="headerlink" title="生活中的例子"></a><strong>生活中的例子</strong></h5><p> <strong>🔵 协变（<code>out</code>）：只读，不写</strong></p>
+<p>假设你去<strong>看书</strong> 📖：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">kotlin</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">复制编辑</span><br><span class="line">val books: List&lt;out Book&gt; = listOf(ScienceBook())</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>你可以<strong>拿起一本书来看</strong>（<code>val book: Book = books[0]</code> ✅）。</li>
+<li>但你<strong>不能往书架上随便放书</strong>（<code>books.add(Book())</code> ❌），因为这可能是科学书架，只能放《科学书》。</li>
+</ul>
+<p> <strong>🔴 逆变（<code>in</code>）：只写，不读</strong></p>
+<p>假设你有一个<strong>捐书箱</strong> 📦：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">kotlin</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">复制编辑</span><br><span class="line">val donateBox: MutableList&lt;in ScienceBook&gt; = mutableListOf&lt;Book&gt;()</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>你可以<strong>往里面放一本科学书</strong>（<code>donateBox.add(ScienceBook())</code> ✅）。</li>
+<li>但你<strong>取出来的书不一定是科学书</strong>（<code>val sb: ScienceBook = donateBox[0]</code> ❌），可能是一本普通书，甚至是一本字典 📚。</li>
+</ul>
+<hr>
+<p> <strong>6. 协变逆变总结</strong></p>
+<ol>
+<li><strong><code>out</code>（协变） → 只读</strong><br> ✅ <code>List&lt;ScienceBook&gt;</code> 可以赋值给 <code>List&lt;out Book&gt;</code>，但不能 <code>add()</code>。</li>
+<li><strong><code>in</code>（逆变） → 只写</strong><br> ✅ <code>MutableList&lt;Book&gt;</code> 可以赋值给 <code>MutableList&lt;in ScienceBook&gt;</code>，但不能安全 <code>get()</code>。</li>
+<li><strong><code>in</code> + <code>out</code> 不能混用</strong>（同时 <code>in</code> 和 <code>out</code> 会报错）。</li>
+</ol>
+<h4 id="5-1-5-泛型实化（reified）"><a href="#5-1-5-泛型实化（reified）" class="headerlink" title="5.1.5 泛型实化（reified）"></a>5.1.5 泛型实化（reified）</h4><p>由于泛型在运行时会被擦除，使用 <code>reified</code> 可以保留类型信息：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// 错误示例：无法在运行时获取 T 的类型信息</span><br><span class="line">fun &lt;T&gt; getType(): String &#123;</span><br><span class="line">    return T::class.java.name  // ❌</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 正确示例：使用 reified 保留类型信息</span><br><span class="line">inline fun &lt;reified T&gt; getType(): String &#123;</span><br><span class="line">    return T::class.java.name</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun main() &#123;</span><br><span class="line">    println(getType&lt;String&gt;())  // 输出: java.lang.String</span><br><span class="line">    println(getType&lt;Int&gt;())     // 输出: int</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="5-2-委托"><a href="#5-2-委托" class="headerlink" title="5.2 委托"></a>5.2 委托</h3><p>委托是一种设计模式，可以将部分工作交由其他对象来处理，使代码更简洁和灵活。</p>
+<h4 id="5-2-1-属性委托"><a href="#5-2-1-属性委托" class="headerlink" title="5.2.1 属性委托"></a>5.2.1 属性委托</h4><p><strong>lazy 委托</strong>：延迟计算，首次访问时计算结果并缓存。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// 定义一个 lazy 委托属性，只有首次访问时计算值</span><br><span class="line">val lazyValue: String by lazy &#123;</span><br><span class="line">    println(&quot;开始计算&quot;)</span><br><span class="line">    &quot;Hello, Kotlin&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun main() &#123;</span><br><span class="line">    println(&quot;程序开始&quot;)</span><br><span class="line">    println(lazyValue) // 第一次调用时输出计算过程和结果</span><br><span class="line">    println(lazyValue) // 第二次调用时直接输出结果，无重复计算</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>observable 委托</strong>：监听属性变化，每次属性改变时触发回调。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">import kotlin.properties.Delegates</span><br><span class="line"></span><br><span class="line">var name: String by Delegates.observable(&quot;初始值11&quot;) &#123; property, oldValue, newValue -&gt;</span><br><span class="line">    println(&quot;属性 $&#123;property.name&#125; 从 $oldValue 变成了 $newValue&quot;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun main() &#123;</span><br><span class="line">    name = &quot;Kotlin22&quot;  // 输出：属性 name 从 初始值11 变成了 Kotlin22</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-2-2-类委托"><a href="#5-2-2-类委托" class="headerlink" title="5.2.2 类委托"></a>5.2.2 类委托</h4><p>通过类委托，可以将接口的实现任务交由其他类处理，避免重复实现相同的方法。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">// 定义一个接口</span><br><span class="line">interface Printer &#123;</span><br><span class="line">    fun print()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 定义接口实现类</span><br><span class="line">class PrinterImpl(val message: String) : Printer &#123;</span><br><span class="line">    override fun print() &#123;</span><br><span class="line">        println(message)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 类委托：DelegatingPrinter 将 Printer 接口的实现委托给传入的 printer 对象</span><br><span class="line">class DelegatingPrinter(printer: Printer) : Printer by printer</span><br><span class="line"></span><br><span class="line">fun main() &#123;</span><br><span class="line">    val printerImpl = PrinterImpl(&quot;Hello from PrinterImpl&quot;)</span><br><span class="line">    val delegatingPrinter = DelegatingPrinter(printerImpl)</span><br><span class="line">    delegatingPrinter.print() // 实际调用 PrinterImpl 的 print() 方法</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li><strong>作用域函数</strong>：通过 <code>apply</code>、<code>let</code>、<code>run</code>、<code>also</code> 和 <code>with</code> 简化对象操作，选择合适的函数可提高代码简洁性和可读性。</li>
+<li><strong>时间输出</strong>：使用 <code>SimpleDateFormat</code> 和 <code>Calendar</code> 实现日期格式化、解析和时间组件获取。</li>
+<li><strong>回调机制</strong>：回调可以在任务完成时通知你，避免阻塞主线程，常用于 UI 事件、网络请求等场景。</li>
+<li><strong>Lambda 表达式</strong>：用于编写匿名函数，简化代码，尤其在高阶函数中应用广泛。</li>
+<li><strong>泛型与委托</strong>：泛型提高代码通用性和类型安全；委托（属性委托和类委托）使代码更加简洁灵活，避免重复实现。</li>
+</ul>
+<h2 id="inline-函数是什么"><a href="#inline-函数是什么" class="headerlink" title="inline 函数是什么"></a>inline 函数是什么</h2><p>在 Kotlin 中，<strong>inline 函数</strong> 是一种优化手段，其核心思想是在编译期将函数体直接替换到调用处，从而避免函数调用的开销，特别适用于高阶函数（即接受 lambda 参数的函数）。</p>
+<hr>
+<h3 id="1-基本概念"><a href="#1-基本概念" class="headerlink" title="1. 基本概念"></a>1. 基本概念</h3><ul>
+<li><strong>目的</strong>：减少函数调用带来的性能开销，尤其在使用 lambda 表达式时，避免创建额外的对象。</li>
+<li><strong>工作原理</strong>：编译器在编译时将 inline 函数的代码“内联”（inline）到调用该函数的位置，而不是在运行时调用。</li>
+</ul>
+<hr>
+<h3 id="2-使用场景"><a href="#2-使用场景" class="headerlink" title="2. 使用场景"></a>2. 使用场景</h3><ul>
+<li><strong>高阶函数</strong>：当函数接受 lambda 参数时，使用 inline 可以减少 lambda 对象的创建，提高性能。</li>
+<li><strong>小型函数</strong>：适用于那些频繁调用的小函数，可以提高效率。</li>
+<li><strong>泛型实化</strong>：与 <code>reified</code> 关键字结合使用，可以在运行时获取泛型参数的具体类型。</li>
+</ul>
+<hr>
+<h3 id="3-示例"><a href="#3-示例" class="headerlink" title="3. 示例"></a>3. 示例</h3><h4 id="3-1-基本示例"><a href="#3-1-基本示例" class="headerlink" title="3.1 基本示例"></a>3.1 基本示例</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// 定义一个 inline 函数</span><br><span class="line">inline fun performOperation(operation: () -&gt; Unit) &#123;</span><br><span class="line">    println(&quot;操作开始&quot;)</span><br><span class="line">    operation()</span><br><span class="line">    println(&quot;操作结束&quot;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun main() &#123;</span><br><span class="line">    performOperation &#123;</span><br><span class="line">        println(&quot;执行具体操作&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>说明</strong>：在编译时，<code>performOperation</code> 的代码会直接内联到调用处，从而减少了函数调用的额外开销。</p>
+<hr>
+<h4 id="3-2-与-reified-结合"><a href="#3-2-与-reified-结合" class="headerlink" title="3.2 与 reified 结合"></a>3.2 与 reified 结合</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 使用 inline 和 reified 实现一个泛型函数，获取类型名称</span><br><span class="line">inline fun &lt;reified T&gt; getTypeName(): String &#123;</span><br><span class="line">    return T::class.java.name</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun main() &#123;</span><br><span class="line">    println(getTypeName&lt;String&gt;()) // 输出: java.lang.String</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>说明</strong>：</p>
+<ul>
+<li>使用 <code>reified</code> 后，泛型参数在运行时不会被擦除，可以直接获取类型信息。</li>
+<li><code>reified</code> 关键字必须和 <code>inline</code> 函数一起使用。</li>
+</ul>
+<hr>
+<h3 id="4-注意事项"><a href="#4-注意事项" class="headerlink" title="4. 注意事项"></a>4. 注意事项</h3><ul>
+<li><strong>代码膨胀</strong>：由于 inline 函数会将函数体复制到每个调用处，如果函数体过大或者调用次数很多，可能会导致生成的字节码变大。</li>
+<li><strong>适用限制</strong>：某些情况下（例如递归调用）不适合使用 inline 函数。</li>
+</ul>
+<hr>
+<h3 id="inline函数总结"><a href="#inline函数总结" class="headerlink" title="inline函数总结"></a>inline函数总结</h3><p>inline 函数主要用于优化高阶函数，通过在编译期内联函数体来减少运行时的函数调用开销。同时，它可以与 <code>reified</code> 结合使用，以在运行时保留泛型类型信息。虽然 inline 函数能够提高性能，但在使用时也需注意避免代码膨胀问题。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="http://example.com">GoshenC</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="http://example.com/2025/03/03/Kotlin%E8%AF%AD%E6%B3%95/">http://example.com/2025/03/03/Kotlin%E8%AF%AD%E6%B3%95/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="../../../../tags/Kotlin%E8%AF%AD%E6%B3%95/">Kotlin语法</a></div><div class="post-share"><div class="social-share" data-image="../../../../img/avatar.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="../../../02/24/Markdown%E8%AF%AD%E6%B3%95/" title="Markdown语法"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">Previous</div><div class="info-item-2">Markdown语法</div></div><div class="info-2"><div class="info-item-1">一.标题使用# 二.字体1.粗体两个* M M 2.斜体一个* M M 3.粗体加斜体三个* M M 4.删除使用两个波浪线 M M 三.引用使用大于号  M   M  四.分割线三个*或者三个- 五.图片!+[]+()，其中[]内填写名字，()内填写图片地址  六.超链接[]+()，其中[]内填写名字，()内填写网址 hh 七.列表有序列表数字加”.”,再加空格，即生成有序列表  A B  无序列表-加空格  1 2  八.表格1.右键，选择插入，选择表格 2.Ctrl+T 3.原始人模式 先写好格式如下 X|Y|Z –|–|– 1|2|3 然后点击左下角图案&lt;&#x2F;&gt;，开启源代码模式，把各行之间的空行删除，即可生成表格。 九.插入代码块使用三个&#96; 1    </div></div></div></a><a class="pagination-related" href="../../05/Task3-Diary/" title="Task3 Android Diary"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">Next</div><div class="info-item-2">Task3 Android Diary</div></div><div class="info-2"><div class="info-item-1">Android App</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><a class="pagination-related" href="../../26/inflix%E7%94%A8%E6%B3%95%E7%A4%BA%E4%BE%8B/" title="infix用法示例"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-26</div><div class="info-item-2">infix用法示例</div></div><div class="info-2"><div class="info-item-1">什么是 infix 函数？infix 关键字可以让 单参数的函数 以 更自然的语法 书写，使代码更易读。 你可以把它理解为 一种特殊的调用方式，不需要 . 和 ()，让代码像 自然语言 一样流畅。 要使用 infix，需要满足 三个条件：  必须是成员函数或扩展函数（它必须属于某个类或某种类型）。 必须只有且只能有一个参数（如果有多个参数，就不能用 infix）。 ⭐⭐⭐⭐⭐⭐调用时可以省略 . 和 ()（但仍然可以用 . 调用）。   简单示例 1：数字比较不使用 infix1234567fun isBigger(a: Int, b: Int): Boolean &#123;    return a &gt; b&#125;fun main() &#123;    println(isBigger(10, 5)) // 输出：true&#125;  这个函数 isBigger(10, 5) 可读性一般，我们可以用 infix 改写它。  使用 infix1234567infix fun Int.isBiggerThan(other: Int): Boolean &#123; ...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="../../../../img/avatar.jpg" onerror="this.onerror=null;this.src='../../../../img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">GoshenC</div><div class="author-info-description"></div><div class="site-data"><a href="../../../../archives/"><div class="headline">Articles</div><div class="length-num">69</div></a><a href="../../../../tags/"><div class="headline">Tags</div><div class="length-num">7</div></a><a href="../../../../categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Goshenc"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Goshenc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="../../../../mailto:gx.c221434@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Welcome</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%87%BD%E6%95%B0"><span class="toc-number">1.</span> <span class="toc-text">1. 作用域函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-apply-%E5%9C%A8%E5%AF%B9%E8%B1%A1%E8%87%AA%E8%BA%AB%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%86%85%E4%BF%AE%E6%94%B9%E5%AF%B9%E8%B1%A1"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 apply - 在对象自身作用域内修改对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-let-%E9%80%82%E7%94%A8%E4%BA%8E%E9%9D%9E%E7%A9%BA%E5%80%BC%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 let - 适用于非空值的操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-run-%E5%9C%A8%E5%AF%B9%E8%B1%A1%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%86%85%E6%89%A7%E8%A1%8C%E4%BB%A3%E7%A0%81%E5%B9%B6%E8%BF%94%E5%9B%9E%E8%AE%A1%E7%AE%97%E7%BB%93%E6%9E%9C"><span class="toc-number">1.3.</span> <span class="toc-text">1.3 run - 在对象作用域内执行代码并返回计算结果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-also-%E9%80%82%E7%94%A8%E4%BA%8E%E5%AF%B9%E8%B1%A1%E7%9A%84%E9%A2%9D%E5%A4%96%E6%93%8D%E4%BD%9C"><span class="toc-number">1.4.</span> <span class="toc-text">1.4 also - 适用于对象的额外操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-5-with-%E7%94%A8%E4%BA%8E%E9%9D%9E%E6%89%A9%E5%B1%95%E5%AF%B9%E8%B1%A1%E7%9A%84%E4%BD%9C%E7%94%A8%E5%9F%9F%E8%B0%83%E7%94%A8"><span class="toc-number">1.5.</span> <span class="toc-text">1.5 with - 用于非扩展对象的作用域调用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-6-%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%87%BD%E6%95%B0%E5%AF%B9%E6%AF%94%E6%80%BB%E7%BB%93"><span class="toc-number">1.6.</span> <span class="toc-text">1.6 作用域函数对比总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%97%B6%E9%97%B4%E8%BE%93%E5%87%BA"><span class="toc-number">2.</span> <span class="toc-text">2. 时间输出</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%9B%9E%E8%B0%83%E6%9C%BA%E5%88%B6"><span class="toc-number">3.</span> <span class="toc-text">3. 回调机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E4%BB%80%E4%B9%88%E6%98%AF%E5%9B%9E%E8%B0%83%EF%BC%9F"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 什么是回调？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E7%A4%BA%E4%BE%8B%EF%BC%9A%E4%B8%8D%E4%BD%BF%E7%94%A8%E5%9B%9E%E8%B0%83%EF%BC%88%E5%90%8C%E6%AD%A5%E7%AD%89%E5%BE%85%EF%BC%89"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 示例：不使用回调（同步等待）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E7%A4%BA%E4%BE%8B%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%9B%9E%E8%B0%83%EF%BC%88%E5%BC%82%E6%AD%A5%E9%80%9A%E7%9F%A5%EF%BC%89"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 示例：使用回调（异步通知）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-%E5%9B%9E%E8%B0%83%E5%9C%A8-Android-%E5%BC%80%E5%8F%91%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8"><span class="toc-number">3.4.</span> <span class="toc-text">3.4 回调在 Android 开发中的应用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Lambda-%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-number">4.</span> <span class="toc-text">4. Lambda 表达式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E4%BB%80%E4%B9%88%E6%98%AF-Lambda-%E8%A1%A8%E8%BE%BE%E5%BC%8F%EF%BC%9F"><span class="toc-number">4.1.</span> <span class="toc-text">4.1 什么是 Lambda 表达式？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E7%A4%BA%E4%BE%8B%EF%BC%9A%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95"><span class="toc-number">4.2.</span> <span class="toc-text">4.2 示例：基本用法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-Lambda-%E5%9C%A8%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8"><span class="toc-number">4.3.</span> <span class="toc-text">4.3 Lambda 在高阶函数中的应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-%E5%8D%95%E5%8F%82%E6%95%B0-Lambda-%E7%A4%BA%E4%BE%8B"><span class="toc-number">4.4.</span> <span class="toc-text">4.4 单参数 Lambda 示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%B3%9B%E5%9E%8B%E4%B8%8E%E5%A7%94%E6%89%98"><span class="toc-number">5.</span> <span class="toc-text">5. 泛型与委托</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E6%B3%9B%E5%9E%8B"><span class="toc-number">5.1.</span> <span class="toc-text">5.1 泛型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-1-1-%E6%B3%9B%E5%9E%8B%E7%B1%BB%E7%A4%BA%E4%BE%8B"><span class="toc-number">5.1.1.</span> <span class="toc-text">5.1.1 泛型类示例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-1-2-%E6%B3%9B%E5%9E%8B%E5%87%BD%E6%95%B0%E7%A4%BA%E4%BE%8B"><span class="toc-number">5.1.2.</span> <span class="toc-text">5.1.2 泛型函数示例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-1-3-%E7%B1%BB%E5%9E%8B%E5%8F%82%E6%95%B0%E7%9A%84%E9%99%90%E5%AE%9A"><span class="toc-number">5.1.3.</span> <span class="toc-text">5.1.3 类型参数的限定</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-1-4-%E5%8D%8F%E5%8F%98%E4%B8%8E%E9%80%86%E5%8F%98"><span class="toc-number">5.1.4.</span> <span class="toc-text">5.1.4 协变与逆变</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%84%9F%E8%A7%89%E4%B8%8D%E5%A6%82%E4%B9%A6%E4%B8%8AP418%E8%AE%B2%E5%BE%97%E5%A5%BD"><span class="toc-number">5.1.5.</span> <span class="toc-text">(感觉不如书上P418讲得好)</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8D%8F%E5%8F%98%EF%BC%88Covariance%EF%BC%89%E2%80%94%E2%80%94-out-T"><span class="toc-number">5.1.5.1.</span> <span class="toc-text">协变（Covariance）—— out T</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%80%86%E5%8F%98%EF%BC%88Contravariance%EF%BC%89%E2%80%94%E2%80%94-in-T"><span class="toc-number">5.1.5.2.</span> <span class="toc-text">逆变（Contravariance）—— in T</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%AE%B0%E4%BD%8F%E8%BF%99%E4%B8%A4%E4%B8%AA%E5%8E%9F%E5%88%99"><span class="toc-number">5.1.5.3.</span> <span class="toc-text">记住这两个原则</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%94%9F%E6%B4%BB%E4%B8%AD%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="toc-number">5.1.5.4.</span> <span class="toc-text">生活中的例子</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-1-5-%E6%B3%9B%E5%9E%8B%E5%AE%9E%E5%8C%96%EF%BC%88reified%EF%BC%89"><span class="toc-number">5.1.6.</span> <span class="toc-text">5.1.5 泛型实化（reified）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E5%A7%94%E6%89%98"><span class="toc-number">5.2.</span> <span class="toc-text">5.2 委托</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-1-%E5%B1%9E%E6%80%A7%E5%A7%94%E6%89%98"><span class="toc-number">5.2.1.</span> <span class="toc-text">5.2.1 属性委托</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-2-%E7%B1%BB%E5%A7%94%E6%89%98"><span class="toc-number">5.2.2.</span> <span class="toc-text">5.2.2 类委托</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">6.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#inline-%E5%87%BD%E6%95%B0%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">7.</span> <span class="toc-text">inline 函数是什么</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">7.1.</span> <span class="toc-text">1. 基本概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">7.2.</span> <span class="toc-text">2. 使用场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%A4%BA%E4%BE%8B"><span class="toc-number">7.3.</span> <span class="toc-text">3. 示例</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-%E5%9F%BA%E6%9C%AC%E7%A4%BA%E4%BE%8B"><span class="toc-number">7.3.1.</span> <span class="toc-text">3.1 基本示例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-%E4%B8%8E-reified-%E7%BB%93%E5%90%88"><span class="toc-number">7.3.2.</span> <span class="toc-text">3.2 与 reified 结合</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">7.4.</span> <span class="toc-text">4. 注意事项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#inline%E5%87%BD%E6%95%B0%E6%80%BB%E7%BB%93"><span class="toc-number">7.5.</span> <span class="toc-text">inline函数总结</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Posts</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="../../../12/07/%E8%99%9A%E6%8B%9F%E5%88%97%E8%A1%A8/" title="虚拟列表">虚拟列表</a><time datetime="2025-12-07T13:27:21.000Z" title="Created 2025-12-07 21:27:21">2025-12-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="../../../11/30/npm%E6%95%99%E7%A8%8B/" title="npm教程">npm教程</a><time datetime="2025-11-30T12:13:50.000Z" title="Created 2025-11-30 20:13:50">2025-11-30</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="../../../10/26/%E5%BC%B9%E6%80%A7%E7%9B%92%E5%B8%83%E5%B1%80/" title="弹性盒布局">弹性盒布局</a><time datetime="2025-10-26T07:58:57.000Z" title="Created 2025-10-26 15:58:57">2025-10-26</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="../../../10/25/css%E5%B8%83%E5%B1%80/" title="css布局">css布局</a><time datetime="2025-10-25T14:24:09.000Z" title="Created 2025-10-25 22:24:09">2025-10-25</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="../../../10/25/%E7%9B%92%E5%AD%90%E6%A8%A1%E5%9E%8B/" title="盒子模型">盒子模型</a><time datetime="2025-10-25T11:42:00.000Z" title="Created 2025-10-25 19:42:00">2025-10-25</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2025 By GoshenC</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="../../../../js/utils.js"></script><script src="../../../../js/main.js"></script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'none',
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          enableMenu: true,
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="100" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading Database</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="../../../../js/search/local-search.js"></script></div></div></body></html>

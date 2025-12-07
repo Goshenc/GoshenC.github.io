@@ -1,0 +1,263 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Room用法 | GoshenC</title><meta name="author" content="GoshenC"><meta name="copyright" content="GoshenC"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Room 是 Android 官方推荐的数据库框架，它是 SQLite 的抽象封装，提供了更便捷的数据库操作方式，支持 Kotlin 协程和 LiveData。以下是 Room 的基本使用方法：  1. 添加 Room 依赖在 build.gradle.kts（模块级）中添加 Room 相关依赖： 12345678dependencies &#123;    val room_version &#x3D;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Room用法">
+<meta property="og:url" content="http://example.com/2025/03/15/Room%E7%94%A8%E6%B3%95/index.html">
+<meta property="og:site_name" content="GoshenC">
+<meta property="og:description" content="Room 是 Android 官方推荐的数据库框架，它是 SQLite 的抽象封装，提供了更便捷的数据库操作方式，支持 Kotlin 协程和 LiveData。以下是 Room 的基本使用方法：  1. 添加 Room 依赖在 build.gradle.kts（模块级）中添加 Room 相关依赖： 12345678dependencies &#123;    val room_version &#x3D;">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/avatar.jpg">
+<meta property="article:published_time" content="2025-03-15T02:07:34.000Z">
+<meta property="article:modified_time" content="2025-03-15T05:52:14.189Z">
+<meta property="article:author" content="GoshenC">
+<meta property="article:tag" content="安卓知识类">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/avatar.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Room用法",
+  "url": "http://example.com/2025/03/15/Room%E7%94%A8%E6%B3%95/",
+  "image": "http://example.com/img/avatar.jpg",
+  "datePublished": "2025-03-15T02:07:34.000Z",
+  "dateModified": "2025-03-15T05:52:14.189Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "GoshenC",
+      "url": "http://example.com/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="../../../../img/circularavatar.jpg"><link rel="canonical" href="http://example.com/2025/03/15/Room%E7%94%A8%E6%B3%95/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="../../../../css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"No results found for: ${query}","hits_stats":"${hits} articles found"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":250,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Room用法',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(img/mainbackground.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="../../../../img/avatar.jpg" onerror="this.onerror=null;this.src='../../../../img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="../../../../archives/"><div class="headline">Articles</div><div class="length-num">69</div></a><a href="../../../../tags/"><div class="headline">Tags</div><div class="length-num">7</div></a><a href="../../../../categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="../../../../gotcha,hahaha"><span> 简体中文/Chinese-CN</span></a></div><div class="menus_item"><a class="site-page" href="../../../../index.html"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="../../../../archives/"><i class="fa-fw fas fa-archive"></i><span> Timeline</span></a></div><div class="menus_item"><a class="site-page" href="../../../../tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="../../../../categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="../../../../link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="../../../../about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" target="_blank" rel="noopener" href="https://www.kugou.com/"><i class="fa-fw fas fa-music"></i><span> Music(音乐)</span></a></li><li><a class="site-page child" href="../../../../movies/"><i class="fa-fw fas fa-video"></i><span> Movie(电影)</span></a></li><li><a class="site-page child" href="../../../../music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(img/mainbackground.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="../../../../index.html"><img class="site-icon" src="../../../../img/circularavatar.jpg" alt="Logo"><span class="site-name">GoshenC</span></a><a class="nav-page-title" href="../../../../index.html"><span class="site-name">Room用法</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="../../../../gotcha,hahaha"><span> 简体中文/Chinese-CN</span></a></div><div class="menus_item"><a class="site-page" href="../../../../index.html"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="../../../../archives/"><i class="fa-fw fas fa-archive"></i><span> Timeline</span></a></div><div class="menus_item"><a class="site-page" href="../../../../tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="../../../../categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="../../../../link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="../../../../about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" target="_blank" rel="noopener" href="https://www.kugou.com/"><i class="fa-fw fas fa-music"></i><span> Music(音乐)</span></a></li><li><a class="site-page child" href="../../../../movies/"><i class="fa-fw fas fa-video"></i><span> Movie(电影)</span></a></li><li><a class="site-page child" href="../../../../music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Room用法</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2025-03-15T02:07:34.000Z" title="Created 2025-03-15 10:07:34">2025-03-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2025-03-15T05:52:14.189Z" title="Updated 2025-03-15 13:52:14">2025-03-15</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word Count:</span><span class="word-count">931</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading Time:</span><span>4mins</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>Room 是 Android 官方推荐的数据库框架，它是 SQLite 的抽象封装，提供了更便捷的数据库操作方式，支持 Kotlin 协程和 LiveData。以下是 Room 的基本使用方法：</p>
+<hr>
+<h2 id="1-添加-Room-依赖"><a href="#1-添加-Room-依赖" class="headerlink" title="1. 添加 Room 依赖"></a><strong>1. 添加 Room 依赖</strong></h2><p>在 <code>build.gradle.kts</code>（模块级）中添加 Room 相关依赖：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    val room_version = &quot;2.6.1&quot; // 确保使用最新版本</span><br><span class="line"></span><br><span class="line">    implementation(&quot;androidx.room:room-runtime:$room_version&quot;)</span><br><span class="line">    kapt(&quot;androidx.room:room-compiler:$room_version&quot;) // 用于注解处理器</span><br><span class="line"></span><br><span class="line">    implementation(&quot;androidx.room:room-ktx:$room_version&quot;) // 支持 Kotlin 协程</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果项目使用 Kotlin Symbol Processing (KSP) 代替 kapt：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ksp(&quot;androidx.room:room-compiler:$room_version&quot;)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="2-创建数据库实体（Entity）"><a href="#2-创建数据库实体（Entity）" class="headerlink" title="2. 创建数据库实体（Entity）"></a><strong>2. 创建数据库实体（Entity）</strong></h2><p>使用 <code>@Entity</code> 注解定义数据库表：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import androidx.room.Entity</span><br><span class="line">import androidx.room.PrimaryKey</span><br><span class="line"></span><br><span class="line">@Entity(tableName = &quot;diary_entries&quot;) // 指定表名</span><br><span class="line">data class DiaryEntry(</span><br><span class="line">    @PrimaryKey(autoGenerate = true) val id: Int = 0, // 主键，自动生成</span><br><span class="line">    val title: String,</span><br><span class="line">    val content: String,</span><br><span class="line">    val date: Long, // 以时间戳形式存储日期</span><br><span class="line">    val weather: String? = null</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-创建-DAO（数据访问对象）"><a href="#3-创建-DAO（数据访问对象）" class="headerlink" title="3. 创建 DAO（数据访问对象）"></a><strong>3. 创建 DAO（数据访问对象）</strong></h2><p>DAO 负责数据库的 CRUD 操作：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">import androidx.room.*</span><br><span class="line"></span><br><span class="line">@Dao</span><br><span class="line">interface DiaryDao &#123;</span><br><span class="line">    @Insert(onConflict = OnConflictStrategy.REPLACE)</span><br><span class="line">    suspend fun insertDiary(entry: DiaryEntry)</span><br><span class="line"></span><br><span class="line">    @Update</span><br><span class="line">    suspend fun updateDiary(entry: DiaryEntry)</span><br><span class="line"></span><br><span class="line">    @Delete</span><br><span class="line">    suspend fun deleteDiary(entry: DiaryEntry)</span><br><span class="line"></span><br><span class="line">    @Query(&quot;SELECT * FROM diary_entries ORDER BY date DESC&quot;)</span><br><span class="line">    fun getAllDiaries(): List&lt;DiaryEntry&gt; // 直接返回列表（不推荐，建议使用 Flow）</span><br><span class="line"></span><br><span class="line">    @Query(&quot;SELECT * FROM diary_entries WHERE id = :id&quot;)</span><br><span class="line">    suspend fun getDiaryById(id: Int): DiaryEntry?</span><br><span class="line"></span><br><span class="line">    @Query(&quot;SELECT * FROM diary_entries WHERE title LIKE &#x27;%&#x27; || :query || &#x27;%&#x27;&quot;)</span><br><span class="line">    fun searchDiaries(query: String): List&lt;DiaryEntry&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果需要监听数据变化，可以用 <code>Flow</code>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@Query(&quot;SELECT * FROM diary_entries ORDER BY date DESC&quot;)</span><br><span class="line">fun getAllDiariesFlow(): Flow&lt;List&lt;DiaryEntry&gt;&gt; // 使用 Flow 以支持实时监听</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="4-创建数据库（Database）"><a href="#4-创建数据库（Database）" class="headerlink" title="4. 创建数据库（Database）"></a><strong>4. 创建数据库（Database）</strong></h2><p>使用 <code>@Database</code> 注解创建 Room 数据库：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">import android.content.Context</span><br><span class="line">import androidx.room.Database</span><br><span class="line">import androidx.room.Room</span><br><span class="line">import androidx.room.RoomDatabase</span><br><span class="line"></span><br><span class="line">@Database(entities = [DiaryEntry::class], version = 1, exportSchema = false)</span><br><span class="line">abstract class DiaryDatabase : RoomDatabase() &#123;</span><br><span class="line">    abstract fun diaryDao(): DiaryDao</span><br><span class="line"></span><br><span class="line">    companion object &#123;</span><br><span class="line">        @Volatile</span><br><span class="line">        private var INSTANCE: DiaryDatabase? = null</span><br><span class="line"></span><br><span class="line">        fun getDatabase(context: Context): DiaryDatabase &#123;</span><br><span class="line">            return INSTANCE ?: synchronized(this) &#123;</span><br><span class="line">                val instance = Room.databaseBuilder(</span><br><span class="line">                    context.applicationContext,</span><br><span class="line">                    DiaryDatabase::class.java,</span><br><span class="line">                    &quot;diary_database&quot;</span><br><span class="line">                ).build()</span><br><span class="line">                INSTANCE = instance</span><br><span class="line">                instance</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>说明</strong>：</p>
+<ul>
+<li><code>@Volatile</code> 确保多个线程能正确访问 <code>INSTANCE</code>。</li>
+<li><code>synchronized(this)</code> 确保数据库实例的单例模式。</li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="5-在-ViewModel-中使用"><a href="#5-在-ViewModel-中使用" class="headerlink" title="5. 在 ViewModel 中使用"></a><strong>5. 在 ViewModel 中使用</strong></h2><p>在 <code>ViewModel</code> 里封装数据库操作：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">import androidx.lifecycle.ViewModel</span><br><span class="line">import kotlinx.coroutines.flow.Flow</span><br><span class="line"></span><br><span class="line">class DiaryViewModel(private val diaryDao: DiaryDao) : ViewModel() &#123;</span><br><span class="line">    val allDiaries: Flow&lt;List&lt;DiaryEntry&gt;&gt; = diaryDao.getAllDiariesFlow()</span><br><span class="line"></span><br><span class="line">    suspend fun addDiary(entry: DiaryEntry) &#123;</span><br><span class="line">        diaryDao.insertDiary(entry)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    suspend fun deleteDiary(entry: DiaryEntry) &#123;</span><br><span class="line">        diaryDao.deleteDiary(entry)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在 <code>viewmodel</code> 目录下新建 <code>DiaryViewModelFactory.kt</code> 文件，并写入以下代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import androidx.lifecycle.ViewModel</span><br><span class="line">import androidx.lifecycle.ViewModelProvider</span><br><span class="line">import com.example.uibestpractice.data.DiaryDao // 替换为你的包名</span><br><span class="line"></span><br><span class="line">class DiaryViewModelFactory(private val diaryDao: DiaryDao) : ViewModelProvider.Factory &#123;</span><br><span class="line">    override fun &lt;T : ViewModel&gt; create(modelClass: Class&lt;T&gt;): T &#123;</span><br><span class="line">        if (modelClass.isAssignableFrom(DiaryViewModel::class.java)) &#123;</span><br><span class="line">            return DiaryViewModel(diaryDao) as T</span><br><span class="line">        &#125;</span><br><span class="line">        throw IllegalArgumentException(&quot;Unknown ViewModel class&quot;)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="6-在-Activity-Fragment-中使用"><a href="#6-在-Activity-Fragment-中使用" class="headerlink" title="6. 在 Activity&#x2F;Fragment 中使用"></a><strong>6. 在 Activity&#x2F;Fragment 中使用</strong></h2><p>在 <code>Activity</code> 或 <code>Fragment</code> 里使用 ViewModel：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">import android.os.Bundle</span><br><span class="line">import androidx.activity.viewModels</span><br><span class="line">import androidx.appcompat.app.AppCompatActivity</span><br><span class="line">import androidx.lifecycle.lifecycleScope</span><br><span class="line">import kotlinx.coroutines.launch</span><br><span class="line"></span><br><span class="line">class MainActivity : AppCompatActivity() &#123;</span><br><span class="line">    private val diaryViewModel: DiaryViewModel by viewModels &#123;</span><br><span class="line">        DiaryViewModelFactory(DiaryDatabase.getDatabase(this).diaryDao())</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    override fun onCreate(savedInstanceState: Bundle?) &#123;</span><br><span class="line">        super.onCreate(savedInstanceState)</span><br><span class="line"></span><br><span class="line">        // 监听数据库变化</span><br><span class="line">        lifecycleScope.launch &#123;</span><br><span class="line">            diaryViewModel.allDiaries.collect &#123; diaryList -&gt;</span><br><span class="line">                // 更新 UI</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private fun addDiaryEntry() &#123;</span><br><span class="line">        lifecycleScope.launch &#123;</span><br><span class="line">            val newEntry = DiaryEntry(title = &quot;新日记&quot;, content = &quot;今天很开心！&quot;, date = System.currentTimeMillis())</span><br><span class="line">            diaryViewModel.addDiary(newEntry)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="7-线程调度（协程）"><a href="#7-线程调度（协程）" class="headerlink" title="7. 线程调度（协程）"></a><strong>7. 线程调度（协程）</strong></h2><p>Room 允许在 <code>suspend</code> 函数中调用数据库操作，Kotlin 协程会自动切换到 IO 线程：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">suspend fun insertDiary(entry: DiaryEntry) &#123;</span><br><span class="line">    diaryDao.insertDiary(entry) // Room 在 IO 线程执行</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对于 <strong>不支持协程的函数</strong>（如 <code>getAllDiaries()</code>），应使用 <code>withContext(Dispatchers.IO)</code>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fun getAllDiariesBlocking(): List&lt;DiaryEntry&gt; &#123;</span><br><span class="line">    return runBlocking &#123; withContext(Dispatchers.IO) &#123; diaryDao.getAllDiaries() &#125; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a><strong>总结</strong></h2><p>Room 提供了 <strong>简单、安全、高效</strong> 的数据库管理：</p>
+<ol>
+<li><strong>Entity</strong>（表） → <code>@Entity</code></li>
+<li><strong>DAO</strong>（数据操作） → <code>@Dao</code></li>
+<li><strong>Database</strong>（数据库实例） → <code>@Database</code></li>
+<li><strong>ViewModel</strong>（封装业务逻辑）</li>
+<li><strong>Activity&#x2F;Fragment</strong>（UI 层使用数据库）</li>
+</ol>
+<p>你可以结合 <code>Flow</code> 进行 <strong>实时监听</strong>，结合 <strong>Kotlin 协程</strong> 进行 <strong>异步处理</strong>，使数据库操作更加流畅高效。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="http://example.com">GoshenC</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="http://example.com/2025/03/15/Room%E7%94%A8%E6%B3%95/">http://example.com/2025/03/15/Room%E7%94%A8%E6%B3%95/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="../../../../tags/%E5%AE%89%E5%8D%93%E7%9F%A5%E8%AF%86%E7%B1%BB/">安卓知识类</a></div><div class="post-share"><div class="social-share" data-image="../../../../img/avatar.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="../../14/startActivity%E5%92%8CregisterForActivityResult%E7%9A%84%E7%94%A8%E6%B3%95/" title="startActivity和registerForActivityResult的用法"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">Previous</div><div class="info-item-2">startActivity和registerForActivityResult的用法</div></div><div class="info-2"><div class="info-item-1">在 Android Kotlin 开发中，startActivity 和 registerForActivityResult 是启动新 Activity 并处理返回结果的两种方式。  1. 使用 startActivitystartActivity 适用于 不需要获取返回值 的情况，例如从 MainActivity 跳转到 SecondActivity： 示例：启动新 Activity12val intent = Intent(this, SecondActivity::class.java)startActivity(intent)  如果你需要传递数据： 1234val intent = Intent(this, SecondActivity::class.java).apply &#123;    putExtra(&quot;key&quot;, &quot;Hello, SecondActivity!&quot;)&#125;startActivity(intent)  在 SecondActivity 中获取： 1val data =...</div></div></div></a><a class="pagination-related" href="../ViewModel%E7%94%A8%E6%B3%95/" title="ViewModel用法"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">Next</div><div class="info-item-2">ViewModel用法</div></div><div class="info-2"><div class="info-item-1">ViewModel 是 Android 架构组件之一，用于管理 UI 相关的数据，并在 配置更改（如屏幕旋转）时保持数据不丢失。  🔹 1. 添加 ViewModel 依赖在 build.gradle.kts（模块级）中添加： 123dependencies &#123;    implementation(&quot;androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2&quot;)&#125;   🔹 2. 创建 ViewModel（1）基础 ViewModel123456789import androidx.lifecycle.ViewModelclass CounterViewModel : ViewModel() &#123;    var count = 0 // ViewModel 变量（Activity 重建后不会丢失）    fun increment() &#123;        count++    &#125;&#125;   🔹 3. 在 Activity&#x2F;Fragment...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><a class="pagination-related" href="../../14/Retrofit%E7%94%A8%E6%B3%95%E7%A4%BA%E4%BE%8B/" title="Retrofit用法示例"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-14</div><div class="info-item-2">Retrofit用法示例</div></div><div class="info-2"><div class="info-item-1">Retrofit 使用指南 Retrofit 是 Android 上最常用的网络请求库之一，它简化了 HTTP 请求的处理，支持 GET、POST、PUT、DELETE 等请求方式，并且可以配合 Gson、Moshi 等解析 JSON 数据。 1. 添加依赖在 build.gradle (Module 级) 中添加： 1234dependencies &#123;    implementation &#x27;com.squareup.retrofit2:retrofit:2.9.0&#x27;    implementation &#x27;com.squareup.retrofit2:converter-gson:2.9.0&#x27; // Gson 解析 JSON&#125;  2. 创建 API 接口定义 API 接口，例如获取用户信息： 12345678910111213141516171819202122232425import retrofit2.Callimport retrofit2.http.GETimport...</div></div></div></a><a class="pagination-related" href="../../14/startActivity%E5%92%8CregisterForActivityResult%E7%9A%84%E7%94%A8%E6%B3%95/" title="startActivity和registerForActivityResult的用法"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-14</div><div class="info-item-2">startActivity和registerForActivityResult的用法</div></div><div class="info-2"><div class="info-item-1">在 Android Kotlin 开发中，startActivity 和 registerForActivityResult 是启动新 Activity 并处理返回结果的两种方式。  1. 使用 startActivitystartActivity 适用于 不需要获取返回值 的情况，例如从 MainActivity 跳转到 SecondActivity： 示例：启动新 Activity12val intent = Intent(this, SecondActivity::class.java)startActivity(intent)  如果你需要传递数据： 1234val intent = Intent(this, SecondActivity::class.java).apply &#123;    putExtra(&quot;key&quot;, &quot;Hello, SecondActivity!&quot;)&#125;startActivity(intent)  在 SecondActivity 中获取： 1val data =...</div></div></div></a><a class="pagination-related" href="../ViewModel%E7%94%A8%E6%B3%95/" title="ViewModel用法"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-15</div><div class="info-item-2">ViewModel用法</div></div><div class="info-2"><div class="info-item-1">ViewModel 是 Android 架构组件之一，用于管理 UI 相关的数据，并在 配置更改（如屏幕旋转）时保持数据不丢失。  🔹 1. 添加 ViewModel 依赖在 build.gradle.kts（模块级）中添加： 123dependencies &#123;    implementation(&quot;androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2&quot;)&#125;   🔹 2. 创建 ViewModel（1）基础 ViewModel123456789import androidx.lifecycle.ViewModelclass CounterViewModel : ViewModel() &#123;    var count = 0 // ViewModel 变量（Activity 重建后不会丢失）    fun increment() &#123;        count++    &#125;&#125;   🔹 3. 在 Activity&#x2F;Fragment...</div></div></div></a><a class="pagination-related" href="../Room-ViewModel-LiveData%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8%E7%9A%84%E7%94%A8%E6%B3%95/" title="Room+ViewModel+LiveData一起使用的用法"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-15</div><div class="info-item-2">Room+ViewModel+LiveData一起使用的用法</div></div><div class="info-2"><div class="info-item-1">在 Android 开发中，Room、ViewModel 和 LiveData 经常一起使用，以实现 MVVM 架构，并提供持久化数据存储、生命周期感知的数据管理和自动更新 UI 的能力。  📌 1. 主要作用   组件 作用    Room（数据库） 提供 SQLite 的抽象层，管理本地数据存储   ViewModel 管理 UI 相关的数据，确保数据在配置变更（如旋转屏幕）时不会丢失   LiveData 观察数据变化，并在 UI 组件生命周期内自动更新    🚀 2. 使用 Room + ViewModel + LiveData 的完整示例📌 功能：我们实现一个简单的待办事项（ToDo List）应用，可以：  增删查改任务，数据存储在 Room 数据库中。 使用 LiveData 让 UI 自动更新，而不需要手动刷新。 ViewModel 负责管理数据，避免 Activity 直接操作数据库。   📌 3. 创建 Room 数据库（1）定义 Entity（数据库表）123456789import androidx.room.Entityimport...</div></div></div></a><a class="pagination-related" href="../SQLite%E7%94%A8%E6%B3%95/" title="SQLite用法"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-15</div><div class="info-item-2">SQLite用法</div></div><div class="info-2"><div class="info-item-1">SQLite 是一种轻量级的嵌入式数据库，在 Android 中用于存储结构化数据。你可以通过 SQLiteOpenHelper 来管理数据库的创建、升级、和版本管理。以下是使用 SQLite 的基本步骤： 1. 创建数据库和表使用 SQLiteOpenHelper 创建数据库以及表结构。这个类会帮助你创建数据库、执行表的升级、降级等操作。 创建 SQLiteOpenHelper 类123456789101112131415161718192021222324252627282930import android.content.Contextimport android.database.sqlite.SQLiteDatabaseimport android.database.sqlite.SQLiteOpenHelperclass MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) &#123;    companion...</div></div></div></a><a class="pagination-related" href="../../17/ContentResolver%E7%9A%84%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5%E6%96%B9%E6%B3%95%E7%A4%BA%E4%BE%8B/" title="ContentResolver的增删改查方法示例"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-17</div><div class="info-item-2">ContentResolver的增删改查方法示例</div></div><div class="info-2"><div class="info-item-1">Android 中 ContentResolver 的增删改查详解ContentResolver 是 Android 提供的 API，用于在不同应用程序之间访问和操作数据，通常与 ContentProvider 一起使用。它提供 增（insert）、删（delete）、改（update）、查（query） 操作，常见于访问系统数据库（如通讯录、媒体库等）或应用自定义的数据库（如日记本、笔记等）。  📌 使用 ContentResolver 的步骤 确定 ContentProvider 提供的数据 URI（content:// 格式） 获取 ContentResolver 对象 执行增、删、改、查操作 处理权限（如果是访问系统数据） 关闭 Cursor 以释放资源（仅 query 需要）   💡 1. 获取 ContentResolver在 Activity 或 Fragment 中： 1val contentResolver = context.contentResolver  在 Service 中： 1val contentResolver =...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="../../../../img/avatar.jpg" onerror="this.onerror=null;this.src='../../../../img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">GoshenC</div><div class="author-info-description"></div><div class="site-data"><a href="../../../../archives/"><div class="headline">Articles</div><div class="length-num">69</div></a><a href="../../../../tags/"><div class="headline">Tags</div><div class="length-num">7</div></a><a href="../../../../categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Goshenc"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Goshenc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="../../../../mailto:gx.c221434@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Welcome</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%B7%BB%E5%8A%A0-Room-%E4%BE%9D%E8%B5%96"><span class="toc-number">1.</span> <span class="toc-text">1. 添加 Room 依赖</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%9E%E4%BD%93%EF%BC%88Entity%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">2. 创建数据库实体（Entity）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%88%9B%E5%BB%BA-DAO%EF%BC%88%E6%95%B0%E6%8D%AE%E8%AE%BF%E9%97%AE%E5%AF%B9%E8%B1%A1%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">3. 创建 DAO（数据访问对象）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%88Database%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">4. 创建数据库（Database）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%9C%A8-ViewModel-%E4%B8%AD%E4%BD%BF%E7%94%A8"><span class="toc-number">5.</span> <span class="toc-text">5. 在 ViewModel 中使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%9C%A8-Activity-Fragment-%E4%B8%AD%E4%BD%BF%E7%94%A8"><span class="toc-number">6.</span> <span class="toc-text">6. 在 Activity&#x2F;Fragment 中使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E7%BA%BF%E7%A8%8B%E8%B0%83%E5%BA%A6%EF%BC%88%E5%8D%8F%E7%A8%8B%EF%BC%89"><span class="toc-number">7.</span> <span class="toc-text">7. 线程调度（协程）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">8.</span> <span class="toc-text">总结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Posts</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="../../../12/07/%E8%99%9A%E6%8B%9F%E5%88%97%E8%A1%A8/" title="虚拟列表">虚拟列表</a><time datetime="2025-12-07T13:27:21.000Z" title="Created 2025-12-07 21:27:21">2025-12-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="../../../11/30/npm%E6%95%99%E7%A8%8B/" title="npm教程">npm教程</a><time datetime="2025-11-30T12:13:50.000Z" title="Created 2025-11-30 20:13:50">2025-11-30</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="../../../10/26/%E5%BC%B9%E6%80%A7%E7%9B%92%E5%B8%83%E5%B1%80/" title="弹性盒布局">弹性盒布局</a><time datetime="2025-10-26T07:58:57.000Z" title="Created 2025-10-26 15:58:57">2025-10-26</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="../../../10/25/css%E5%B8%83%E5%B1%80/" title="css布局">css布局</a><time datetime="2025-10-25T14:24:09.000Z" title="Created 2025-10-25 22:24:09">2025-10-25</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="../../../10/25/%E7%9B%92%E5%AD%90%E6%A8%A1%E5%9E%8B/" title="盒子模型">盒子模型</a><time datetime="2025-10-25T11:42:00.000Z" title="Created 2025-10-25 19:42:00">2025-10-25</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2025 By GoshenC</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="../../../../js/utils.js"></script><script src="../../../../js/main.js"></script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'none',
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          enableMenu: true,
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="100" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading Database</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="../../../../js/search/local-search.js"></script></div></div></body></html>

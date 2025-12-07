@@ -1,0 +1,362 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Task 1 | GoshenC</title><meta name="author" content="GoshenC"><meta name="copyright" content="GoshenC"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="寒假第一讲：C++ 基础一.Long Loong1.对应思路思路较为简单，就是先固定输出L，再根据输入的N得到应该输出多少o，最后再固定输出ng。 2.代码123456789101112#include &lt;iostream&gt;using namespace std;int main()&#123;	int n;	cin &gt;&gt; n;	cout &lt;&lt; &#x27;L&amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Task 1">
+<meta property="og:url" content="http://example.com/2025/02/06/Task-1/index.html">
+<meta property="og:site_name" content="GoshenC">
+<meta property="og:description" content="寒假第一讲：C++ 基础一.Long Loong1.对应思路思路较为简单，就是先固定输出L，再根据输入的N得到应该输出多少o，最后再固定输出ng。 2.代码123456789101112#include &lt;iostream&gt;using namespace std;int main()&#123;	int n;	cin &gt;&gt; n;	cout &lt;&lt; &#x27;L&amp;">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/avatar.jpg">
+<meta property="article:published_time" content="2025-02-06T11:50:05.000Z">
+<meta property="article:modified_time" content="2025-02-06T11:50:15.112Z">
+<meta property="article:author" content="GoshenC">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/avatar.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Task 1",
+  "url": "http://example.com/2025/02/06/Task-1/",
+  "image": "http://example.com/img/avatar.jpg",
+  "datePublished": "2025-02-06T11:50:05.000Z",
+  "dateModified": "2025-02-06T11:50:15.112Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "GoshenC",
+      "url": "http://example.com/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="../../../../img/circularavatar.jpg"><link rel="canonical" href="http://example.com/2025/02/06/Task-1/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="../../../../css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"No results found for: ${query}","hits_stats":"${hits} articles found"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":250,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Task 1',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(img/mainbackground.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="../../../../img/avatar.jpg" onerror="this.onerror=null;this.src='../../../../img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="../../../../archives/"><div class="headline">Articles</div><div class="length-num">69</div></a><a href="../../../../tags/"><div class="headline">Tags</div><div class="length-num">7</div></a><a href="../../../../categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="../../../../gotcha,hahaha"><span> 简体中文/Chinese-CN</span></a></div><div class="menus_item"><a class="site-page" href="../../../../index.html"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="../../../../archives/"><i class="fa-fw fas fa-archive"></i><span> Timeline</span></a></div><div class="menus_item"><a class="site-page" href="../../../../tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="../../../../categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="../../../../link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="../../../../about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" target="_blank" rel="noopener" href="https://www.kugou.com/"><i class="fa-fw fas fa-music"></i><span> Music(音乐)</span></a></li><li><a class="site-page child" href="../../../../movies/"><i class="fa-fw fas fa-video"></i><span> Movie(电影)</span></a></li><li><a class="site-page child" href="../../../../music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(img/mainbackground.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="../../../../index.html"><img class="site-icon" src="../../../../img/circularavatar.jpg" alt="Logo"><span class="site-name">GoshenC</span></a><a class="nav-page-title" href="../../../../index.html"><span class="site-name">Task 1</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="../../../../gotcha,hahaha"><span> 简体中文/Chinese-CN</span></a></div><div class="menus_item"><a class="site-page" href="../../../../index.html"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="../../../../archives/"><i class="fa-fw fas fa-archive"></i><span> Timeline</span></a></div><div class="menus_item"><a class="site-page" href="../../../../tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="../../../../categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="../../../../link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="../../../../about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" target="_blank" rel="noopener" href="https://www.kugou.com/"><i class="fa-fw fas fa-music"></i><span> Music(音乐)</span></a></li><li><a class="site-page child" href="../../../../movies/"><i class="fa-fw fas fa-video"></i><span> Movie(电影)</span></a></li><li><a class="site-page child" href="../../../../music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Task 1</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2025-02-06T11:50:05.000Z" title="Created 2025-02-06 19:50:05">2025-02-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2025-02-06T11:50:15.112Z" title="Updated 2025-02-06 19:50:15">2025-02-06</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word Count:</span><span class="word-count">2.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading Time:</span><span>11mins</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="寒假第一讲：C-基础"><a href="#寒假第一讲：C-基础" class="headerlink" title="寒假第一讲：C++ 基础"></a>寒假第一讲：C++ 基础</h1><h2 id="一-Long-Loong"><a href="#一-Long-Loong" class="headerlink" title="一.Long Loong"></a>一.Long Loong</h2><h3 id="1-对应思路"><a href="#1-对应思路" class="headerlink" title="1.对应思路"></a>1.对应思路</h3><p>思路较为简单，就是先固定输出L，再根据输入的N得到应该输出多少o，最后再固定输出ng。</p>
+<h3 id="2-代码"><a href="#2-代码" class="headerlink" title="2.代码"></a>2.代码</h3><div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">	int n;</span><br><span class="line">	cin &gt;&gt; n;</span><br><span class="line">	cout &lt;&lt; &#x27;L&#x27;;</span><br><span class="line">	for (int i = 0; i &lt; n; i++)</span><br><span class="line">		cout &lt;&lt; &#x27;o&#x27;;</span><br><span class="line">	cout &lt;&lt; &quot;ng&quot;;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="3-学习总结"><a href="#3-学习总结" class="headerlink" title="3.学习总结"></a>3.学习总结</h3><p>学到了for循环的基本用法，对我帮助极大，受益良多。</p>
+<h2 id="二-YES-or-YES"><a href="#二-YES-or-YES" class="headerlink" title="二.YES or YES?"></a>二.YES or YES?</h2><h3 id="1-对应思路-1"><a href="#1-对应思路-1" class="headerlink" title="1.对应思路"></a>1.对应思路</h3><p>思路就是将输入的字符串全部大写，然后判断是否等于YES，如果等于就输出YES，不等于就输出NO。</p>
+<h3 id="2-代码-1"><a href="#2-代码-1" class="headerlink" title="2.代码"></a>2.代码</h3><div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;string&gt;</span><br><span class="line">#include &lt;algorithm&gt; </span><br><span class="line">using namespace std;</span><br><span class="line">int main() &#123;</span><br><span class="line">    int t; </span><br><span class="line">    cin &gt;&gt; t;</span><br><span class="line">    while (t--) &#123;</span><br><span class="line">        string s;</span><br><span class="line">        cin &gt;&gt; s;</span><br><span class="line">        transform(s.begin(), s.end(), s.begin(), ::toupper);</span><br><span class="line">        if (s == &quot;YES&quot;) &#123;</span><br><span class="line">            cout &lt;&lt; &quot;YES&quot; &lt;&lt; endl;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            cout &lt;&lt; &quot;NO&quot; &lt;&lt; endl;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="3-学习总结-1"><a href="#3-学习总结-1" class="headerlink" title="3.学习总结"></a>3.学习总结</h3><ol>
+<li>字符串处理：通过 <code>transform</code> 配合 <code>tolower</code> 或 <code>toupper</code>，可以快速将字符串统一为小写或大写，便于比较。</li>
+<li>循环与分支：利用 <code>while (t--)</code> 循环高效处理多组输入，结合 <code>if-else</code> 判断分类处理逻辑。</li>
+<li>时间复杂度：转换大小写或比较字符串的复杂度为 O(字符串长度)O(\text{字符串长度})O(字符串长度)。整体复杂度为 O(t)O(t)O(t)，适用于测试用例较多的情况。</li>
+<li>STL 使用：标准库函数如 <code>transform</code> 和字符串直接比较提升了代码简洁性和可靠性。</li>
+</ol>
+<h2 id="三-Even-Odd-G"><a href="#三-Even-Odd-G" class="headerlink" title="三.Even? Odd? G"></a>三.Even? Odd? G</h2><h3 id="1-对应思路-2"><a href="#1-对应思路-2" class="headerlink" title="1.对应思路"></a>1.对应思路</h3><p>这个程序的主要任务是根据输入的一组超大整数，判断每个整数的奇偶性（即最后一位数字是偶数还是奇数）。由于数的范围可能非常大（高达 106010^{60}1060），无法直接使用普通整数类型（如 <code>int</code> 或 <code>long long</code>），所以采用字符串处理的方式。</p>
+<h3 id="2-代码-2"><a href="#2-代码-2" class="headerlink" title="2.代码"></a>2.代码</h3><div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;string&gt;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line"></span><br><span class="line">    int N;</span><br><span class="line">    cin &gt;&gt; N;</span><br><span class="line"></span><br><span class="line">    vector&lt;string&gt; results;</span><br><span class="line"></span><br><span class="line">    for (int i = 0; i &lt; N; ++i) &#123;</span><br><span class="line">        string number;</span><br><span class="line">        cin &gt;&gt; number;</span><br><span class="line"></span><br><span class="line">        char lastDigit = number[number.length() - 1];</span><br><span class="line">        if ((lastDigit - &#x27;0&#x27;) % 2 == 0) &#123;</span><br><span class="line">            results.push_back(&quot;even&quot;);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            results.push_back(&quot;odd&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    for (const string&amp; result : results) &#123;</span><br><span class="line">        cout &lt;&lt; result &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="3-学习总结-2"><a href="#3-学习总结-2" class="headerlink" title="3.学习总结"></a>3.学习总结</h3><p><strong>字符串处理大数</strong>：</p>
+<ul>
+<li>当数字的范围超过内置类型的支持时，可以用字符串表示并处理。</li>
+<li>判断奇偶性只需关注数字的最后一位，简化了大数的操作。</li>
+</ul>
+<p><strong>模运算的应用</strong>：</p>
+<ul>
+<li>奇偶性的本质是看数字能否被 222 整除，通过 mod  2\mod 2mod2 运算即可实现。</li>
+</ul>
+<h2 id="四-Problem-Generator"><a href="#四-Problem-Generator" class="headerlink" title="四.Problem Generator"></a>四.Problem Generator</h2><h3 id="1-对应思路-3"><a href="#1-对应思路-3" class="headerlink" title="1.对应思路"></a>1.对应思路</h3><ol>
+<li>输入处理</li>
+</ol>
+<ul>
+<li>读取测试用例数量 <code>t</code>。</li>
+<li>对于每个测试用例，读取两个整数 <code>n</code>（题库题目数量）和 <code>m</code>（比赛轮次），以及一个字符串 <code>a</code> 表示题库中的题目难度。</li>
+</ul>
+<ol start="2">
+<li>统计题目数量</li>
+</ol>
+<ul>
+<li>使用7个变量 <code>n1</code> 到 <code>n7</code> 分别记录每种难度（A到G）的题目数量。</li>
+<li>遍历字符串 <code>a</code>，通过比较字符 <code>c</code> 是否为 ‘A’ 到 ‘G’ 来对每种难度的题目计数。</li>
+</ul>
+<ol start="3">
+<li>每种难度的最大需求</li>
+</ol>
+<ul>
+<li>每轮比赛需要一个完整的难度级别（A到G），即每种难度最多需要 mmm 道题。</li>
+</ul>
+<ol start="4">
+<li>计算需要补充的题目数量</li>
+</ol>
+<ul>
+<li><p>每轮比赛需要7种难度的题目，因此总需求为 7×m7 \times m7×m。</p>
+</li>
+<li><p>当前已有的题目总量为 n1+n2+⋯+n7n1 + n2 + \dots + n7n1+n2+⋯+n7。</p>
+</li>
+<li><p>需要补充的题目数量为： 需要补充&#x3D;max⁡(0,7×m−当前已有的题目总量)\text{需要补充} &#x3D; \max(0, 7 \times m - \text{当前已有的题目总量})需要补充&#x3D;max(0,7×m−当前已有的题目总量)</p>
+</li>
+<li><p>如果已有题目足够，则补充为0；否则补充缺少的题目数量。</p>
+</li>
+</ul>
+<ol start="5">
+<li>输出结果</li>
+</ol>
+<ul>
+<li>将每个测试用例的结果输出在单独的一行。</li>
+</ul>
+<h3 id="2-代码-3"><a href="#2-代码-3" class="headerlink" title="2.代码"></a>2.代码</h3><div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;string&gt;</span><br><span class="line">#include &lt;algorithm&gt;</span><br><span class="line">using namespace std;</span><br><span class="line"> </span><br><span class="line">int main() &#123;</span><br><span class="line">    int t;</span><br><span class="line">    cin &gt;&gt; t;   </span><br><span class="line"> </span><br><span class="line">    while (t--) &#123;</span><br><span class="line">        int n, m;</span><br><span class="line">        cin &gt;&gt; n &gt;&gt; m;</span><br><span class="line">        string a;</span><br><span class="line">        cin &gt;&gt; a;</span><br><span class="line">        int n1 = 0, n2 = 0, n3 = 0, n4 = 0, n5 = 0, n6 = 0, n7 = 0;</span><br><span class="line">        for (char c : a)</span><br><span class="line">        &#123;</span><br><span class="line">            if (c == &#x27;A&#x27;)</span><br><span class="line">                n1++;</span><br><span class="line">            if (c == &#x27;B&#x27;)</span><br><span class="line">                n2++;</span><br><span class="line">            if (c == &#x27;C&#x27;)</span><br><span class="line">                n3++;</span><br><span class="line">            if (c == &#x27;D&#x27;)</span><br><span class="line">                n4++;</span><br><span class="line">            if (c == &#x27;E&#x27;)</span><br><span class="line">                n5++;</span><br><span class="line">            if (c == &#x27;F&#x27;)</span><br><span class="line">                n6++;</span><br><span class="line">            if (c == &#x27;G&#x27;)</span><br><span class="line">                n7++;</span><br><span class="line">        &#125;</span><br><span class="line">        if (n1 &gt; m)</span><br><span class="line">            n1 = m;</span><br><span class="line">        if (n2 &gt; m)</span><br><span class="line">            n2 = m;</span><br><span class="line">        if (n3 &gt; m)</span><br><span class="line">            n3 = m;</span><br><span class="line">        if (n4 &gt; m)</span><br><span class="line">            n4 = m;</span><br><span class="line">        if (n5 &gt; m)</span><br><span class="line">            n5 = m;</span><br><span class="line">        if (n6 &gt; m)</span><br><span class="line">            n6 = m;</span><br><span class="line">        if (n7 &gt; m)</span><br><span class="line">            n7 = m;</span><br><span class="line">        cout &lt;&lt; max(0, 7 * m - n1 - n2 - n3 - n4 - n5 - n6 - n7) &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h3 id="3-学习总结-3"><a href="#3-学习总结-3" class="headerlink" title="3.学习总结"></a>3.学习总结</h3><ul>
+<li><p>本题通过统计每种难度题目的数量解决问题。这是字符频率统计的典型应用。</p>
+</li>
+<li><p>通过遍历字符串并比较字符，可以有效统计各类别出现次数。</p>
+</li>
+</ul>
+<h2 id="五-rules"><a href="#五-rules" class="headerlink" title="五.rules"></a>五.rules</h2><h3 id="1-对应思路-4"><a href="#1-对应思路-4" class="headerlink" title="1.对应思路"></a>1.对应思路</h3><p>这段代码解决的问题是考察规则是否符合民意，主要步骤如下：</p>
+<ol>
+<li><p>输入数据：首先读取居民总数 <code>n</code>、记录天数 <code>m</code> 以及规则代号 <code>k</code>。</p>
+</li>
+<li><p>统计符合民意的天数：</p>
+<p>循环 <code>m</code> 次，表示逐天处理记录。</p>
+<p>对每一天，统计有多少居民遵守了规则 <code>k</code>（计数器 <code>c2</code>）。</p>
+<p>如果遵守规则 <code>k</code> 的人数大于等于一半 (<code>c2 * 2 &gt;= n</code>)，则该天规则符合民意，符合民意的天数计数器 <code>c1</code> 加一。</p>
+</li>
+<li><p>判断规则正确性</p>
+<p>：如果符合民意的天数大于等于记录天数的一半 (<code>c1 * 2 &gt;= m</code>)，输出 “YES” 表示规则正确，否则输出 “NO”。</p>
+</li>
+</ol>
+<h3 id="2-代码-4"><a href="#2-代码-4" class="headerlink" title="2.代码"></a>2.代码</h3><div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">	int m, n, k;</span><br><span class="line">	int c1 = 0, c2 = 0;</span><br><span class="line">	cin &gt;&gt; n &gt;&gt; m &gt;&gt; k;</span><br><span class="line">	for (int i = 0; i &lt; m; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		c2 = 0;</span><br><span class="line">		for (int j = 0; j &lt; n; j++) &#123;</span><br><span class="line">			int t;</span><br><span class="line">			cin &gt;&gt; t;</span><br><span class="line">			if (t == k)</span><br><span class="line">			&#123;</span><br><span class="line">				c2++;</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">			</span><br><span class="line">		&#125;</span><br><span class="line">		if ( c2*2 &gt;=  n)</span><br><span class="line">			&#123;</span><br><span class="line">				c1++;</span><br><span class="line">				</span><br><span class="line">			&#125;</span><br><span class="line">	&#125;if ( c1*2 &gt;=  m)</span><br><span class="line">			&#123;</span><br><span class="line">				cout &lt;&lt; &quot;YES&quot;;</span><br><span class="line">				</span><br><span class="line">			&#125;</span><br><span class="line">	else</span><br><span class="line">	cout &lt;&lt; &quot;NO&quot;;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h3 id="3-学习总结-4"><a href="#3-学习总结-4" class="headerlink" title="3.学习总结"></a>3.学习总结</h3><p>这道题目涉及多重循环的处理，是学习数组与条件判断的重要练习。通过这段代码可以总结如下：</p>
+<ol>
+<li><p>理解核心逻辑</p>
+<p>问题的核心在于两层判断：一是某天规则是否符合民意，二是统计符合民意的天数是否达到要求。这种多层嵌套条件是常见的编程模式。</p>
+</li>
+<li><p>优化循环效率</p>
+<p>本代码通过双重循环按天和按人处理问题，时间复杂度为 O(m×n)O(m \times n)O(m×n)。这种结构在处理范围较大时可能需要优化。</p>
+</li>
+<li><p>掌握计数逻辑</p>
+<p>使用计数器 <code>c2</code> 和 <code>c1</code> 逐步累积数据，并通过条件判断更新状态。这种逻辑清晰、简洁，适合复杂问题分步解决。</p>
+</li>
+</ol>
+<h2 id="六-Many-Replacement"><a href="#六-Many-Replacement" class="headerlink" title="六.Many Replacement"></a>六.Many Replacement</h2><h3 id="1-对应思路-5"><a href="#1-对应思路-5" class="headerlink" title="1.对应思路"></a>1.对应思路</h3><ol>
+<li><p>初始化映射表：</p>
+<p>创建一个 <code>mapping</code> 数组，长度为 26（表示字母表），初始化为 <code>&#39;a&#39;</code> 到 <code>&#39;z&#39;</code> 的对应字母。这个表将用于记录字母替换关系。</p>
+</li>
+<li><p>处理替换操作：</p>
+<p>对每个替换指令 <code>(c, d)</code>，遍历 <code>mapping</code> 数组，将所有值等于 <code>c</code> 的项替换为 <code>d</code>。</p>
+<p>这种方式确保了间接替换链条也能正确生效。例如，如果先将 <code>a</code> 替换为 <code>b</code>，再将 <code>b</code> 替换为 <code>c</code>，最终 <code>a</code> 也会被替换为 <code>c</code>。</p>
+</li>
+<li><p>修改字符串：</p>
+<p>遍历字符串 <code>S</code> 的每个字符，根据 <code>mapping</code> 数组中的映射关系，将字符替换为最终映射的目标字符。</p>
+</li>
+<li><p>输出结果：</p>
+<p>输出修改后的字符串 <code>S</code>。</p>
+</li>
+</ol>
+<p>通过使用 <code>mapping</code> 数组记录全局映射关系，避免直接修改字符串多次，提高了处理效率。</p>
+<h3 id="2-代码-5"><a href="#2-代码-5" class="headerlink" title="2.代码"></a>2.代码</h3><div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;string&gt;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line">    int N, Q;</span><br><span class="line">    cin &gt;&gt; N;</span><br><span class="line">    string S;</span><br><span class="line">    cin &gt;&gt; S;</span><br><span class="line">    cin &gt;&gt; Q;</span><br><span class="line"></span><br><span class="line">    vector&lt;char&gt; mapping(26);</span><br><span class="line">    for (int i = 0; i &lt; 26; i++) &#123;</span><br><span class="line">        mapping[i] = &#x27;a&#x27; + i; </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    for (int i = 0; i &lt; Q; i++) &#123;</span><br><span class="line">        char c, d;</span><br><span class="line">        cin &gt;&gt; c &gt;&gt; d;</span><br><span class="line">        for (int j = 0; j &lt; 26; j++) &#123;</span><br><span class="line">            if (mapping[j] == c) &#123;</span><br><span class="line">                mapping[j] = d;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    for (char &amp;ch : S) &#123;</span><br><span class="line">        ch = mapping[ch - &#x27;a&#x27;]; </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; S &lt;&lt; endl;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+
+
+<h3 id="3-学习总结-5"><a href="#3-学习总结-5" class="headerlink" title="3.学习总结"></a>3.学习总结</h3><p>1.高效处理替换链：</p>
+<p>  使用一个映射表 (<code>mapping</code> 数组) 将字符替换逻辑统一管理，避免了直接在字符串中进行多次替换操作，降低了时间复杂度。</p>
+<p>2.间接替换链的处理：</p>
+<p>  通过在处理替换指令时遍历整个映射表，确保链式替换得到正确结果。这种方法适用于有依赖关系的替换问题。</p>
+<p>3.复杂度优化：</p>
+<p>  替换操作遍历 <code>mapping</code> 的复杂度为 O(Q×26)O(Q \times 26)O(Q×26)，字符串替换为 O(N)O(N)O(N)，整体复杂度约为 O(Q+N)O(Q + N)O(Q+N)，足以处理较大输入规模。</p>
+<p>4.边界条件考虑：</p>
+<p>  替换字符可以是相同的（<code>c = d</code>），这种情况不会影响映射表。</p>
+<p>  某些字符可能不存在于字符串中，但替换逻辑依然可以正常处理。</p>
+<h2 id="更好的交换"><a href="#更好的交换" class="headerlink" title="更好的交换"></a>更好的交换</h2><h3 id="1-对应思路-6"><a href="#1-对应思路-6" class="headerlink" title="1.对应思路"></a>1.对应思路</h3><ol>
+<li><p>输入与初始化：</p>
+<p>读取矩阵大小 <code>n</code> 和操作次数 <code>m</code>。</p>
+<p>读取矩阵内容并存储在 <code>matrix</code> 中。</p>
+<p>初始化两个数组 <code>row_map</code> 和 <code>col_map</code>，分别记录行和列的映射关系，初始值为 <code>[0, 1, 2, ..., n-1]</code>。</p>
+</li>
+<li><p>操作处理：</p>
+<p>遍历每个操作，根据操作类型：</p>
+<p>  若 <code>op == 1</code>（交换行），则交换 <code>row_map[x]</code> 和 <code>row_map[y]</code>。</p>
+<p>  若 <code>op == 0</code>（交换列），则交换 <code>col_map[x]</code> 和 <code>col_map[y]</code>。</p>
+<p>通过修改 <code>row_map</code> 和 <code>col_map</code> 的映射关系，而非直接修改矩阵，节省了时间复杂度。</p>
+</li>
+<li><p>输出矩阵：</p>
+<p>根据最终的 <code>row_map</code> 和 <code>col_map</code>，重新按映射顺序输出矩阵。<code>matrix[row_map[i]][col_map[j]]</code> 得到正确的映射值。</p>
+</li>
+</ol>
+<p>通过这种间接映射法，避免了每次交换直接操作矩阵，提高了效率，适合大规模输入。</p>
+<h3 id="2-代码-6"><a href="#2-代码-6" class="headerlink" title="2.代码"></a>2.代码</h3><div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line">    int n, m;</span><br><span class="line">    cin &gt;&gt; n &gt;&gt; m;</span><br><span class="line">    vector&lt;vector&lt;int&gt;&gt; matrix(n, vector&lt;int&gt;(n));</span><br><span class="line">    for (int i = 0; i &lt; n; ++i) &#123;</span><br><span class="line">        for (int j = 0; j &lt; n; ++j) &#123;</span><br><span class="line">            cin &gt;&gt; matrix[i][j];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    vector&lt;int&gt; row_map(n), col_map(n);</span><br><span class="line">    for (int i = 0; i &lt; n; ++i) &#123;</span><br><span class="line">        row_map[i] = i; </span><br><span class="line">        col_map[i] = i; </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    for (int i = 0; i &lt; m; ++i) &#123;</span><br><span class="line">        int op, x, y;</span><br><span class="line">        cin &gt;&gt; op &gt;&gt; x &gt;&gt; y;</span><br><span class="line">        --x; </span><br><span class="line">        --y;</span><br><span class="line">        if (op == 1) &#123;</span><br><span class="line">            swap(row_map[x], row_map[y]); </span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            swap(col_map[x], col_map[y]); </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    for (int i = 0; i &lt; n; ++i) &#123;</span><br><span class="line">        for (int j = 0; j &lt; n; ++j) &#123;</span><br><span class="line">            cout &lt;&lt; matrix[row_map[i]][col_map[j]] &lt;&lt; &quot; &quot;;</span><br><span class="line">        &#125;</span><br><span class="line">        cout &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h3 id="3-学习总结-6"><a href="#3-学习总结-6" class="headerlink" title="3.学习总结"></a>3.学习总结</h3><p>间接映射优化：</p>
+<p>​    直接交换矩阵行列会带来高昂的时间复杂度，间接通过映射数组调整顺序是一种高效的解决方式。</p>
+<p>空间与时间的平衡：</p>
+<p>​    增加两个映射数组 <code>row_map</code> 和 <code>col_map</code>，用空间换取了时间的优化。</p>
+<p>​    在 mmm 次操作和 n2n^2n2 次矩阵访问中，复杂度降低为 O(n2+m)O(n^2 + m)O(n2+m)，适合处理大规模 n,mn, mn,m。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="http://example.com">GoshenC</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="http://example.com/2025/02/06/Task-1/">http://example.com/2025/02/06/Task-1/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="../../../../img/avatar.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="../blog%E7%94%A8%E6%B3%95/" title="blog用法"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">Previous</div><div class="info-item-2">blog用法</div></div><div class="info-2"><div class="info-item-1">practice</div></div></div></a><a class="pagination-related" href="../Task-2/" title="Task 2"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">Next</div><div class="info-item-2">Task 2</div></div><div class="info-2"><div class="info-item-1">寒假第二讲:“二分”一.二分查找1.对应思路这个问题的要求是通过二分查找，在一个已经按升序排列的整数序列中查找是否包含查询的整数。对于每次查询，若该整数在序列中出现，则输出 “Yes”，否则输出 “No”。  输入处理： 输入一个整数 nnn，表示数组的大小。 接下来输入 nnn 个整数，这些整数已排序。 接着输入一个整数 qqq，表示查询次数。 对于每次查询，输入一个整数 mmm，需要判断 mmm 是否出现在排序数组中。   二分查找： 二分查找是一种高效的查找方法，在一个已排序的数组中查找某个元素的时间复杂度为 O(log⁡n)O(\log n)O(logn)。 使用标准库的 lower_bound 函数来实现二分查找。它会返回一个指向数组中第一个大于或等于查询值的迭代器。如果迭代器指向的元素与查询值相同，则表示该元素存在。   输出： 如果查询值在数组中存在，则输出 “Yes”；否则输出 “No”。    123456789101112131415161718192021222324252627282930313233#include...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="../../../../img/avatar.jpg" onerror="this.onerror=null;this.src='../../../../img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">GoshenC</div><div class="author-info-description"></div><div class="site-data"><a href="../../../../archives/"><div class="headline">Articles</div><div class="length-num">69</div></a><a href="../../../../tags/"><div class="headline">Tags</div><div class="length-num">7</div></a><a href="../../../../categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Goshenc"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Goshenc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="../../../../mailto:gx.c221434@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Welcome</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AF%92%E5%81%87%E7%AC%AC%E4%B8%80%E8%AE%B2%EF%BC%9AC-%E5%9F%BA%E7%A1%80"><span class="toc-number">1.</span> <span class="toc-text">寒假第一讲：C++ 基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-Long-Loong"><span class="toc-number">1.1.</span> <span class="toc-text">一.Long Loong</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AF%B9%E5%BA%94%E6%80%9D%E8%B7%AF"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.对应思路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BB%A3%E7%A0%81"><span class="toc-number">1.1.2.</span> <span class="toc-text">2.代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93"><span class="toc-number">1.1.3.</span> <span class="toc-text">3.学习总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-YES-or-YES"><span class="toc-number">1.2.</span> <span class="toc-text">二.YES or YES?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AF%B9%E5%BA%94%E6%80%9D%E8%B7%AF-1"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.对应思路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BB%A3%E7%A0%81-1"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93-1"><span class="toc-number">1.2.3.</span> <span class="toc-text">3.学习总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-Even-Odd-G"><span class="toc-number">1.3.</span> <span class="toc-text">三.Even? Odd? G</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AF%B9%E5%BA%94%E6%80%9D%E8%B7%AF-2"><span class="toc-number">1.3.1.</span> <span class="toc-text">1.对应思路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BB%A3%E7%A0%81-2"><span class="toc-number">1.3.2.</span> <span class="toc-text">2.代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93-2"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.学习总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B-Problem-Generator"><span class="toc-number">1.4.</span> <span class="toc-text">四.Problem Generator</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AF%B9%E5%BA%94%E6%80%9D%E8%B7%AF-3"><span class="toc-number">1.4.1.</span> <span class="toc-text">1.对应思路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BB%A3%E7%A0%81-3"><span class="toc-number">1.4.2.</span> <span class="toc-text">2.代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93-3"><span class="toc-number">1.4.3.</span> <span class="toc-text">3.学习总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94-rules"><span class="toc-number">1.5.</span> <span class="toc-text">五.rules</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AF%B9%E5%BA%94%E6%80%9D%E8%B7%AF-4"><span class="toc-number">1.5.1.</span> <span class="toc-text">1.对应思路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BB%A3%E7%A0%81-4"><span class="toc-number">1.5.2.</span> <span class="toc-text">2.代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93-4"><span class="toc-number">1.5.3.</span> <span class="toc-text">3.学习总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD-Many-Replacement"><span class="toc-number">1.6.</span> <span class="toc-text">六.Many Replacement</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AF%B9%E5%BA%94%E6%80%9D%E8%B7%AF-5"><span class="toc-number">1.6.1.</span> <span class="toc-text">1.对应思路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BB%A3%E7%A0%81-5"><span class="toc-number">1.6.2.</span> <span class="toc-text">2.代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93-5"><span class="toc-number">1.6.3.</span> <span class="toc-text">3.学习总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B4%E5%A5%BD%E7%9A%84%E4%BA%A4%E6%8D%A2"><span class="toc-number">1.7.</span> <span class="toc-text">更好的交换</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AF%B9%E5%BA%94%E6%80%9D%E8%B7%AF-6"><span class="toc-number">1.7.1.</span> <span class="toc-text">1.对应思路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BB%A3%E7%A0%81-6"><span class="toc-number">1.7.2.</span> <span class="toc-text">2.代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93-6"><span class="toc-number">1.7.3.</span> <span class="toc-text">3.学习总结</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Posts</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="../../../12/07/%E8%99%9A%E6%8B%9F%E5%88%97%E8%A1%A8/" title="虚拟列表">虚拟列表</a><time datetime="2025-12-07T13:27:21.000Z" title="Created 2025-12-07 21:27:21">2025-12-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="../../../11/30/npm%E6%95%99%E7%A8%8B/" title="npm教程">npm教程</a><time datetime="2025-11-30T12:13:50.000Z" title="Created 2025-11-30 20:13:50">2025-11-30</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="../../../10/26/%E5%BC%B9%E6%80%A7%E7%9B%92%E5%B8%83%E5%B1%80/" title="弹性盒布局">弹性盒布局</a><time datetime="2025-10-26T07:58:57.000Z" title="Created 2025-10-26 15:58:57">2025-10-26</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="../../../10/25/css%E5%B8%83%E5%B1%80/" title="css布局">css布局</a><time datetime="2025-10-25T14:24:09.000Z" title="Created 2025-10-25 22:24:09">2025-10-25</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="../../../10/25/%E7%9B%92%E5%AD%90%E6%A8%A1%E5%9E%8B/" title="盒子模型">盒子模型</a><time datetime="2025-10-25T11:42:00.000Z" title="Created 2025-10-25 19:42:00">2025-10-25</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2025 By GoshenC</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="../../../../js/utils.js"></script><script src="../../../../js/main.js"></script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'none',
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          enableMenu: true,
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="100" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading Database</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="../../../../js/search/local-search.js"></script></div></div></body></html>

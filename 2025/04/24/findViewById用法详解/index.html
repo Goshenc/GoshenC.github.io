@@ -1,0 +1,305 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>findViewById用法详解 | GoshenC</title><meta name="author" content="GoshenC"><meta name="copyright" content="GoshenC"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Android findViewById 用法详解在传统的 Android 开发中，findViewById 是从 XML 布局中获取视图（View）引用的最常用方法。本文将从基础用法、类型安全、性能影响、常见坑以及替代方案等多角度，详细剖析 findViewById 的正确使用方式与优化建议。  1. 基础用法1.1 方法签名1public &lt;T extends View&gt; T fi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="findViewById用法详解">
+<meta property="og:url" content="http://example.com/2025/04/24/findViewById%E7%94%A8%E6%B3%95%E8%AF%A6%E8%A7%A3/index.html">
+<meta property="og:site_name" content="GoshenC">
+<meta property="og:description" content="Android findViewById 用法详解在传统的 Android 开发中，findViewById 是从 XML 布局中获取视图（View）引用的最常用方法。本文将从基础用法、类型安全、性能影响、常见坑以及替代方案等多角度，详细剖析 findViewById 的正确使用方式与优化建议。  1. 基础用法1.1 方法签名1public &lt;T extends View&gt; T fi">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/avatar.jpg">
+<meta property="article:published_time" content="2025-04-24T14:07:36.000Z">
+<meta property="article:modified_time" content="2025-04-24T14:08:32.710Z">
+<meta property="article:author" content="GoshenC">
+<meta property="article:tag" content="安卓开发">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/avatar.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "findViewById用法详解",
+  "url": "http://example.com/2025/04/24/findViewById%E7%94%A8%E6%B3%95%E8%AF%A6%E8%A7%A3/",
+  "image": "http://example.com/img/avatar.jpg",
+  "datePublished": "2025-04-24T14:07:36.000Z",
+  "dateModified": "2025-04-24T14:08:32.710Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "GoshenC",
+      "url": "http://example.com/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="../../../../img/circularavatar.jpg"><link rel="canonical" href="http://example.com/2025/04/24/findViewById%E7%94%A8%E6%B3%95%E8%AF%A6%E8%A7%A3/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="../../../../css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"No results found for: ${query}","hits_stats":"${hits} articles found"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":250,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'findViewById用法详解',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(img/mainbackground.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="../../../../img/avatar.jpg" onerror="this.onerror=null;this.src='../../../../img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="../../../../archives/"><div class="headline">Articles</div><div class="length-num">69</div></a><a href="../../../../tags/"><div class="headline">Tags</div><div class="length-num">7</div></a><a href="../../../../categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="../../../../gotcha,hahaha"><span> 简体中文/Chinese-CN</span></a></div><div class="menus_item"><a class="site-page" href="../../../../index.html"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="../../../../archives/"><i class="fa-fw fas fa-archive"></i><span> Timeline</span></a></div><div class="menus_item"><a class="site-page" href="../../../../tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="../../../../categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="../../../../link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="../../../../about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" target="_blank" rel="noopener" href="https://www.kugou.com/"><i class="fa-fw fas fa-music"></i><span> Music(音乐)</span></a></li><li><a class="site-page child" href="../../../../movies/"><i class="fa-fw fas fa-video"></i><span> Movie(电影)</span></a></li><li><a class="site-page child" href="../../../../music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(img/mainbackground.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="../../../../index.html"><img class="site-icon" src="../../../../img/circularavatar.jpg" alt="Logo"><span class="site-name">GoshenC</span></a><a class="nav-page-title" href="../../../../index.html"><span class="site-name">findViewById用法详解</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="../../../../gotcha,hahaha"><span> 简体中文/Chinese-CN</span></a></div><div class="menus_item"><a class="site-page" href="../../../../index.html"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="../../../../archives/"><i class="fa-fw fas fa-archive"></i><span> Timeline</span></a></div><div class="menus_item"><a class="site-page" href="../../../../tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="../../../../categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="../../../../link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="../../../../about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" target="_blank" rel="noopener" href="https://www.kugou.com/"><i class="fa-fw fas fa-music"></i><span> Music(音乐)</span></a></li><li><a class="site-page child" href="../../../../movies/"><i class="fa-fw fas fa-video"></i><span> Movie(电影)</span></a></li><li><a class="site-page child" href="../../../../music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">findViewById用法详解</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2025-04-24T14:07:36.000Z" title="Created 2025-04-24 22:07:36">2025-04-24</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2025-04-24T14:08:32.710Z" title="Updated 2025-04-24 22:08:32">2025-04-24</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word Count:</span><span class="word-count">912</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading Time:</span><span>3mins</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="Android-findViewById-用法详解"><a href="#Android-findViewById-用法详解" class="headerlink" title="Android findViewById 用法详解"></a>Android <code>findViewById</code> 用法详解</h1><p>在传统的 Android 开发中，<code>findViewById</code> 是从 XML 布局中获取视图（<code>View</code>）引用的最常用方法。本文将从基础用法、类型安全、性能影响、常见坑以及替代方案等多角度，详细剖析 <code>findViewById</code> 的正确使用方式与优化建议。</p>
+<hr>
+<h2 id="1-基础用法"><a href="#1-基础用法" class="headerlink" title="1. 基础用法"></a>1. 基础用法</h2><h3 id="1-1-方法签名"><a href="#1-1-方法签名" class="headerlink" title="1.1 方法签名"></a>1.1 方法签名</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public &lt;T extends View&gt; T findViewById(int id);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>参数</strong>：<code>id</code> — 要查找的视图在 R 文件中对应的资源 ID（如 <code>R.id.myTextView</code>）。</li>
+<li><strong>返回值</strong>：返回指定类型的视图引用，若布局中未找到则返回 <code>null</code>。</li>
+</ul>
+<h3 id="1-2-最简单示例"><a href="#1-2-最简单示例" class="headerlink" title="1.2 最简单示例"></a>1.2 最简单示例</h3><p>假设在 <code>res/layout/activity_main.xml</code> 中有：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;TextView</span><br><span class="line">    android:id=&quot;@+id/tvHello&quot;</span><br><span class="line">    android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">    android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">    android:text=&quot;Hello World&quot;/&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在 <code>Activity</code> 或 <code>Fragment</code> 中：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">    super.onCreate(savedInstanceState);</span><br><span class="line">    setContentView(R.layout.activity_main);</span><br><span class="line"></span><br><span class="line">    TextView tv = findViewById(R.id.tvHello);</span><br><span class="line">    tv.setText(&quot;欢迎使用 findViewById！&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>⚠️ 从 Android API 26 开始，<code>findViewById</code> 不再需要显式地进行类型转换；它会根据泛型推断返回类型。</p>
+</blockquote>
+<hr>
+<h2 id="2-常见陷阱与注意点"><a href="#2-常见陷阱与注意点" class="headerlink" title="2. 常见陷阱与注意点"></a>2. 常见陷阱与注意点</h2><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>问题描述</th>
+<th>解决方案</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>布局未 setContentView</td>
+<td><code>findViewById</code> 返回 <code>null</code> 或 NPE</td>
+<td>必须在 <code>setContentView(...)</code> 之后调用</td>
+</tr>
+<tr>
+<td>在 Fragment 中调用 Activity 的 <code>findViewById</code></td>
+<td>找不到 Fragment 布局内的视图</td>
+<td>应使用 <code>view.findViewById(...)</code>（在 <code>onViewCreated</code> 或 <code>onCreateView</code> 中）</td>
+</tr>
+<tr>
+<td>重复调用性能</td>
+<td>每次都遍历视图树，影响性能</td>
+<td>使用视图缓存（ViewHolder、属性缓存）或 ViewBinding</td>
+</tr>
+<tr>
+<td>错误的布局文件</td>
+<td>include 或不同布局导致 ID 不匹配</td>
+<td>确认 <code>setContentView</code> 使用的布局文件包含目标 ID</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="3-性能优化"><a href="#3-性能优化" class="headerlink" title="3. 性能优化"></a>3. 性能优化</h2><ul>
+<li><p><strong>避免频繁调用</strong><br> 每次调用 <code>findViewById</code> 都会遍历当前视图树，复杂界面中不宜在滚动或高频操作里反复调用。</p>
+</li>
+<li><p><strong>缓存引用</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">private TextView tvHello;</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line">protected void onCreate(...) &#123;</span><br><span class="line">    setContentView(...);</span><br><span class="line">    tvHello = findViewById(R.id.tvHello);</span><br><span class="line">    // 之后直接使用 tvHello，无需再次 findViewById</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>ViewHolder 模式（RecyclerView &#x2F; ListView）</strong><br> 在列表中，将子项视图引用缓存在 <code>ViewHolder</code>，只在创建时查找一次。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">static class VH extends RecyclerView.ViewHolder &#123;</span><br><span class="line">    TextView tv;</span><br><span class="line">    VH(View itemView) &#123;</span><br><span class="line">        super(itemView);</span><br><span class="line">        tv = itemView.findViewById(R.id.itemText);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h2 id="4-进阶用法"><a href="#4-进阶用法" class="headerlink" title="4. 进阶用法"></a>4. 进阶用法</h2><h3 id="4-1-在-Fragment-中"><a href="#4-1-在-Fragment-中" class="headerlink" title="4.1 在 Fragment 中"></a>4.1 在 Fragment 中</h3><p>在 <code>Fragment.onCreateView</code> 中：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) &#123;</span><br><span class="line">    View root = inflater.inflate(R.layout.frag_layout, container, false);</span><br><span class="line">    TextView tv = root.findViewById(R.id.tvFrag);</span><br><span class="line">    tv.setText(&quot;Fragment 内的 findViewById&quot;);</span><br><span class="line">    return root;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-在自定义-View-中"><a href="#4-2-在自定义-View-中" class="headerlink" title="4.2 在自定义 View 中"></a>4.2 在自定义 View 中</h3><p>若你继承了 <code>LinearLayout</code>、<code>ConstraintLayout</code> 等：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public class MyCustomView extends LinearLayout &#123;</span><br><span class="line">    private ImageView ivIcon;</span><br><span class="line">    public MyCustomView(Context ctx, AttributeSet attrs) &#123;</span><br><span class="line">        super(ctx, attrs);</span><br><span class="line">        inflate(ctx, R.layout.view_custom, this);</span><br><span class="line">        ivIcon = findViewById(R.id.ivIcon);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="5-推荐替代方案"><a href="#5-推荐替代方案" class="headerlink" title="5. 推荐替代方案"></a>5. 推荐替代方案</h2><p>随着 Android 架构演进，Google 推荐使用更安全、高效的方式代替手动 <code>findViewById</code>：</p>
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th>优点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>View Binding</td>
+<td>编译时生成绑定类，类型安全、无需强制转换；避免 NPE</td>
+</tr>
+<tr>
+<td>Data Binding</td>
+<td>除绑定视图外，还支持双向数据绑定与表达式</td>
+</tr>
+<tr>
+<td>Kotlin Android Extensions (已废弃)</td>
+<td>语法简洁，但已被官方弃用</td>
+</tr>
+</tbody></table>
+<h3 id="5-1-View-Binding-示例"><a href="#5-1-View-Binding-示例" class="headerlink" title="5.1 View Binding 示例"></a>5.1 View Binding 示例</h3><p>在模块 <code>build.gradle</code> 中启用：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">    viewBinding &#123; enabled = true &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在 Activity 中使用：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">private lateinit var binding: ActivityMainBinding</span><br><span class="line"></span><br><span class="line">override fun onCreate(savedInstanceState: Bundle?) &#123;</span><br><span class="line">    super.onCreate(savedInstanceState)</span><br><span class="line">    binding = ActivityMainBinding.inflate(layoutInflater)</span><br><span class="line">    setContentView(binding.root)</span><br><span class="line"></span><br><span class="line">    binding.tvHello.text = &quot;使用 ViewBinding&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="6-小结"><a href="#6-小结" class="headerlink" title="6. 小结"></a>6. 小结</h2><ul>
+<li><code>findViewById</code> 是最基本的视图查找方式，但要注意性能与空指针风险。</li>
+<li>对于频繁访问的视图，要做好引用缓存。</li>
+<li>在 Fragment、自定义 View 中要基于对应根 View 调用。</li>
+<li>推荐使用 <strong>View Binding</strong> 或 <strong>Data Binding</strong> 以获得更好的类型安全与可维护性。</li>
+</ul>
+<p>通过本文，你应当掌握了 <code>findViewById</code> 的方方面面：从基础调用到性能优化、常见陷阱及现代替代方案。希望能帮助你在 Android 开发中写出更健壮、高效的 UI 代码！</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="http://example.com">GoshenC</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="http://example.com/2025/04/24/findViewById%E7%94%A8%E6%B3%95%E8%AF%A6%E8%A7%A3/">http://example.com/2025/04/24/findViewById%E7%94%A8%E6%B3%95%E8%AF%A6%E8%A7%A3/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="../../../../tags/%E5%AE%89%E5%8D%93%E5%BC%80%E5%8F%91/">安卓开发</a></div><div class="post-share"><div class="social-share" data-image="../../../../img/avatar.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="../../22/%E5%B9%B3%E7%A7%BB%E5%8A%A8%E7%94%BB%E8%AF%A6%E8%A7%A3/" title="平移动画详解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">Previous</div><div class="info-item-2">平移动画详解</div></div><div class="info-2"><div class="info-item-1">Android 中的平移动画详解文档一、什么是平移动画？平移动画是 Android 中的一种基础动画效果，它允许你在屏幕上沿 X 或 Y 方向移动视图（View），不改变视图本身的布局属性，仅仅是“看起来”被移动了。 平移的本质是对 View 的 translationX 或 translationY 属性进行动态设置，单位是像素（px），通过动画的方式实现流畅的移动效果。 二、实现方式1. 使用 ViewPropertyAnimator（简洁高效）1234view.animate()    .translationY(100f)    .setDuration(300)    .start()   translationX() 或 translationY() 控制平移位置（相对初始位置） setDuration() 设置动画时间，单位毫秒 start() 开始动画  2. 使用 ObjectAnimator（更灵活）12345ObjectAnimator.ofFloat(view, &quot;translationY&quot;, 0f, 100f).apply...</div></div></div></a><a class="pagination-related" href="../../../05/17/HTML-CSS-%E5%B8%B8%E8%A7%81%E6%A0%87%E7%AD%BE%E5%92%8C%E6%A0%B7%E5%BC%8F/" title="HTML-CSS-常见标签和样式"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">Next</div><div class="info-item-2">HTML-CSS-常见标签和样式</div></div><div class="info-2"><div class="info-item-1">25&#x2F;5&#x2F;17  25&#x2F;5&#x2F;18    25&#x2F;5&#x2F;20 justify-content: space-between是每个元素“左右”分配相同的外部间距（margin-like 间隔）。 比如有3个元素的话，中间元素之间的间距会是两倍的边缘间距。   25&#x2F;5&#x2F;22 25&#x2F;5&#x2F;22 HTML-CSS-课程总结  </div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><a class="pagination-related" href="../../04/DrawerLayout%E8%AF%A6%E8%A7%A3/" title="DrawerLayout详解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-04-04</div><div class="info-item-2">DrawerLayout详解</div></div><div class="info-2"><div class="info-item-1">📘 DrawerLayout 技术文档（2025 年版） 1. 🧭 简介DrawerLayout 是 Android 官方支持的布局容器，用于实现侧边滑出的导航抽屉效果（Navigation Drawer）。广泛应用于包含多个导航项的 App 中，例如邮箱客户端、新闻阅读器、社交类应用等。 特性：  支持左侧&#x2F;右侧抽屉（或同时存在） 支持滑动手势与菜单图标触发 与 NavigationView 和 Jetpack Navigation 组件良好兼容 支持 Material Design 风格   2. 🧩 核心概念与组件结构DrawerLayout 是一个 ViewGroup 容器，至少包含两个子布局：  主内容区域：通常为主界面，如 FragmentContainerView 或 ConstraintLayout 抽屉内容区域：通常放置 NavigationView，用于显示导航菜单项  123plaintext复制编辑DrawerLayout├── 主界面内容（Main Content）└── 抽屉内容（Drawer -...</div></div></div></a><a class="pagination-related" href="../../04/NavigationView%E8%AF%A6%E8%A7%A3/" title="NavigationView详解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-04-04</div><div class="info-item-2">NavigationView详解</div></div><div class="info-2"><div class="info-item-1">📌 Android NavigationView 技术详解（2025 年版）在现代 Android 应用中，良好的导航体验是提升用户满意度的关键。NavigationView 是 Google Material Design 指南推荐的组件之一，常与 DrawerLayout 结合使用，为应用提供侧滑导航菜单（Side Navigation Drawer）功能。本文将全面解析 NavigationView 的用法、特性与最佳实践，帮助你构建符合现代设计规范的 Android 应用。  🔧 什么是 NavigationView？NavigationView 是 com.google.android.material.navigation.NavigationView，它是 Material Components 提供的 UI 组件，用于构建左侧侧滑菜单，通常嵌套在 DrawerLayout 中。  📌 NavigationView 实际上是一个带有菜单项（Menu）和可选头部视图（Header）的 FrameLayout。   🧱...</div></div></div></a><a class="pagination-related" href="../../04/Snackbar%E7%94%A8%E6%B3%95%E8%AF%A6%E8%A7%A3/" title="Snackbar用法详解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-04-04</div><div class="info-item-2">Snackbar用法详解</div></div><div class="info-2"><div class="info-item-1">一、概述Snackbar 是 Android 提供的一种简洁、轻量级的提示框，用于在屏幕底部展示短暂的信息提示。它的设计初衷是为了提供一种比 Toast 更具互动性和灵活性的提示方式。与 Toast 的静态提示不同，Snackbar 提供了更多的交互功能，例如：支持撤销操作、自动隐藏和手动关闭。 Snackbar 适用于展示短期通知，尤其是需要用户进行交互（如撤销操作）的场景。  二、Snackbar 与 Toast 的对比   特性 Snackbar Toast    显示位置 屏幕底部 屏幕中间或底部   显示时间 可定制（一般显示 2-3 秒） 自动消失（一般 2-3 秒）   可交互性 支持按钮操作（如撤销） 无法交互   可以设置自定义动作 可以添加撤销按钮、动作 只能显示文本   Snackbar 的主要优势在于支持交互操作和自定义动作，比如用户可以点击“撤销”按钮撤回某个操作，而 Toast 仅是展示提示信息并自动消失。  三、Snackbar 基本使用1. 导入必要的依赖在使用 Snackbar 之前，首先需要确保你的项目已经包含了 Material...</div></div></div></a><a class="pagination-related" href="../../04/CoordinatorLayout%E7%94%A8%E6%B3%95%E8%AF%A6%E8%A7%A3/" title="CoordinatorLayout用法详解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-04-04</div><div class="info-item-2">CoordinatorLayout用法详解</div></div><div class="info-2"><div class="info-item-1">一、概述CoordinatorLayout 是 Android 支持库（Support Library）提供的一个高级布局容器，它继承自 FrameLayout，是一个强大的布局容器，能够协调并支持更复杂的交互设计，尤其是在 Material Design 中。它提供了一种灵活的方式来协作处理子视图之间的行为，如与 AppBarLayout、FloatingActionButton、Snackbar 等组件的交互效果。 CoordinatorLayout 主要目的是提供一种“协调”各个视图行为的机制，可以通过自定义或现成的行为（Behavior）来控制子视图的滑动、动画和响应。  二、CoordinatorLayout 特性CoordinatorLayout 提供了以下几个重要特性：  响应滚动和手势：CoordinatorLayout 能够捕捉子视图的滚动和手势事件，并根据需要调整布局位置。 子视图行为协调：可以让不同的视图（如 AppBarLayout 和 FloatingActionButton）之间协调运动，确保界面一致性和流畅的过渡效果。 支持自定义行为：通过自定义...</div></div></div></a><a class="pagination-related" href="../../04/MateriaCardView%E7%94%A8%E6%B3%95%E8%AF%A6%E8%A7%A3/" title="MaterialCardView用法详解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-04-04</div><div class="info-item-2">MaterialCardView用法详解</div></div><div class="info-2"><div class="info-item-1">一、概述MaterialCardView 是 Android Material Components 库中的一个视图控件，它基于 CardView 进行了增强，加入了更多 Material Design 风格的特性，使其更适合现代 Android 应用的设计要求。MaterialCardView 提供了简洁的卡片式界面，能够方便地实现圆角、阴影、背景等效果，从而帮助开发者构建更加美观、易于交互的 UI 元素。 与 CardView 相比，MaterialCardView 支持更多的功能，例如：  形状：支持更复杂的形状，除了圆角外，还支持自定义的形状和阴影效果。 背景：可以设置与背景相关的更多属性。 Ripple 效果：内置 Material Design 风格的水波纹点击效果。  MaterialCardView 适合用于展示内容卡片、列表项、照片、产品展示等，尤其是需要圆角和阴影效果的场景。  二、依赖与导入在使用 MaterialCardView 之前，需要确保你的项目已经加入了 Material Components 库的依赖。可以在项目的 build.gradle...</div></div></div></a><a class="pagination-related" href="../../04/AppbarLayout%E7%94%A8%E6%B3%95%E8%AF%A6%E8%A7%A3/" title="AppbarLayout用法详解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-04-04</div><div class="info-item-2">AppbarLayout用法详解</div></div><div class="info-2"><div class="info-item-1">一、概述AppBarLayout 是 Android Material Components 库中的一个重要视图组件，作为布局的一部分，通常用于实现可滚动的应用栏。它通过与其他布局控件（如 Toolbar、CollapsingToolbarLayout）结合使用，支持一些常见的交互效果，比如折叠和展开的动画效果。AppBarLayout 主要用来创建符合 Material Design 风格的顶部区域，它为复杂的应用栏交互提供了强大的支持，尤其是在多层滚动视图中。 主要特性： 滚动行为：支持和子视图（如 RecyclerView）的滚动交互，可以折叠和展开应用栏。 折叠与展开：通过 CollapsingToolbarLayout 支持应用栏的折叠与展开动画。 Material Design 支持：内置 Material Design 风格，符合现代 Android 应用的设计规范。   二、依赖与导入AppBarLayout 是 Android Material Components 库的一部分，在使用时需要确保已经在项目的 build.gradle 文件中添加了...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="../../../../img/avatar.jpg" onerror="this.onerror=null;this.src='../../../../img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">GoshenC</div><div class="author-info-description"></div><div class="site-data"><a href="../../../../archives/"><div class="headline">Articles</div><div class="length-num">69</div></a><a href="../../../../tags/"><div class="headline">Tags</div><div class="length-num">7</div></a><a href="../../../../categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Goshenc"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Goshenc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="../../../../mailto:gx.c221434@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Welcome</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Android-findViewById-%E7%94%A8%E6%B3%95%E8%AF%A6%E8%A7%A3"><span class="toc-number">1.</span> <span class="toc-text">Android findViewById 用法详解</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95"><span class="toc-number">1.1.</span> <span class="toc-text">1. 基础用法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E6%96%B9%E6%B3%95%E7%AD%BE%E5%90%8D"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1 方法签名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E6%9C%80%E7%AE%80%E5%8D%95%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.1.2.</span> <span class="toc-text">1.2 最简单示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%B8%B8%E8%A7%81%E9%99%B7%E9%98%B1%E4%B8%8E%E6%B3%A8%E6%84%8F%E7%82%B9"><span class="toc-number">1.2.</span> <span class="toc-text">2. 常见陷阱与注意点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"><span class="toc-number">1.3.</span> <span class="toc-text">3. 性能优化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E8%BF%9B%E9%98%B6%E7%94%A8%E6%B3%95"><span class="toc-number">1.4.</span> <span class="toc-text">4. 进阶用法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E5%9C%A8-Fragment-%E4%B8%AD"><span class="toc-number">1.4.1.</span> <span class="toc-text">4.1 在 Fragment 中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E5%9C%A8%E8%87%AA%E5%AE%9A%E4%B9%89-View-%E4%B8%AD"><span class="toc-number">1.4.2.</span> <span class="toc-text">4.2 在自定义 View 中</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%8E%A8%E8%8D%90%E6%9B%BF%E4%BB%A3%E6%96%B9%E6%A1%88"><span class="toc-number">1.5.</span> <span class="toc-text">5. 推荐替代方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-View-Binding-%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.5.1.</span> <span class="toc-text">5.1 View Binding 示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%B0%8F%E7%BB%93"><span class="toc-number">1.6.</span> <span class="toc-text">6. 小结</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Posts</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="../../../12/07/%E8%99%9A%E6%8B%9F%E5%88%97%E8%A1%A8/" title="虚拟列表">虚拟列表</a><time datetime="2025-12-07T13:27:21.000Z" title="Created 2025-12-07 21:27:21">2025-12-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="../../../11/30/npm%E6%95%99%E7%A8%8B/" title="npm教程">npm教程</a><time datetime="2025-11-30T12:13:50.000Z" title="Created 2025-11-30 20:13:50">2025-11-30</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="../../../10/26/%E5%BC%B9%E6%80%A7%E7%9B%92%E5%B8%83%E5%B1%80/" title="弹性盒布局">弹性盒布局</a><time datetime="2025-10-26T07:58:57.000Z" title="Created 2025-10-26 15:58:57">2025-10-26</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="../../../10/25/css%E5%B8%83%E5%B1%80/" title="css布局">css布局</a><time datetime="2025-10-25T14:24:09.000Z" title="Created 2025-10-25 22:24:09">2025-10-25</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="../../../10/25/%E7%9B%92%E5%AD%90%E6%A8%A1%E5%9E%8B/" title="盒子模型">盒子模型</a><time datetime="2025-10-25T11:42:00.000Z" title="Created 2025-10-25 19:42:00">2025-10-25</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2025 By GoshenC</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="../../../../js/utils.js"></script><script src="../../../../js/main.js"></script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'none',
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          enableMenu: true,
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="100" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading Database</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="../../../../js/search/local-search.js"></script></div></div></body></html>
